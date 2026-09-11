@@ -1,0 +1,1544 @@
+/* ==========================================================================
+   HS Properties — Intake flow
+   The shell and form system for multi-step private intake screens.
+
+   Built to be shared: the seller intake uses it now, the buyer intake and the
+   admin console will reuse the same shell, controls and review rows. Nothing
+   here is specific to a single step.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   SHELL
+   -------------------------------------------------------------------------- */
+
+.intake-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--c-sand-50);
+  color: var(--c-sand-900);
+}
+
+/* Two stacked background textures: a fine architectural grid and a warm
+   ambient glow. Both are painted on the body, behind all content. */
+.intake-body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--c-sand-50);
+  background-image: linear-gradient(
+      to right,
+      rgba(15, 23, 42, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.intake-body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+      circle at 18% 25%,
+      rgba(223, 194, 147, 0.08) 0%,
+      rgba(250, 249, 246, 0) 55%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(200, 180, 150, 0.06) 0%,
+      rgba(250, 249, 246, 0) 60%
+    );
+}
+
+.intake-main {
+  flex-grow: 1;
+  padding-block: var(--s-2xl) var(--s-3xl);
+}
+
+/* --------------------------------------------------------------------------
+   MINIMAL HEADER
+   -------------------------------------------------------------------------- */
+
+.intake-header {
+  border-bottom: 1px solid var(--c-sand-200);
+  background-color: rgba(250, 249, 246, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.intake-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-lg);
+  padding-block: var(--s-md);
+}
+
+.intake-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+/* Monogram tile */
+.intake-brand__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: var(--r-sm);
+  background-color: var(--c-noir);
+  color: var(--c-sand-50);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.intake-brand__name {
+  display: block;
+  font-size: var(--t-label-md-size);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.intake-brand__tagline {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--c-sand-700);
+  line-height: 1.4;
+}
+
+.intake-header__aside {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
+}
+
+.intake-header__note {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+}
+
+.intake-header__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-sm);
+  font-size: var(--t-label-sm-size);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-sand-900);
+  transition: color var(--d-base) var(--ease-standard),
+    gap var(--d-base) var(--ease-standard);
+}
+
+.intake-header__cta:hover {
+  color: var(--c-champagne-600);
+  gap: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   PROGRESS RAIL
+   -------------------------------------------------------------------------- */
+
+.intake-progress {
+  border-bottom: 1px solid var(--c-sand-200);
+  background-color: rgba(244, 243, 240, 0.6);
+}
+
+.intake-progress__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-lg);
+  padding-block: 0.875rem;
+}
+
+/* Breadcrumb */
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-sand-400);
+  min-width: 0;
+}
+
+.crumb__item {
+  color: var(--c-sand-400);
+  white-space: nowrap;
+}
+
+.crumb__item--strong {
+  color: var(--c-sand-900);
+}
+
+.crumb__item--current {
+  color: var(--c-champagne-600);
+}
+
+.crumb__sep {
+  color: var(--c-sand-300);
+}
+
+/* Step indicator */
+.steps {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
+  min-width: 0;
+}
+
+.steps__item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--c-sand-400);
+}
+
+.steps__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--r-pill);
+  background-color: var(--c-sand-300);
+  flex-shrink: 0;
+}
+
+/* Completed steps read bronze; the active step reads ink with a ringed dot. */
+.steps__item--done {
+  color: var(--c-champagne-600);
+}
+
+.steps__item--done .steps__dot {
+  background-color: var(--c-champagne-500);
+}
+
+.steps__item--current {
+  color: var(--c-sand-900);
+}
+
+.steps__item--current .steps__dot {
+  background-color: var(--c-sand-900);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12);
+}
+
+.steps__rule {
+  width: 2.5rem;
+  height: 1px;
+  background-color: var(--c-sand-300);
+  flex-shrink: 0;
+}
+
+.steps__item--done + .steps__rule {
+  background-color: var(--c-champagne-400);
+}
+
+/* --------------------------------------------------------------------------
+   LAYOUT — editorial column + form card
+   -------------------------------------------------------------------------- */
+
+.intake-grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--s-3xl);
+  align-items: start;
+}
+
+/* The narrative column tracks the form while it scrolls. */
+.intake-aside {
+  position: sticky;
+  top: var(--s-xl);
+  display: flex;
+  flex-direction: column;
+}
+
+.intake-aside__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
+  margin-bottom: var(--s-lg);
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-champagne-600);
+}
+
+.intake-aside__eyebrow::before {
+  content: "";
+  width: 1.5rem;
+  height: 1px;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.intake-aside__title {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-lg-size);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  margin-bottom: var(--s-lg);
+}
+
+/* Second line of every intake headline is italic champagne. */
+.intake-aside__title em {
+  display: block;
+  font-style: italic;
+  color: var(--c-champagne-600);
+}
+
+.intake-aside__lede {
+  font-size: var(--t-body-md-size);
+  line-height: 1.7;
+  color: var(--c-sand-700);
+  max-width: 32rem;
+}
+
+/* Advisory protocol note — a bronze-ruled quote block. */
+.protocol {
+  margin-top: var(--s-xl);
+  padding-left: var(--s-md);
+  border-left: 2px solid var(--c-champagne-400);
+}
+
+.protocol__title {
+  font-size: var(--t-label-sm-size);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--s-sm);
+}
+
+.protocol__text {
+  font-size: var(--t-body-sm-size);
+  line-height: 1.6;
+  color: var(--c-sand-700);
+}
+
+.assurances {
+  margin-top: var(--s-xl);
+  padding-top: var(--s-xl);
+  border-top: 1px solid var(--c-sand-200);
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.assurances__item {
+  position: relative;
+  padding-left: var(--s-md);
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+}
+
+.assurances__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-pill);
+  background-color: var(--c-champagne-500);
+}
+
+/* Oversized phase watermark anchoring the column. */
+.phase {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-md);
+  margin-top: var(--s-3xl);
+}
+
+.phase__number {
+  font-family: var(--font-display);
+  font-size: 64px;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--c-sand-300);
+}
+
+.phase__total {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--c-sand-300);
+}
+
+.phase__label {
+  margin-left: auto;
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-sand-400);
+  text-align: right;
+}
+
+/* --------------------------------------------------------------------------
+   FORM CARD
+   -------------------------------------------------------------------------- */
+
+.panel {
+  background-color: var(--c-surface-lowest);
+  border: 1px solid var(--c-sand-200);
+  border-radius: var(--r-md);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  padding: var(--s-xl);
+}
+
+.panel__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-md);
+}
+
+.panel__title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.panel__note {
+  margin-top: var(--s-sm);
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+}
+
+/* Bronze outline tag in the panel header. */
+.panel__tag {
+  flex-shrink: 0;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--c-champagne-400);
+  border-radius: var(--r-sm);
+  background-color: rgba(236, 217, 186, 0.25);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--c-champagne-600);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   FIELDSETS
+   -------------------------------------------------------------------------- */
+
+.fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  padding-top: var(--s-xl);
+  margin-top: var(--s-xl);
+  border-top: 1px solid var(--c-sand-200);
+}
+
+.fieldset__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-md);
+  width: 100%;
+  margin-bottom: var(--s-md);
+}
+
+.fieldset__legend {
+  font-size: var(--t-label-sm-size);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-sand-900);
+}
+
+.fieldset__hint {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-sand-400);
+  white-space: nowrap;
+}
+
+.req {
+  color: var(--c-champagne-600);
+  margin-left: 2px;
+}
+
+/* Explanatory note closing a fieldset. */
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  margin-top: var(--s-md);
+  padding: 0.875rem var(--s-md);
+  border: 1px solid var(--c-sand-200);
+  border-radius: var(--r-sm);
+  background-color: var(--c-sand-100);
+  font-size: var(--t-body-sm-size);
+  line-height: 1.55;
+  color: var(--c-sand-700);
+}
+
+.note .icon {
+  color: var(--c-champagne-600);
+  margin-top: 1px;
+}
+
+.note--plain {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin-top: 0.625rem;
+}
+
+/* --------------------------------------------------------------------------
+   TEXT INPUTS & SELECTS
+   -------------------------------------------------------------------------- */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-md);
+}
+
+/* A narrow input beside a wider control group (year + furnishing status).
+   A four-digit year needs very little room, so the control group takes the
+   rest and its options stay on a single row. */
+.grid-1-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  gap: var(--s-md);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.input-group__label {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+}
+
+.input {
+  width: 100%;
+  padding: 0.6875rem 0.875rem;
+  background-color: var(--c-surface-lowest);
+  border: 1px solid var(--c-sand-300);
+  border-radius: var(--r-sm);
+  font-size: var(--t-body-md-size);
+  color: var(--c-sand-900);
+  transition: border-color var(--d-fast) var(--ease-standard),
+    box-shadow var(--d-fast) var(--ease-standard);
+}
+
+.input::placeholder {
+  color: var(--c-sand-400);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--c-ink);
+  box-shadow: 0 0 0 1px var(--c-ink);
+}
+
+/* Native select, restyled with our own chevron. */
+select.input {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.25rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23524e44' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+/* Input carrying a unit or currency affix. */
+.affix {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.affix .input {
+  width: 100%;
+}
+
+.affix__lead,
+.affix__trail {
+  position: absolute;
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-400);
+  pointer-events: none;
+}
+
+.affix__lead {
+  left: 0.875rem;
+  color: var(--c-champagne-600);
+  font-weight: 600;
+}
+
+.affix__trail {
+  right: 0.875rem;
+}
+
+.affix--lead .input {
+  padding-left: 2rem;
+}
+
+.affix--trail .input {
+  padding-right: 4.5rem;
+}
+
+/* Label introducing a control group that is not a single input. */
+.group-label {
+  margin-top: var(--s-md);
+  margin-bottom: 0.375rem;
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+}
+
+/* Spacing utility for stacked control rows inside a group. */
+.u-mt {
+  margin-top: var(--s-md);
+}
+
+/* --------------------------------------------------------------------------
+   OPTION CARDS  (radio / checkbox styled as selectable tiles)
+
+   Real inputs drive these. The input is visually hidden but focusable, so
+   keyboard arrow-key selection and screen-reader semantics work natively and
+   the control still functions with no JavaScript at all.
+   -------------------------------------------------------------------------- */
+
+.options {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.options--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.options--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.875rem;
+  border: 1px solid var(--c-sand-300);
+  border-radius: var(--r-sm);
+  background-color: var(--c-surface-lowest);
+  cursor: pointer;
+  transition: border-color var(--d-fast) var(--ease-out-expo),
+    box-shadow var(--d-fast) var(--ease-out-expo),
+    background-color var(--d-fast) var(--ease-out-expo);
+}
+
+.option__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+.option:hover {
+  border-color: var(--c-sand-400);
+}
+
+.option:has(.option__input:checked) {
+  border-color: var(--c-ink);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 0 0 1px var(--c-ink);
+}
+
+.option:has(.option__input:focus-visible) {
+  outline: 2px solid var(--c-champagne-600);
+  outline-offset: 2px;
+}
+
+.option__title {
+  font-size: var(--t-body-md-size);
+  font-weight: 500;
+  line-height: 1.3;
+  /* Keep a long label clear of the pip in the top-right corner. */
+  padding-right: 0.75rem;
+}
+
+.option__note {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+  line-height: 1.4;
+}
+
+/* Champagne pip marking the chosen tile. */
+.option__pip {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background-color: var(--c-champagne-500);
+  opacity: 0;
+  transition: opacity var(--d-fast) var(--ease-standard);
+}
+
+.option:has(.option__input:checked) .option__pip {
+  opacity: 1;
+}
+
+/* Option tile with a leading radio dot (ownership, mandate structure). */
+.option--marked {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.option__ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+  border: 1px solid var(--c-sand-400);
+  border-radius: var(--r-pill);
+}
+
+.option__ring::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background-color: var(--c-ink);
+  transform: scale(0);
+  transition: transform var(--d-fast) var(--ease-out-expo);
+}
+
+.option:has(.option__input:checked) .option__ring {
+  border-color: var(--c-ink);
+}
+
+.option:has(.option__input:checked) .option__ring::after {
+  transform: scale(1);
+}
+
+.option__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.option--marked .option__title {
+  padding-right: 0;
+}
+
+/* --------------------------------------------------------------------------
+   SEGMENTED CONTROL — compact single-line choices
+   -------------------------------------------------------------------------- */
+
+.segments {
+  display: flex;
+  flex-wrap: wrap;
+  /* Tighter than the option grid so a four-up group still fits on one line
+     inside a half-width column. */
+  gap: 0.5rem;
+}
+
+.segment {
+  position: relative;
+  /* Equal widths when there is room, never narrower than the longest word —
+     `min-width: auto` keeps the flex min-content floor, so a label can wrap
+     inside its box but can never overflow it. */
+  flex: 1 1 0;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--c-sand-300);
+  border-radius: var(--r-sm);
+  background-color: var(--c-surface-lowest);
+  font-size: var(--t-body-sm-size);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--d-fast) var(--ease-out-expo),
+    box-shadow var(--d-fast) var(--ease-out-expo);
+}
+
+.segment:hover {
+  border-color: var(--c-sand-400);
+}
+
+.segment:has(.option__input:checked) {
+  border-color: var(--c-ink);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 0 0 1px var(--c-ink);
+  font-weight: 600;
+}
+
+.segment:has(.option__input:focus-visible) {
+  outline: 2px solid var(--c-champagne-600);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   DOCUMENT CHIPS — multi-select with a staged/optional status line
+   -------------------------------------------------------------------------- */
+
+.chips {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.625rem;
+}
+
+.chip {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--c-sand-300);
+  border-radius: var(--r-sm);
+  background-color: var(--c-surface-lowest);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--d-fast) var(--ease-out-expo),
+    box-shadow var(--d-fast) var(--ease-out-expo);
+}
+
+.chip:hover {
+  border-color: var(--c-sand-400);
+}
+
+.chip:has(.option__input:checked) {
+  border-color: var(--c-ink);
+  box-shadow: 0 0 0 1px var(--c-ink);
+}
+
+.chip:has(.option__input:focus-visible) {
+  outline: 2px solid var(--c-champagne-600);
+  outline-offset: 2px;
+}
+
+.chip__title {
+  font-size: var(--t-body-sm-size);
+  font-weight: 500;
+  line-height: 1.3;
+  /* Clear the tick that appears in the corner once the chip is selected. */
+  padding-right: 1.125rem;
+}
+
+.chip__status {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-sand-400);
+}
+
+.chip:has(.option__input:checked) .chip__status {
+  color: var(--c-champagne-600);
+}
+
+.chip__tick {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: var(--c-ink);
+  opacity: 0;
+  transition: opacity var(--d-fast) var(--ease-standard);
+}
+
+.chip:has(.option__input:checked) .chip__tick {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   FILE UPLOAD
+   -------------------------------------------------------------------------- */
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.625rem;
+  padding: var(--s-lg);
+  border: 1px dashed var(--c-sand-300);
+  border-radius: var(--r-sm);
+  background-color: var(--c-sand-100);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--d-fast) var(--ease-standard),
+    background-color var(--d-fast) var(--ease-standard);
+}
+
+.dropzone:hover,
+.dropzone.is-dragover {
+  border-color: var(--c-champagne-500);
+  background-color: rgba(236, 217, 186, 0.2);
+}
+
+.dropzone:has(.dropzone__input:focus-visible) {
+  outline: 2px solid var(--c-champagne-600);
+  outline-offset: 2px;
+}
+
+.dropzone__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.dropzone__lead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+}
+
+.dropzone__lead .icon {
+  color: var(--c-champagne-600);
+}
+
+.dropzone__browse {
+  color: var(--c-champagne-600);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dropzone__formats {
+  font-size: 11px;
+  color: var(--c-sand-400);
+}
+
+/* Uploaded / staged document rows */
+.files {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.625rem;
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--c-sand-200);
+  border-radius: var(--r-sm);
+  background-color: var(--c-surface-lowest);
+}
+
+.file__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: var(--r-sm);
+  background-color: var(--c-sand-100);
+  border: 1px solid var(--c-sand-200);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--c-sand-700);
+}
+
+.file__body {
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.file__name {
+  font-size: var(--t-body-sm-size);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.file__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 11px;
+  color: var(--c-sand-400);
+}
+
+.file__state {
+  color: var(--c-champagne-600);
+  font-weight: 600;
+}
+
+.file__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex-shrink: 0;
+}
+
+.file__link {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.file__link:hover {
+  color: var(--c-sand-900);
+}
+
+.file__remove {
+  display: inline-flex;
+  color: var(--c-sand-400);
+  transition: color var(--d-fast) var(--ease-standard);
+}
+
+.file__remove:hover {
+  color: var(--c-error);
+}
+
+.file__tag {
+  flex-shrink: 0;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-sand-400);
+  text-align: right;
+}
+
+/* --------------------------------------------------------------------------
+   FORM FOOTER — step counter + actions
+   -------------------------------------------------------------------------- */
+
+.form-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-md);
+  flex-wrap: wrap;
+  margin-top: var(--s-xl);
+  padding-top: var(--s-lg);
+  border-top: 1px solid var(--c-sand-200);
+}
+
+.form-foot__status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-400);
+}
+
+.form-foot__status strong {
+  color: var(--c-sand-900);
+  font-weight: 600;
+}
+
+.form-foot__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
+  flex-wrap: wrap;
+}
+
+.link-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+  transition: color var(--d-base) var(--ease-standard);
+}
+
+.link-quiet:hover {
+  color: var(--c-sand-900);
+}
+
+/* Primary action for the intake flow. */
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 0.875rem 1.5rem;
+  border: 0;
+  border-radius: var(--r-sm);
+  background-color: var(--c-noir);
+  color: var(--c-sand-50);
+  font-size: var(--t-label-sm-size);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--d-base) var(--ease-standard),
+    box-shadow var(--d-base) var(--ease-standard),
+    transform var(--d-fast) var(--ease-standard);
+}
+
+.btn-submit:hover {
+  background-color: #000;
+  box-shadow: 0 8px 20px -8px rgba(15, 23, 42, 0.5);
+}
+
+.btn-submit:active {
+  transform: scale(0.98);
+}
+
+.btn-submit .icon {
+  transition: transform var(--d-base) var(--ease-standard);
+}
+
+.btn-submit:hover .icon {
+  transform: translateX(4px);
+}
+
+.form-foot__aside {
+  width: 100%;
+  margin-top: 0.625rem;
+  text-align: right;
+  font-size: 11px;
+  color: var(--c-sand-400);
+}
+
+/* --------------------------------------------------------------------------
+   REVIEW (Step 03)
+   -------------------------------------------------------------------------- */
+
+.review__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-md);
+  margin-bottom: var(--s-md);
+}
+
+.review__title {
+  font-size: var(--t-label-sm-size);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.review__edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--t-label-sm-size);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-champagne-600);
+  transition: gap var(--d-base) var(--ease-standard);
+}
+
+.review__edit:hover {
+  gap: 0.625rem;
+}
+
+/* Definition rows: label left, value right, hairline between. */
+.review__list {
+  margin: 0;
+}
+
+.review__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-md);
+  padding-block: 0.6875rem;
+  border-top: 1px solid var(--c-sand-200);
+}
+
+.review__row:first-child {
+  border-top: 0;
+}
+
+.review__label {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-700);
+  flex-shrink: 0;
+}
+
+.review__value {
+  margin: 0;
+  font-size: var(--t-body-md-size);
+  font-weight: 500;
+  text-align: right;
+}
+
+.review__value .muted {
+  font-weight: 400;
+  color: var(--c-sand-400);
+}
+
+/* Champagne pip trailing a highlighted value. */
+.review__value .pip {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 0.375rem;
+  border-radius: var(--r-pill);
+  background-color: var(--c-champagne-500);
+  vertical-align: middle;
+}
+
+/* Dark confidentiality panel */
+.private-panel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-md);
+  margin-top: var(--s-xl);
+  padding: var(--s-lg);
+  border-radius: var(--r-sm);
+  background-color: var(--c-noir);
+  color: var(--c-sand-100);
+}
+
+.private-panel__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: var(--r-sm);
+  background-color: rgba(223, 194, 147, 0.15);
+  color: var(--c-champagne-400);
+}
+
+.private-panel__title {
+  font-size: var(--t-label-sm-size);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-champagne-400);
+  margin-bottom: 0.375rem;
+}
+
+.private-panel__text {
+  font-size: var(--t-body-sm-size);
+  line-height: 1.6;
+  color: rgba(244, 243, 240, 0.85);
+}
+
+/* Declaration checkbox */
+.declaration {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: var(--s-xl);
+  cursor: pointer;
+}
+
+.declaration__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+  border: 1px solid var(--c-sand-400);
+  border-radius: 2px;
+  background-color: var(--c-surface-lowest);
+  color: transparent;
+  transition: background-color var(--d-fast) var(--ease-standard),
+    border-color var(--d-fast) var(--ease-standard),
+    color var(--d-fast) var(--ease-standard);
+}
+
+.declaration:has(.option__input:checked) .declaration__box {
+  background-color: var(--c-ink);
+  border-color: var(--c-ink);
+  color: #fff;
+}
+
+.declaration:has(.option__input:focus-visible) .declaration__box {
+  outline: 2px solid var(--c-champagne-600);
+  outline-offset: 2px;
+}
+
+.declaration__text {
+  font-size: var(--t-body-sm-size);
+  line-height: 1.6;
+  color: var(--c-sand-700);
+}
+
+/* --------------------------------------------------------------------------
+   CONFIRMATION VIEW (Step 03, post-submission)
+   -------------------------------------------------------------------------- */
+
+.confirm__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-champagne-600);
+  margin-bottom: var(--s-md);
+}
+
+.confirm__title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 400;
+  margin-bottom: var(--s-md);
+}
+
+.confirm__title em {
+  /* The blueprint breaks the italic clause onto its own line. */
+  display: block;
+  font-style: italic;
+  color: var(--c-champagne-600);
+}
+
+.confirm__text {
+  font-size: var(--t-body-md-size);
+  line-height: 1.7;
+  color: var(--c-sand-700);
+  max-width: 34rem;
+}
+
+.reference {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-md);
+  margin-top: var(--s-xl);
+  padding: var(--s-lg);
+  border: 1px solid var(--c-sand-200);
+  border-radius: var(--r-sm);
+  background-color: var(--c-sand-100);
+}
+
+.reference__label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-sand-400);
+  margin-bottom: 0.375rem;
+}
+
+.reference__value {
+  font-size: var(--t-body-md-size);
+  font-weight: 600;
+}
+
+.reference__value--accent {
+  color: var(--c-champagne-600);
+}
+
+.confirm__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-md);
+  flex-wrap: wrap;
+  margin-top: var(--s-xl);
+  padding-top: var(--s-lg);
+  border-top: 1px solid var(--c-sand-200);
+}
+
+/* --------------------------------------------------------------------------
+   MINIMAL FOOTER
+   -------------------------------------------------------------------------- */
+
+.intake-footer {
+  border-top: 1px solid var(--c-sand-200);
+  background-color: rgba(244, 243, 240, 0.5);
+}
+
+.intake-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-lg);
+  flex-wrap: wrap;
+  padding-block: var(--s-lg);
+  font-size: var(--t-body-sm-size);
+  color: var(--c-sand-400);
+}
+
+.intake-footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.intake-footer__name {
+  font-size: var(--t-label-sm-size);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-sand-900);
+  max-width: 5.5rem;
+  line-height: 1.3;
+}
+
+.intake-footer__rule {
+  color: var(--c-sand-300);
+}
+
+.intake-footer__links {
+  display: flex;
+  align-items: center;
+  gap: var(--s-lg);
+  flex-wrap: wrap;
+}
+
+.intake-footer__links a:hover {
+  color: var(--c-sand-900);
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .intake-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-2xl);
+  }
+
+  /* The narrative column leads, then releases the form. */
+  .intake-aside {
+    position: static;
+  }
+
+  .phase {
+    margin-top: var(--s-xl);
+  }
+
+  .chips {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* The step rail would crowd the breadcrumb; the breadcrumb already says
+     which step this is, so drop the rail rather than shrink it. */
+  .steps {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .intake-main {
+    padding-block: var(--s-xl) var(--s-2xl);
+  }
+
+  .panel {
+    padding: var(--s-lg);
+  }
+
+  .options--3,
+  .options--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3,
+  .grid-1-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .intake-header__note {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .intake-body {
+    font-size: var(--t-body-md-size);
+  }
+
+  .options--3,
+  .options--2,
+  .grid-2,
+  .grid-3,
+  .grid-1-2,
+  .chips {
+    grid-template-columns: 1fr;
+  }
+
+  .reference {
+    grid-template-columns: 1fr;
+    gap: var(--s-md);
+  }
+
+  .segment {
+    flex: 1 1 100%;
+  }
+
+  .phase__number {
+    font-size: 48px;
+  }
+
+  /* Actions stack so the primary control is always full width and reachable. */
+  .form-foot,
+  .confirm__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-foot__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .btn-submit {
+    width: 100%;
+  }
+
+  .form-foot__aside {
+    text-align: left;
+  }
+
+  .review__row {
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .review__value {
+    text-align: left;
+  }
+
+  .file {
+    flex-wrap: wrap;
+  }
+}

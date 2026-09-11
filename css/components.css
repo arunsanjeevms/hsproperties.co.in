@@ -1,0 +1,800 @@
+/* ==========================================================================
+   HS Properties — Components
+   Reusable, page-agnostic building blocks. Every later page should compose
+   from these rather than writing new one-off rules.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   BUTTONS
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-sm);
+  height: 2.5rem;
+  padding-inline: var(--s-md);
+  border-radius: var(--r-lg);
+  border: 1px solid transparent;
+  font-size: var(--t-label-md-size);
+  line-height: var(--t-label-md-lh);
+  font-weight: var(--t-label-md-weight);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--d-base) var(--ease-standard),
+    border-color var(--d-base) var(--ease-standard),
+    box-shadow var(--d-base) var(--ease-standard),
+    transform var(--d-fast) var(--ease-standard),
+    color var(--d-base) var(--ease-standard);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Primary — deep navy with a champagne hairline. */
+.btn--primary {
+  background-color: var(--c-primary-container);
+  color: var(--c-on-primary);
+  border-color: var(--c-champagne-a30);
+  padding-inline: var(--s-lg);
+}
+
+.btn--primary:hover {
+  background-color: var(--c-primary);
+  box-shadow: var(--glow-navy);
+}
+
+/* Secondary — outlined bronze on light grounds. */
+.btn--outline {
+  background-color: transparent;
+  color: var(--c-on-surface);
+  border-color: var(--c-bronze-a50);
+}
+
+.btn--outline:hover {
+  border-color: var(--c-secondary);
+  background-color: rgba(254, 207, 147, 0.2);
+  box-shadow: var(--glow-champagne);
+}
+
+/* Light — solid ivory, used on dark grounds. */
+.btn--light {
+  background-color: var(--c-surface);
+  color: var(--c-on-surface);
+  border-color: rgba(255, 255, 255, 0.6);
+  padding-inline: var(--s-lg);
+}
+
+.btn--light:hover {
+  border-color: var(--c-secondary);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Ghost — for tertiary navigation-level actions. */
+.btn--ghost {
+  background-color: transparent;
+  color: var(--c-on-surface-variant);
+  padding-inline: var(--s-md);
+  font-size: var(--t-label-sm-size);
+}
+
+.btn--ghost:hover {
+  color: var(--c-secondary);
+}
+
+.btn--lg {
+  height: 3rem;
+  padding-inline: var(--s-xl);
+}
+
+/* Arrow inside a button nudges forward on hover. */
+.btn .icon {
+  transition: transform var(--d-base) var(--ease-standard);
+}
+
+.btn:hover .icon--arrow {
+  transform: translateX(4px);
+}
+
+/* --------------------------------------------------------------------------
+   LINK — inline editorial action with a trailing arrow
+   -------------------------------------------------------------------------- */
+
+.link-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-sm);
+  color: var(--c-secondary);
+  font-size: var(--t-label-md-size);
+  font-weight: var(--t-label-md-weight);
+  transition: color var(--d-base) var(--ease-standard),
+    gap var(--d-base) var(--ease-standard);
+}
+
+.link-action:hover {
+  gap: var(--s-md);
+  color: var(--c-tertiary-accent);
+}
+
+.section--dark .link-action {
+  color: var(--c-secondary-container);
+}
+
+/* --------------------------------------------------------------------------
+   GATEWAY CTA — the dual "Find / Sell" panels in the hero.
+   A two-line control: title row plus an explanatory sub-line.
+   -------------------------------------------------------------------------- */
+
+.gateway {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-xs);
+  padding: var(--s-md) 1.75rem;
+  border-radius: var(--r-lg);
+  border: 1px solid transparent;
+  transition: transform var(--d-base) var(--ease-standard),
+    box-shadow var(--d-base) var(--ease-standard),
+    border-color var(--d-base) var(--ease-standard),
+    background-color var(--d-base) var(--ease-standard);
+}
+
+.gateway:hover {
+  transform: translateY(-4px);
+}
+
+.gateway__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-md);
+}
+
+.gateway__label {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.gateway__note {
+  font-size: var(--t-label-sm-size);
+  line-height: var(--t-label-sm-lh);
+  font-weight: 400;
+}
+
+.gateway__icon {
+  color: var(--c-secondary);
+  transition: transform var(--d-base) var(--ease-standard);
+}
+
+.gateway:hover .gateway__icon {
+  transform: scale(1.1);
+}
+
+.gateway:hover .icon--arrow {
+  transform: translateX(6px);
+}
+
+/* Solid ivory variant. */
+.gateway--solid {
+  background-color: var(--c-surface);
+  color: var(--c-on-surface);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: var(--shadow-lg);
+}
+
+.gateway--solid:hover {
+  border-color: var(--c-secondary);
+  box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.5);
+}
+
+.gateway--solid .gateway__note {
+  color: var(--c-on-surface-variant);
+}
+
+/* Glass variant, for use over imagery. */
+.gateway--glass {
+  background-color: rgba(227, 226, 224, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--c-surface);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.gateway--glass:hover {
+  background-color: rgba(227, 226, 224, 0.3);
+  border-color: rgba(254, 207, 147, 0.8);
+  box-shadow: 0 15px 35px -10px rgba(254, 207, 147, 0.25);
+}
+
+.gateway--glass .gateway__icon {
+  color: var(--c-secondary-container);
+}
+
+.gateway--glass .gateway__note {
+  color: var(--c-surface-highest);
+}
+
+/* --------------------------------------------------------------------------
+   BADGES & PILLS
+   -------------------------------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-sm);
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--r-lg);
+  font-size: var(--t-eyebrow-size);
+  line-height: var(--t-eyebrow-lh);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+}
+
+/* Glass badge over imagery, with a live status dot. */
+.badge--glass {
+  background-color: rgba(250, 249, 246, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--c-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.badge__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--r-pill);
+  background-color: var(--c-secondary-container);
+  flex-shrink: 0;
+  animation: badge-pulse 2.4s var(--ease-standard) infinite;
+}
+
+@keyframes badge-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* Status badge on a property card. */
+.badge--status {
+  background-color: rgba(19, 27, 46, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--c-secondary-container);
+  border: 1px solid var(--c-champagne-a30);
+  border-radius: var(--r-md);
+}
+
+/* Small bronze retainer / certification mark. */
+.badge--retainer {
+  border: 1px solid var(--c-champagne-a30);
+  border-radius: var(--r-md);
+  color: var(--c-secondary);
+  background-color: rgba(254, 207, 147, 0.08);
+  padding: var(--s-sm) var(--s-md);
+}
+
+/* --------------------------------------------------------------------------
+   CARDS
+   -------------------------------------------------------------------------- */
+
+/* Base card on a light ground. */
+.card {
+  background-color: var(--c-surface);
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-md);
+  transition: border-color var(--d-slow) var(--ease-out-expo),
+    box-shadow var(--d-slow) var(--ease-out-expo),
+    transform var(--d-slow) var(--ease-out-expo);
+}
+
+.card--lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--c-secondary);
+}
+
+/* Card on a dark ground. */
+.card--dark {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: var(--c-hairline-dark);
+  color: var(--c-surface);
+}
+
+.card--dark.card--lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-dark-lift);
+  border-color: var(--c-champagne-a30);
+}
+
+.card__body {
+  padding: var(--s-lg);
+}
+
+/* Feature card — icon, title, copy. Used for governance and distinction. */
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-md);
+  padding: var(--s-lg);
+}
+
+.feature__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--r-md);
+  color: var(--c-secondary);
+  background-color: rgba(254, 207, 147, 0.14);
+  border: 1px solid var(--c-champagne-a20);
+}
+
+.section--dark .feature__icon {
+  color: var(--c-secondary-container);
+  background-color: rgba(254, 207, 147, 0.08);
+}
+
+.feature__title {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-sm-size);
+  line-height: var(--t-headline-sm-lh);
+  font-weight: 600;
+}
+
+.feature__text {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-on-surface-variant);
+}
+
+.section--dark .feature__text {
+  color: var(--c-surface-highest);
+}
+
+/* Compact feature — icon inline with the title. */
+.feature--inline .feature__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+}
+
+.feature--inline .feature__head .icon {
+  color: var(--c-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   PROPERTY CARD
+   -------------------------------------------------------------------------- */
+
+.property {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--c-hairline-dark);
+  border-radius: var(--r-md);
+  transition: border-color var(--d-slow) var(--ease-out-expo),
+    box-shadow var(--d-slow) var(--ease-out-expo),
+    transform var(--d-slow) var(--ease-out-expo);
+}
+
+.property:hover {
+  transform: translateY(-4px);
+  border-color: var(--c-champagne-a30);
+  box-shadow: var(--shadow-dark-lift);
+}
+
+.property__figure {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.property__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--d-image) ease-out;
+}
+
+.property:hover .property__image {
+  transform: scale(1.05);
+}
+
+.property__status {
+  position: absolute;
+  top: var(--s-md);
+  right: var(--s-md);
+}
+
+/* Location + reference strip sits over the base of the image. */
+.property__meta {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-md);
+  padding: var(--s-md);
+  background: linear-gradient(to top, rgba(19, 27, 46, 0.92), transparent);
+  font-size: var(--t-label-sm-size);
+  color: var(--c-surface);
+}
+
+.property__ref {
+  color: var(--c-secondary-container);
+  letter-spacing: 0.04em;
+}
+
+.property__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-sm);
+  padding: var(--s-lg);
+  flex-grow: 1;
+}
+
+.property__title {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-sm-size);
+  line-height: var(--t-headline-sm-lh);
+  font-weight: 500;
+  color: var(--c-surface);
+}
+
+.property__mandate {
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-secondary-container);
+}
+
+.property__spec {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-surface-highest);
+}
+
+.property__summary {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-on-primary-container);
+}
+
+.property__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-md);
+  padding: var(--s-md) var(--s-lg);
+  border-top: 1px solid var(--c-hairline-dark);
+  margin-top: auto;
+}
+
+.property__type {
+  font-size: var(--t-label-sm-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-on-primary-container);
+}
+
+/* --------------------------------------------------------------------------
+   NAVIGATION
+   -------------------------------------------------------------------------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-header);
+  background-color: rgba(251, 249, 245, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(227, 222, 214, 0.6);
+  transition: box-shadow var(--d-base) var(--ease-standard),
+    background-color var(--d-base) var(--ease-standard);
+}
+
+/* Set once the page has scrolled past the hero lip. */
+.site-header.is-scrolled {
+  box-shadow: var(--shadow-sm);
+  background-color: rgba(251, 249, 245, 0.97);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-lg);
+  height: var(--header-height);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
+  min-width: 0;
+}
+
+.brand__mark {
+  height: 2rem;
+  width: auto;
+  transition: transform var(--d-slow) var(--ease-standard);
+}
+
+.brand:hover .brand__mark {
+  transform: scale(1.05);
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand__name {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-md-size);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  transition: color var(--d-base) var(--ease-standard);
+}
+
+.brand:hover .brand__name {
+  color: var(--c-secondary);
+}
+
+.brand__tagline {
+  margin-top: var(--s-xs);
+  color: var(--c-secondary);
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: 0.14em;
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+}
+
+/* Primary nav */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--s-xl);
+  height: 100%;
+}
+
+.nav__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  white-space: nowrap;
+  font-size: var(--t-label-md-size);
+  font-weight: var(--t-label-md-weight);
+  color: var(--c-on-surface-variant);
+  transition: color var(--d-base) var(--ease-standard);
+}
+
+.nav__link:hover {
+  color: var(--c-on-surface);
+}
+
+/* The underline grows from the left on hover. */
+.nav__link::after {
+  content: "";
+  position: absolute;
+  inset: auto auto 0 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--c-secondary);
+  transition: width var(--d-base) var(--ease-standard);
+}
+
+.nav__link:hover::after {
+  width: 100%;
+}
+
+.nav__link[aria-current="page"] {
+  color: var(--c-on-surface);
+  font-weight: 600;
+}
+
+.nav__link[aria-current="page"]::after {
+  width: 100%;
+  box-shadow: 0 0 8px var(--c-bronze-a50);
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Account affordance */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--r-pill);
+  background-color: var(--c-primary);
+  color: var(--c-on-primary);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--d-base) var(--ease-standard);
+}
+
+.avatar:hover {
+  box-shadow: 0 0 0 2px rgba(254, 207, 147, 0.4);
+}
+
+/* Mobile menu trigger — hidden on desktop via responsive.css */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-md);
+  color: var(--c-on-surface);
+}
+
+/* Mobile drawer */
+.nav-drawer {
+  position: fixed;
+  inset: var(--header-height) 0 auto 0;
+  z-index: var(--z-drawer);
+  background-color: var(--c-background);
+  border-bottom: 1px solid var(--c-hairline);
+  box-shadow: var(--shadow-md);
+  padding: var(--s-lg) 0 var(--s-xl);
+  transform: translateY(-8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--d-base) var(--ease-standard),
+    transform var(--d-base) var(--ease-standard),
+    visibility var(--d-base) var(--ease-standard);
+}
+
+.nav-drawer.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-drawer__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-drawer__link {
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--c-hairline);
+  font-family: var(--font-display);
+  font-size: var(--t-headline-sm-size);
+  color: var(--c-on-surface);
+}
+
+.nav-drawer__link[aria-current="page"] {
+  color: var(--c-secondary);
+}
+
+.nav-drawer__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-sm);
+  margin-top: var(--s-lg);
+}
+
+.nav-drawer__actions .btn {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   FORM PRIMITIVES
+   Defined now so the intake pages inherit a consistent system later.
+   -------------------------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-sm);
+}
+
+.field__label {
+  font-size: var(--t-label-sm-size);
+  font-weight: var(--t-label-sm-weight);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-on-surface-variant);
+}
+
+.field__control {
+  width: 100%;
+  padding: 0.75rem var(--s-md);
+  background-color: var(--c-surface-lowest);
+  border: 1px solid var(--c-outline-variant);
+  border-radius: var(--r-md);
+  font-size: var(--t-body-md-size);
+  transition: border-color var(--d-base) var(--ease-standard),
+    box-shadow var(--d-base) var(--ease-standard);
+}
+
+.field__control::placeholder {
+  color: var(--c-outline);
+}
+
+.field__control:focus {
+  outline: none;
+  border-color: var(--c-secondary);
+  box-shadow: 0 0 0 3px var(--c-champagne-a20);
+}
+
+.field__hint {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-on-surface-variant);
+}
+
+.field__error {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-error);
+}
+
+.field--invalid .field__control {
+  border-color: var(--c-error);
+}
+
+/* --------------------------------------------------------------------------
+   STATUS PILLS — shared vocabulary for request/mandate states.
+   -------------------------------------------------------------------------- */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-xs);
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--r-md);
+  font-size: var(--t-label-sm-size);
+  font-weight: var(--t-label-sm-weight);
+  border: 1px solid transparent;
+}
+
+.status--pending {
+  background-color: rgba(254, 207, 147, 0.2);
+  color: var(--c-secondary-deep);
+  border-color: var(--c-champagne-a30);
+}
+
+.status--active {
+  background-color: rgba(63, 107, 79, 0.12);
+  color: var(--c-success);
+  border-color: rgba(63, 107, 79, 0.3);
+}
+
+.status--closed {
+  background-color: var(--c-surface-high);
+  color: var(--c-on-surface-variant);
+  border-color: var(--c-outline-variant);
+}
+
+.status--error {
+  background-color: var(--c-error-container);
+  color: var(--c-on-error-container);
+  border-color: rgba(186, 26, 26, 0.3);
+}

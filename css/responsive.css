@@ -1,0 +1,363 @@
+/* ==========================================================================
+   HS Properties — Responsive behaviour
+   Layouts are re-composed per breakpoint, not merely scaled down. Type and
+   spacing tokens re-scale in variables.css; structural changes live here.
+
+   Breakpoints
+     1280px  large laptop  — nav collapses to the drawer
+     1024px  tablet        — multi-column bands become 2-up
+      768px  small tablet  — editorial splits become single column
+      640px  mobile        — everything stacks
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   ≤ 1500px — the full desktop header no longer fits comfortably.
+   Tighten the nav rhythm and drop the tertiary link before anything clips.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1500px) {
+  .nav {
+    gap: var(--s-lg);
+  }
+
+  .header__actions .btn--ghost {
+    display: none;
+  }
+
+  /* Let the brand block shrink instead of forcing the row to overflow. */
+  .brand {
+    min-width: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ≤ 1280px — navigation collapses
+   -------------------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .nav {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  /* The desktop header actions give way to the drawer. */
+  .header__actions .btn--outline,
+  .header__actions .btn--ghost {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ≤ 1024px — tablet
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero__inner {
+    min-height: 720px;
+    padding-top: 8rem;
+  }
+
+  /* Trust pillars go 2-up; the left border is re-drawn per row. */
+  .pillars__grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: var(--s-lg);
+  }
+
+  .pillar:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .portfolio__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Advisory stages become a 2×2 block with hairlines on both axes. */
+  .mandate__band {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stage:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .stage:nth-child(n + 3) {
+    border-top: 1px solid var(--c-hairline);
+  }
+
+  /* Editorial splits collapse to a single column. */
+  .buyer__grid,
+  .distinction__grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-2xl);
+  }
+
+  /* The float card can no longer overhang — seat it inside the column. */
+  .distinction__visual {
+    padding-bottom: 0;
+  }
+
+  .float-card {
+    position: static;
+    max-width: none;
+    margin-top: calc(var(--s-lg) * -1);
+    margin-inline: var(--s-lg);
+    width: auto;
+  }
+
+  /* Seller timeline becomes 2×2; the horizontal connector is dropped. */
+  .timeline {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: var(--s-xl);
+  }
+
+  .timeline__label::after {
+    display: none;
+  }
+
+  .portfolio__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-lg);
+  }
+
+  .governance__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Closing section: the visual frame moves below the copy. */
+  .closing__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .closing__copy {
+    padding-right: 0;
+    padding-bottom: var(--s-2xl);
+  }
+
+  .closing__frame {
+    border-left: 0;
+    border-top: 1px solid var(--c-hairline-dark);
+    min-height: 320px;
+    justify-content: flex-end;
+    margin-inline: calc(var(--page-margin) * -1);
+    padding-inline: var(--page-margin);
+  }
+
+  .pull-quote {
+    margin-left: 0;
+    text-align: left;
+    max-width: 26rem;
+  }
+
+  .site-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-xl);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ≤ 768px — small tablet
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* The logo SVG carries its own wordmark, which duplicates the brand text
+     beside it. Drop the mark and keep the text — it reads better small and
+     keeps the header within the viewport. */
+  .brand__mark {
+    display: none;
+  }
+
+  .avatar {
+    display: none;
+  }
+
+  .portfolio__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .advisory-bar__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-lg);
+  }
+
+  .advisory-bar__brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-sm);
+  }
+
+  .advisory-bar__wordmark {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .seller__trigger {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ≤ 640px — mobile
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  /* The hero becomes a taller, portrait-friendly plate. */
+  .hero__inner {
+    min-height: 600px;
+    padding-top: 7rem;
+    padding-bottom: var(--s-2xl);
+  }
+
+  .hero__content {
+    gap: var(--s-md);
+  }
+
+  /* Full-width gateway CTAs — thumb-reachable targets. */
+  .hero__gateways {
+    flex-direction: column;
+    gap: var(--s-md);
+  }
+
+  .gateway {
+    width: 100%;
+  }
+
+  /* Pillars stack; each keeps a top hairline instead of a left one. */
+  .pillars__grid {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+
+  .pillar {
+    border-left: 0;
+    padding-inline: 0;
+    padding-block: var(--s-lg);
+    border-top: 1px solid var(--c-hairline);
+  }
+
+  .pillar:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  /* Advisory stages become a single stacked column. */
+  .mandate__band {
+    grid-template-columns: 1fr;
+  }
+
+  .stage {
+    border-left: 0;
+    padding-inline: var(--s-lg);
+  }
+
+  .stage:not(:first-child) {
+    border-top: 1px solid var(--c-hairline);
+  }
+
+  .journey {
+    padding-left: var(--s-lg);
+  }
+
+  .journey__marker {
+    left: calc(var(--s-lg) * -1);
+  }
+
+  .timeline {
+    grid-template-columns: 1fr;
+    row-gap: var(--s-lg);
+  }
+
+  .timeline__step {
+    padding-right: 0;
+  }
+
+  .distinction__features,
+  .closing__cards {
+    grid-template-columns: 1fr;
+  }
+
+  /* Side by side these two wrap onto two lines each and read as a muddle. */
+  .property__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-sm);
+  }
+
+  .float-card {
+    margin-inline: 0;
+  }
+
+  .confidentiality {
+    flex-direction: column;
+    gap: var(--s-md);
+  }
+
+  .site-footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-lg);
+  }
+
+  .site-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-md);
+  }
+
+  .site-footer__legal {
+    gap: var(--s-md);
+  }
+
+  /* Buttons in the header shrink to the essential pair. */
+  .header__actions {
+    gap: var(--s-sm);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Fine-grained mobile — very narrow devices
+   -------------------------------------------------------------------------- */
+@media (max-width: 400px) {
+  .brand__name {
+    font-size: 20px;
+  }
+
+  .brand__tagline {
+    font-size: 9px;
+  }
+
+  .header__actions .btn--primary {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PRINT — a clean, ink-efficient record of the page.
+   -------------------------------------------------------------------------- */
+@media print {
+  .site-header,
+  .nav-drawer,
+  .hero__plate,
+  .seller__plate,
+  .closing__glow,
+  .closing__frame-image {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .section--dark,
+  .closing,
+  .hero {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .has-js .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

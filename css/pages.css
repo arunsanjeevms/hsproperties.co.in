@@ -1,0 +1,972 @@
+/* ==========================================================================
+   HS Properties — Page compositions
+   Section-level layout for the home page ("Architectural Editorial Edition").
+   Components live in components.css; this file only arranges them.
+   ========================================================================== */
+
+.site-main {
+  padding-top: var(--header-height);
+  min-height: 60vh;
+}
+
+/* ==========================================================================
+   1. HERO — cinematic dark architectural plate
+   The hero pulls up beneath the fixed header so the image runs full bleed.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  margin-top: calc(var(--header-height) * -1);
+  overflow: hidden;
+  background-color: var(--c-primary-container);
+  color: var(--c-surface);
+}
+
+.hero__plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+}
+
+/* Two stacked scrims: one horizontal (protects the copy column), one
+   vertical (seats the section into the band below). */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__scrim--horizontal {
+  background: var(--g-hero-horizontal);
+}
+
+.hero__scrim--vertical {
+  background: var(--g-hero-vertical);
+}
+
+.hero__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 870px;
+  padding-top: 10rem;
+  padding-bottom: var(--s-3xl);
+}
+
+.hero__content {
+  max-width: 48rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-lg);
+}
+
+.hero__content > .badge {
+  align-self: flex-start;
+}
+
+.hero__title {
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.hero__lede {
+  max-width: 42rem;
+  color: var(--c-surface-low);
+}
+
+.hero__support {
+  max-width: 36rem;
+  color: rgba(233, 232, 229, 0.9);
+}
+
+.hero__gateways {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding-top: var(--s-md);
+}
+
+/* ==========================================================================
+   2. TRUST PILLARS — hairline-divided horizontal strip
+   ========================================================================== */
+
+.pillars {
+  background-color: var(--c-background);
+  padding-block: var(--s-xl);
+  border-bottom: 1px solid var(--c-hairline);
+}
+
+.pillars__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.pillar {
+  display: flex;
+  gap: var(--s-md);
+  padding: var(--s-md) var(--s-lg);
+  border-left: 1px solid var(--c-hairline);
+}
+
+.pillar:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.pillar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  color: var(--c-secondary);
+  background-color: rgba(254, 207, 147, 0.16);
+  border: 1px solid var(--c-champagne-a20);
+}
+
+.pillar__title {
+  font-size: var(--t-label-md-size);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: var(--s-xs);
+}
+
+.pillar__text {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-on-surface-variant);
+}
+
+/* ==========================================================================
+   3. PORTFOLIO — completed mandates on a deep ground
+   ========================================================================== */
+
+.portfolio__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-xl);
+  margin-bottom: var(--s-2xl);
+}
+
+.portfolio__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-lg);
+}
+
+.portfolio__footer {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--s-2xl);
+}
+
+/* ==========================================================================
+   4. ADVISORY MANDATE — continuous 4-column band with hairline dividers
+   ========================================================================== */
+
+.mandate__band {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: var(--s-2xl);
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-md);
+  background-color: var(--c-surface);
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-xl) var(--s-lg);
+  border-left: 1px solid var(--c-hairline);
+}
+
+.stage:first-child {
+  border-left: 0;
+}
+
+.stage__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-md);
+  margin-bottom: var(--s-lg);
+}
+
+/* Oversized serif numeral — the anchor of each column. */
+.stage__number {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--c-tertiary-accent);
+}
+
+.stage__label {
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-on-surface-variant);
+}
+
+.stage__title {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-sm-size);
+  line-height: var(--t-headline-sm-lh);
+  font-weight: 500;
+  margin-bottom: var(--s-sm);
+}
+
+.stage__text {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-on-surface-variant);
+}
+
+.stage__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-sm);
+  margin-top: auto;
+  padding-top: var(--s-lg);
+  border-top: 1px solid var(--c-hairline);
+  font-size: var(--t-label-sm-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-secondary);
+}
+
+.stage__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-pill);
+  background-color: var(--c-secondary-dim);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   5. BUYER JOURNEY — asymmetric split, vertical gold journey line
+   ========================================================================== */
+
+.buyer {
+  background-color: var(--c-surface-container);
+}
+
+.buyer__grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--s-3xl);
+  align-items: start;
+}
+
+.buyer__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-sm);
+  padding-top: var(--s-lg);
+  margin-top: var(--s-lg);
+  border-top: 1px solid var(--c-hairline);
+  font-size: var(--t-body-sm-size);
+  color: var(--c-on-surface-variant);
+}
+
+.buyer__note .icon {
+  color: var(--c-secondary);
+  margin-top: 2px;
+}
+
+.buyer__cta {
+  margin-top: var(--s-lg);
+}
+
+/* The journey: a single hairline rule with markers seated on it. */
+.journey {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-xl);
+  padding-left: var(--s-xl);
+}
+
+.journey::before {
+  content: "";
+  position: absolute;
+  inset: 0.5rem auto 0.5rem 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    var(--c-champagne-a30),
+    var(--c-secondary-dim),
+    var(--c-champagne-a30)
+  );
+}
+
+.journey__step {
+  position: relative;
+}
+
+/* The ring marker sits centred on the rule. */
+.journey__marker {
+  position: absolute;
+  left: calc(var(--s-xl) * -1);
+  top: 2px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: var(--r-pill);
+  background-color: var(--c-surface-container);
+  border: 1px solid var(--c-secondary-dim);
+}
+
+.journey__marker::after {
+  content: "";
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--r-pill);
+  background-color: var(--c-secondary);
+}
+
+.journey__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-sm);
+  margin-bottom: var(--s-sm);
+}
+
+.journey__index {
+  font-size: var(--t-label-sm-size);
+  font-weight: 600;
+  color: var(--c-tertiary-accent);
+}
+
+.journey__title {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-sm-size);
+  line-height: var(--t-headline-sm-lh);
+  font-weight: 600;
+}
+
+.journey__text {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-on-surface-variant);
+  max-width: 34rem;
+}
+
+/* ==========================================================================
+   6. SELLER JOURNEY — dark band, horizontal timeline
+   ========================================================================== */
+
+.seller {
+  position: relative;
+  border-block: 1px solid var(--c-hairline-dark);
+  overflow: hidden;
+}
+
+/* Architectural plate held far back behind the content. */
+.seller__plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.seller__inner {
+  position: relative;
+}
+
+/* Confidentiality statement — bordered, champagne-keyed. */
+.confidentiality {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-md);
+  max-width: 46rem;
+  margin-top: var(--s-xl);
+  padding: var(--s-lg);
+  border: 1px solid var(--c-champagne-a30);
+  border-radius: var(--r-md);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.confidentiality__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  color: var(--c-secondary-container);
+  background-color: rgba(254, 207, 147, 0.12);
+}
+
+.confidentiality__text {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-surface-highest);
+}
+
+.confidentiality__text strong {
+  color: var(--c-secondary-container);
+  font-weight: 600;
+}
+
+/* Horizontal timeline — one continuous rule, not isolated cards. */
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-lg);
+  margin-top: var(--s-3xl);
+}
+
+.timeline__step {
+  position: relative;
+  padding-right: var(--s-md);
+}
+
+.timeline__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  margin-bottom: var(--s-md);
+}
+
+.timeline__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--c-champagne-a30);
+  background-color: var(--c-primary-container);
+  color: var(--c-secondary-container);
+  font-size: var(--t-label-sm-size);
+  font-weight: 600;
+}
+
+.timeline__label {
+  position: relative;
+  flex-grow: 1;
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-on-primary-container);
+}
+
+/* The connector bridges the gap to the next step only — the grid gap plus
+   the step's own right padding — so the rule stops at the last column. */
+.timeline__label::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(100% + var(--s-sm));
+  width: calc(var(--s-md) + var(--s-lg));
+  height: 1px;
+  background-color: var(--c-hairline-dark);
+}
+
+.timeline__step:last-child .timeline__label::after {
+  display: none;
+}
+
+.timeline__title {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-sm-size);
+  line-height: var(--t-headline-sm-lh);
+  font-weight: 500;
+  margin-bottom: var(--s-sm);
+  color: var(--c-surface);
+}
+
+.timeline__text {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-surface-highest);
+}
+
+/* Trigger strip closing the seller band. */
+.seller__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-lg);
+  flex-wrap: wrap;
+  margin-top: var(--s-3xl);
+  padding-top: var(--s-lg);
+  border-top: 1px solid var(--c-champagne-a20);
+}
+
+.seller__assurance {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  font-size: var(--t-body-sm-size);
+  color: var(--c-surface-highest);
+}
+
+.seller__assurance .icon {
+  color: var(--c-secondary-container);
+}
+
+/* ==========================================================================
+   7. DISTINCTION — editorial split with overlapping float card
+   ========================================================================== */
+
+.distinction__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3xl);
+  align-items: center;
+}
+
+.distinction__visual {
+  position: relative;
+  padding-bottom: var(--s-2xl);
+}
+
+.distinction__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+}
+
+/* Float card overlaps the lower-right corner of the plate. */
+.float-card {
+  position: absolute;
+  right: calc(var(--s-2xl) * -1);
+  bottom: var(--s-xl);
+  max-width: 17rem;
+  padding: var(--s-lg);
+  background-color: var(--c-surface);
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.float-card__label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  margin-bottom: var(--s-sm);
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-secondary);
+}
+
+.float-card__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--r-pill);
+  background-color: var(--c-secondary-dim);
+}
+
+.float-card__text {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-on-surface-variant);
+}
+
+.distinction__features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-md);
+  margin-top: var(--s-xl);
+}
+
+/* ==========================================================================
+   8. GOVERNANCE — dark band, three pillars
+   ========================================================================== */
+
+.governance__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-lg);
+  margin-top: var(--s-2xl);
+}
+
+/* ==========================================================================
+   9. CLOSING — editorial split with visual frame + advisory bar
+   ========================================================================== */
+
+.closing {
+  position: relative;
+  background-color: var(--c-primary-container);
+  color: var(--c-surface);
+  overflow: hidden;
+}
+
+/* Soft ambient glow anchored bottom-left, behind the copy. */
+.closing__glow {
+  position: absolute;
+  left: -10%;
+  bottom: -20%;
+  width: 45rem;
+  height: 45rem;
+  border-radius: var(--r-pill);
+  background: radial-gradient(
+    circle,
+    rgba(254, 207, 147, 0.08) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.closing__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+}
+
+.closing__copy {
+  padding-block: var(--s-3xl);
+  padding-right: var(--s-2xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.closing__lede {
+  max-width: 30rem;
+  color: var(--c-surface-highest);
+  margin-bottom: var(--s-xl);
+}
+
+.closing__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-md);
+  max-width: 34rem;
+}
+
+/* Paired choice cards — one glass, one solid ivory. */
+.choice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-sm);
+  padding: var(--s-lg);
+  border-radius: var(--r-md);
+  border: 1px solid var(--c-hairline-dark);
+  background-color: rgba(255, 255, 255, 0.03);
+  transition: transform var(--d-slow) var(--ease-out-expo),
+    border-color var(--d-slow) var(--ease-out-expo),
+    box-shadow var(--d-slow) var(--ease-out-expo);
+}
+
+.choice:hover {
+  transform: translateY(-4px);
+  border-color: var(--c-champagne-a30);
+  box-shadow: var(--shadow-dark-lift);
+}
+
+.choice--solid {
+  background-color: var(--c-surface);
+  color: var(--c-on-surface);
+  border-color: var(--c-hairline);
+}
+
+.choice__icon {
+  color: var(--c-secondary-container);
+  margin-bottom: var(--s-sm);
+}
+
+.choice--solid .choice__icon {
+  color: var(--c-secondary);
+}
+
+.choice__eyebrow {
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-secondary-container);
+}
+
+.choice--solid .choice__eyebrow {
+  color: var(--c-secondary);
+}
+
+.choice__title {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-sm-size);
+  line-height: var(--t-headline-sm-lh);
+  font-weight: 500;
+}
+
+.choice__text {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-surface-highest);
+}
+
+.choice--solid .choice__text {
+  color: var(--c-on-surface-variant);
+}
+
+.choice__action {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  margin-top: auto;
+  padding-top: var(--s-md);
+  border-top: 1px solid var(--c-hairline-dark);
+  font-size: var(--t-label-sm-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--c-secondary-container);
+  transition: gap var(--d-base) var(--ease-standard);
+}
+
+.choice--solid .choice__action {
+  border-top-color: var(--c-hairline);
+  color: var(--c-on-surface);
+}
+
+.choice:hover .choice__action {
+  gap: var(--s-md);
+}
+
+/* Right visual frame with the floating pull-quote. */
+.closing__frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+  padding: var(--s-2xl) var(--s-xl);
+  border-left: 1px solid var(--c-hairline-dark);
+  overflow: hidden;
+}
+
+.closing__frame-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.closing__frame-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(19, 27, 46, 0.85),
+    rgba(19, 27, 46, 0.25)
+  );
+  pointer-events: none;
+}
+
+.pull-quote {
+  position: relative;
+  margin-left: auto;
+  max-width: 22rem;
+  text-align: right;
+}
+
+.pull-quote__text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--t-headline-md-size);
+  line-height: 1.35;
+  color: var(--c-surface);
+}
+
+.pull-quote__attrib {
+  margin-top: var(--s-md);
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-secondary-container);
+}
+
+/* Direct advisory bar — closes the page above the footer. */
+.advisory-bar {
+  position: relative;
+  border-top: 1px solid var(--c-hairline-dark);
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.advisory-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-xl);
+  flex-wrap: wrap;
+  padding-block: var(--s-lg);
+}
+
+.advisory-bar__contact {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
+}
+
+.advisory-bar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: var(--r-pill);
+  background-color: rgba(254, 207, 147, 0.12);
+  color: var(--c-secondary-container);
+}
+
+.advisory-bar__title {
+  font-size: var(--t-label-md-size);
+  font-weight: 600;
+}
+
+.advisory-bar__note {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-on-primary-container);
+}
+
+.advisory-bar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s-lg);
+}
+
+.advisory-bar__motto {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--t-body-lg-size);
+  color: var(--c-secondary-dim);
+}
+
+.advisory-bar__wordmark {
+  padding-left: var(--s-lg);
+  border-left: 1px solid var(--c-hairline-dark);
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--c-surface);
+}
+
+.advisory-bar__wordmark span {
+  display: block;
+  color: var(--c-on-primary-container);
+  letter-spacing: 0.12em;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.site-footer {
+  background-color: var(--c-background);
+  padding-block: var(--s-2xl);
+  border-top: 1px solid var(--c-hairline);
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 4fr 2fr 2fr 3fr;
+  gap: var(--s-xl);
+  margin-bottom: var(--s-xl);
+}
+
+.site-footer__about {
+  max-width: 24rem;
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+  color: var(--c-on-surface-variant);
+  margin-block: var(--s-md);
+}
+
+.site-footer__heading {
+  font-size: var(--t-eyebrow-size);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+  color: var(--c-on-surface);
+  margin-bottom: var(--s-md);
+}
+
+.site-footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.site-footer__list a {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-on-surface-variant);
+  transition: color var(--d-base) var(--ease-standard);
+}
+
+.site-footer__list a:hover {
+  color: var(--c-secondary);
+}
+
+.site-footer__desk {
+  font-size: var(--t-body-sm-size);
+  color: var(--c-on-surface-variant);
+}
+
+.site-footer__email {
+  display: block;
+  margin-top: var(--s-md);
+  font-weight: 600;
+  color: var(--c-on-surface);
+}
+
+.site-footer__email:hover {
+  color: var(--c-secondary);
+}
+
+.site-footer__phone {
+  display: block;
+  margin-top: var(--s-xs);
+}
+
+.site-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-lg);
+  flex-wrap: wrap;
+  padding-top: var(--s-lg);
+  border-top: 1px solid var(--c-hairline);
+  font-size: var(--t-body-sm-size);
+  color: var(--c-on-surface-variant);
+}
+
+.site-footer__legal {
+  display: flex;
+  gap: var(--s-lg);
+  flex-wrap: wrap;
+}
+
+.site-footer__legal a:hover {
+  color: var(--c-secondary);
+}

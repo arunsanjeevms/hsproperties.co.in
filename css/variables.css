@@ -1,0 +1,262 @@
+/* ==========================================================================
+   HS Properties — Design Tokens
+   Extracted from the Stitch blueprint:
+   "HS Properties — Architectural Editorial Edition"
+
+   This is the single source of truth for the visual system. Every later page
+   consumes these tokens. Do not hard-code colour, type or spacing values in
+   page-level CSS — add or extend a token here instead.
+   ========================================================================== */
+
+:root {
+  /* ----------------------------------------------------------------------
+     COLOUR — Surfaces (warm architectural stone / ivory)
+     ---------------------------------------------------------------------- */
+  --c-surface-lowest: #ffffff;
+  --c-surface: #faf9f6;
+  --c-background: #fbf9f5; /* page ground — a touch warmer than surface */
+  --c-surface-low: #f4f3f1;
+  --c-surface-container: #efeeeb;
+  --c-surface-high: #e9e8e5;
+  --c-surface-highest: #e3e2e0;
+  --c-surface-dim: #dbdad7;
+
+  /* Ink */
+  --c-on-surface: #1a1c1a;
+  --c-on-surface-variant: #45464d;
+  --c-on-primary: #ffffff;
+
+  /* ----------------------------------------------------------------------
+     COLOUR — Deep architectural navy (the "dark band" sections)
+     ---------------------------------------------------------------------- */
+  --c-primary: #000000;
+  --c-primary-container: #131b2e; /* hero + dark section ground */
+  --c-primary-variant: #3f465c;
+  --c-primary-fixed: #dae2fd;
+  --c-primary-fixed-dim: #bec6e0;
+  --c-on-primary-container: #7c839b;
+
+  /* ----------------------------------------------------------------------
+     COLOUR — Bronze / champagne accent
+     ---------------------------------------------------------------------- */
+  --c-secondary: #7a5826; /* bronze — accent on light grounds */
+  --c-secondary-container: #fecf93; /* champagne — accent on dark grounds */
+  --c-secondary-dim: #ecbf84;
+  --c-secondary-light: #ffdcb0;
+  --c-secondary-deep: #5f4111;
+  --c-tertiary-accent: #a57c47;
+
+  /* ----------------------------------------------------------------------
+     COLOUR — Lines, outlines, status
+     ---------------------------------------------------------------------- */
+  --c-outline: #76777d;
+  --c-outline-variant: #c6c6cd;
+  --c-hairline: #e3ded6; /* the signature warm hairline rule */
+  --c-hairline-dark: rgba(255, 255, 255, 0.1);
+
+  --c-error: #ba1a1a;
+  --c-error-container: #ffdad6;
+  --c-on-error-container: #93000a;
+  --c-success: #3f6b4f;
+
+  /* Translucent accents used across dark sections */
+  --c-champagne-a12: rgba(254, 207, 147, 0.12);
+  --c-champagne-a20: rgba(254, 207, 147, 0.2);
+  --c-champagne-a30: rgba(254, 207, 147, 0.3);
+  --c-champagne-a35: rgba(254, 207, 147, 0.35);
+  --c-bronze-a50: rgba(122, 88, 38, 0.5);
+
+  /* ----------------------------------------------------------------------
+     COLOUR — Intake surfaces
+     The intake flow refines the marketing palette into a warmer "sand" ramp
+     with a brighter champagne accent. Shared by every intake and console
+     screen (seller, buyer, admin), so it lives with the global tokens.
+     ---------------------------------------------------------------------- */
+  --c-sand-50: #faf9f6;
+  --c-sand-100: #f4f3f0;
+  --c-sand-200: #e8e6e1; /* card + divider hairline */
+  --c-sand-300: #d9d6ce; /* control borders */
+  --c-sand-400: #b8b4a7; /* placeholder / disabled ink */
+  --c-sand-700: #524e44; /* secondary body ink */
+  --c-sand-900: #1c1b18; /* primary ink */
+
+  --c-champagne-300: #ecd9ba;
+  --c-champagne-400: #dfc293;
+  --c-champagne-500: #c59d5f; /* the intake accent */
+  --c-champagne-600: #aa8144;
+
+  --c-noir: #0e131f; /* intake dark panels */
+  --c-ink: #0f172a;  /* selected-state border + focus ring */
+
+  /* ----------------------------------------------------------------------
+     GRADIENTS
+     ---------------------------------------------------------------------- */
+  --g-champagne-text: linear-gradient(
+    90deg,
+    var(--c-secondary-light) 0%,
+    var(--c-secondary-container) 50%,
+    var(--c-secondary-dim) 100%
+  );
+  --g-hero-horizontal: linear-gradient(
+    to right,
+    rgba(19, 27, 46, 0.95) 0%,
+    rgba(19, 27, 46, 0.8) 55%,
+    rgba(19, 27, 46, 0.45) 100%
+  );
+  --g-hero-vertical: linear-gradient(
+    to top,
+    rgba(19, 27, 46, 1) 0%,
+    rgba(19, 27, 46, 0) 50%,
+    rgba(19, 27, 46, 0.6) 100%
+  );
+
+  /* ----------------------------------------------------------------------
+     TYPOGRAPHY — Families
+     ---------------------------------------------------------------------- */
+  --font-display: "Playfair Display", "Iowan Old Style", Georgia, serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* TYPE SCALE — desktop.
+     Each token pairs a size with its line-height, tracking and weight. */
+  --t-display-hero-size: 56px;
+  --t-display-hero-lh: 64px;
+  --t-display-hero-ls: -0.02em;
+  --t-display-hero-weight: 400;
+
+  --t-headline-lg-size: 40px;
+  --t-headline-lg-lh: 48px;
+  --t-headline-lg-ls: -0.01em;
+  --t-headline-lg-weight: 400;
+
+  --t-headline-md-size: 28px;
+  --t-headline-md-lh: 36px;
+  --t-headline-md-ls: 0;
+  --t-headline-md-weight: 500;
+
+  --t-headline-sm-size: 20px;
+  --t-headline-sm-lh: 28px;
+  --t-headline-sm-ls: -0.01em;
+  --t-headline-sm-weight: 600;
+
+  --t-body-lg-size: 18px;
+  --t-body-lg-lh: 28px;
+
+  --t-body-md-size: 15px;
+  --t-body-md-lh: 24px;
+
+  --t-body-sm-size: 13px;
+  --t-body-sm-lh: 20px;
+
+  --t-label-md-size: 14px;
+  --t-label-md-lh: 20px;
+  --t-label-md-weight: 500;
+
+  --t-label-sm-size: 12px;
+  --t-label-sm-lh: 16px;
+  --t-label-sm-weight: 500;
+
+  --t-eyebrow-size: 11px;
+  --t-eyebrow-lh: 16px;
+  --t-eyebrow-ls: 0.12em;
+  --t-eyebrow-weight: 600;
+
+  /* ----------------------------------------------------------------------
+     SPACING SCALE
+     ---------------------------------------------------------------------- */
+  --s-xs: 0.25rem; /*  4px */
+  --s-sm: 0.5rem; /*  8px */
+  --s-md: 1rem; /* 16px */
+  --s-lg: 1.5rem; /* 24px */
+  --s-xl: 2.5rem; /* 40px */
+  --s-2xl: 4rem; /* 64px */
+  --s-3xl: 6rem; /* 96px */
+
+  /* ----------------------------------------------------------------------
+     LAYOUT — container, gutters, page margins
+     ---------------------------------------------------------------------- */
+  --container-max: 1360px;
+  --gutter: 1.5rem;
+  --page-margin: 4rem;
+  --header-height: 5rem; /* 80px */
+
+  /* Vertical rhythm for full-width sections */
+  --section-py: var(--s-3xl);
+
+  /* ----------------------------------------------------------------------
+     RADIUS — deliberately tight. Architectural, not rounded.
+     ---------------------------------------------------------------------- */
+  --r-sm: 0.125rem; /* 2px */
+  --r-md: 0.25rem; /* 4px */
+  --r-lg: 0.5rem; /* 8px */
+  --r-xl: 0.75rem; /* 12px */
+  --r-pill: 999px;
+
+  /* ----------------------------------------------------------------------
+     ELEVATION
+     ---------------------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 24px -10px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 20px 45px -12px rgba(0, 0, 0, 0.28);
+  --shadow-dark-lift: 0 20px 40px -15px rgba(0, 0, 0, 0.45),
+    0 0 24px -2px var(--c-champagne-a12);
+  --glow-champagne: 0 0 15px var(--c-champagne-a35);
+  --glow-navy: 0 0 20px rgba(19, 27, 46, 0.3);
+
+  /* ----------------------------------------------------------------------
+     MOTION — slow enough to feel premium, fast enough to stay usable
+     ---------------------------------------------------------------------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-architectural: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --d-fast: 200ms;
+  --d-base: 300ms;
+  --d-slow: 400ms;
+  --d-reveal: 850ms;
+  --d-image: 700ms;
+
+  /* Z-index ladder */
+  --z-header: 50;
+  --z-drawer: 60;
+  --z-overlay: 55;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE TOKEN OVERRIDES
+   Type and spacing re-scale at breakpoints so hierarchy survives, rather than
+   the desktop layout simply shrinking.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  :root {
+    --page-margin: 2rem;
+    --section-py: 4.5rem;
+    --t-display-hero-size: 44px;
+    --t-display-hero-lh: 52px;
+    --t-headline-lg-size: 34px;
+    --t-headline-lg-lh: 42px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --page-margin: 1.25rem;
+    --gutter: 1rem;
+    --section-py: 3.5rem;
+
+    --t-display-hero-size: 36px;
+    --t-display-hero-lh: 44px;
+    --t-display-hero-ls: -0.01em;
+
+    --t-headline-lg-size: 28px;
+    --t-headline-lg-lh: 36px;
+    --t-headline-lg-ls: 0;
+
+    --t-headline-md-size: 22px;
+    --t-headline-md-lh: 30px;
+
+    --t-body-lg-size: 16px;
+    --t-body-lg-lh: 26px;
+  }
+}

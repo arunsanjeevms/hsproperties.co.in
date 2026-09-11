@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 296 52" fill="none">
+  <!-- Monogram emblem: architectural geometric 'H' and 'S' framing with fine lines -->
+  <rect x="2" y="4" width="44" height="44" rx="3" stroke="#0F172A" stroke-width="1.5" fill="#FAF9F6"/>
+  <rect x="6" y="8" width="36" height="36" rx="1.5" stroke="#C59B63" stroke-width="0.8" stroke-dasharray="2 2" fill="none"/>
+  <!-- H letterform -->
+  <path d="M16 17V35M26 17V35M16 26H26" stroke="#0F172A" stroke-width="2" stroke-linecap="square"/>
+  <!-- S letterform overlapping accent -->
+  <path d="M34 19C32 17.5 29 18 29 21C29 24.5 35 24 35 28C35 31.5 31.5 32 29 30.5" stroke="#C59B63" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Brand Typography -->
+  <text x="58" y="27" font-family="'Playfair Display', Georgia, serif" font-size="20" font-weight="700" letter-spacing="1.5" fill="#0F172A">HS PROPERTIES</text>
+  <text x="58" y="40" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="8.5" font-weight="500" letter-spacing="3.2" fill="#64748B">PRIVATE REAL ESTATE ADVISORY</text>
+</svg>

@@ -1,0 +1,501 @@
+/* ==========================================================================
+   HS Properties — Global base
+   Reset, typography primitives, layout system, accessibility, motion.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  margin: 0;
+  background-color: var(--c-background);
+  color: var(--c-on-surface);
+  font-family: var(--font-body);
+  font-size: var(--t-body-md-size);
+  line-height: var(--t-body-md-lh);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+::selection {
+  background: var(--c-secondary-container);
+  color: var(--c-primary-container);
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+figure {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl,
+dd,
+blockquote {
+  margin: 0;
+}
+
+/* Wrapped in :where() so the reset carries zero specificity and component
+   classes (.journey, .timeline, .mandate__band …) can set their own padding. */
+:where(ul[class], ol[class]) {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+address {
+  font-style: normal;
+}
+
+/* --------------------------------------------------------------------------
+   TYPOGRAPHY PRIMITIVES
+   Semantic classes that map 1:1 onto the Stitch type scale.
+   -------------------------------------------------------------------------- */
+
+.t-display {
+  font-family: var(--font-display);
+  font-size: var(--t-display-hero-size);
+  line-height: var(--t-display-hero-lh);
+  letter-spacing: var(--t-display-hero-ls);
+  font-weight: var(--t-display-hero-weight);
+}
+
+.t-headline-lg {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-lg-size);
+  line-height: var(--t-headline-lg-lh);
+  letter-spacing: var(--t-headline-lg-ls);
+  font-weight: var(--t-headline-lg-weight);
+}
+
+.t-headline-md {
+  font-family: var(--font-display);
+  font-size: var(--t-headline-md-size);
+  line-height: var(--t-headline-md-lh);
+  letter-spacing: var(--t-headline-md-ls);
+  font-weight: var(--t-headline-md-weight);
+}
+
+/* headline-sm is the one "heading" that sits in the sans family —
+   it labels cards and controls rather than opening a section. */
+.t-headline-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-headline-sm-size);
+  line-height: var(--t-headline-sm-lh);
+  letter-spacing: var(--t-headline-sm-ls);
+  font-weight: var(--t-headline-sm-weight);
+}
+
+.t-body-lg {
+  font-size: var(--t-body-lg-size);
+  line-height: var(--t-body-lg-lh);
+  font-weight: 300;
+}
+
+.t-body-md {
+  font-size: var(--t-body-md-size);
+  line-height: var(--t-body-md-lh);
+}
+
+.t-body-sm {
+  font-size: var(--t-body-sm-size);
+  line-height: var(--t-body-sm-lh);
+}
+
+.t-label-md {
+  font-size: var(--t-label-md-size);
+  line-height: var(--t-label-md-lh);
+  font-weight: var(--t-label-md-weight);
+}
+
+.t-label-sm {
+  font-size: var(--t-label-sm-size);
+  line-height: var(--t-label-sm-lh);
+  font-weight: var(--t-label-sm-weight);
+}
+
+/* The eyebrow is a signature of this design system: tiny, wide-tracked,
+   uppercase, bronze — it opens almost every section. */
+.t-eyebrow {
+  font-size: var(--t-eyebrow-size);
+  line-height: var(--t-eyebrow-lh);
+  letter-spacing: var(--t-eyebrow-ls);
+  font-weight: var(--t-eyebrow-weight);
+  text-transform: uppercase;
+}
+
+.t-italic {
+  font-style: italic;
+}
+
+/* Champagne gradient applied to display text on dark grounds. */
+.t-champagne {
+  background: var(--g-champagne-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   COLOUR UTILITIES
+   -------------------------------------------------------------------------- */
+
+.c-muted {
+  color: var(--c-on-surface-variant);
+}
+.c-accent {
+  color: var(--c-secondary);
+}
+.c-champagne {
+  color: var(--c-secondary-container);
+}
+
+/* --------------------------------------------------------------------------
+   LAYOUT SYSTEM
+   -------------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+/* A full-bleed band. Sections set their own ground colour. */
+.section {
+  position: relative;
+  width: 100%;
+  padding-block: var(--section-py);
+}
+
+/* Dark architectural band — inverts the ink scale for its subtree. */
+.section--dark {
+  background-color: var(--c-primary-container);
+  color: var(--c-surface);
+}
+
+.section--dark .c-muted {
+  color: var(--c-surface-highest);
+}
+
+.section--stone {
+  background-color: var(--c-surface-container);
+}
+
+.section--ivory {
+  background-color: var(--c-background);
+}
+
+.stack > * + * {
+  margin-top: var(--s-md);
+}
+
+/* Section header: eyebrow + headline + lede, used throughout. */
+.section-head {
+  max-width: 42rem;
+}
+
+.section-head__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
+  color: var(--c-secondary);
+  margin-bottom: var(--s-lg);
+}
+
+/* The short horizontal dash that precedes an eyebrow. */
+.section-head__eyebrow::before {
+  content: "";
+  width: 1.5rem;
+  height: 1px;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.section--dark .section-head__eyebrow {
+  color: var(--c-secondary-container);
+}
+
+.section-head__title {
+  margin-bottom: var(--s-lg);
+}
+
+.section-head__lede {
+  color: var(--c-on-surface-variant);
+  max-width: 38rem;
+}
+
+.section--dark .section-head__lede {
+  color: var(--c-surface-highest);
+}
+
+/* Hairline rules — a defining texture of the blueprint. */
+.rule {
+  height: 1px;
+  border: 0;
+  background-color: var(--c-hairline);
+}
+
+.section--dark .rule {
+  background-color: var(--c-hairline-dark);
+}
+
+/* --------------------------------------------------------------------------
+   ACCESSIBILITY
+   -------------------------------------------------------------------------- */
+
+/* Visible, high-contrast focus ring on every interactive element. */
+:focus-visible {
+  outline: 2px solid var(--c-secondary);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+.section--dark :focus-visible,
+.hero :focus-visible {
+  outline-color: var(--c-secondary-container);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link — first tab stop on the page. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transform: translateY(-120%);
+  background: var(--c-primary-container);
+  color: var(--c-on-primary);
+  padding: var(--s-sm) var(--s-md);
+  border-radius: 0 0 var(--r-md) 0;
+  transition: transform var(--d-fast) var(--ease-standard);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   ICONS — inline SVG sprite. Sized by font-size, coloured by currentColor.
+   -------------------------------------------------------------------------- */
+
+.icon {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon--sm {
+  width: 1em;
+  height: 1em;
+}
+
+.icon--lg {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+/* --------------------------------------------------------------------------
+   MOTION — scroll reveal + entrance
+   -------------------------------------------------------------------------- */
+
+/* The hidden state is scoped to .has-js (set synchronously in the document
+   head). Without JavaScript there is nothing to reveal these elements again,
+   so they must simply render as normal content. */
+.reveal {
+  transition: opacity var(--d-reveal) var(--ease-out-expo),
+    transform var(--d-reveal) var(--ease-out-expo);
+}
+
+.has-js .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  will-change: opacity, transform;
+}
+
+.has-js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered children within a revealed group. */
+.reveal[data-delay="1"] {
+  transition-delay: 90ms;
+}
+.reveal[data-delay="2"] {
+  transition-delay: 180ms;
+}
+.reveal[data-delay="3"] {
+  transition-delay: 270ms;
+}
+.reveal[data-delay="4"] {
+  transition-delay: 360ms;
+}
+
+/* Hero entrance — runs on load rather than on scroll. */
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-item {
+  animation: hero-reveal 1.1s var(--ease-out-expo) both;
+}
+
+.hero-item[data-step="0"] {
+  animation-delay: 0.15s;
+}
+.hero-item[data-step="1"] {
+  animation-delay: 0.3s;
+}
+.hero-item[data-step="2"] {
+  animation-delay: 0.45s;
+}
+.hero-item[data-step="3"] {
+  animation-delay: 0.6s;
+}
+.hero-item[data-step="4"] {
+  animation-delay: 0.75s;
+}
+
+/* Slow Ken Burns drift on the hero plate. */
+@keyframes ken-burns {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.04) translate3d(-0.5%, -0.5%, 0);
+  }
+  100% {
+    transform: scale(1.08) translate3d(0.5%, 0.5%, 0);
+  }
+}
+
+.ken-burns {
+  animation: ken-burns 24s var(--ease-architectural) infinite alternate;
+  will-change: transform;
+}
+
+/* A single light sweep across a control on hover. */
+@keyframes shimmer-sweep {
+  from {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  to {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.16),
+    transparent
+  );
+  transform: translateX(-160%) skewX(-20deg);
+  pointer-events: none;
+}
+
+.shimmer:hover::after {
+  animation: shimmer-sweep 1.1s var(--ease-standard);
+}
+
+/* --------------------------------------------------------------------------
+   REDUCED MOTION — honour the user's system preference completely.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .has-js .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
