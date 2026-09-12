@@ -38,7 +38,7 @@ include __DIR__ . '/../includes/intake-header.php';
       </p>
 
       <div class="protocol">
-        <h2 class="protocol__title">Strict Advisory Protocol</h2>
+        <h2 class="protocol__title">Strict Privacy Protocol</h2>
         <p class="protocol__text">
           Your information is handled confidentially. Submissions are never
           listed publicly or broadcast across portals.

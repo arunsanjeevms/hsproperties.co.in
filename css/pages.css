@@ -170,7 +170,7 @@
 }
 
 /* ==========================================================================
-   4. ADVISORY MANDATE — continuous 4-column band with hairline dividers
+   4. THE MANDATE — continuous 4-column band with hairline dividers
    ========================================================================== */
 
 .mandate__band {
@@ -609,7 +609,7 @@
 }
 
 /* ==========================================================================
-   9. CLOSING — editorial split with visual frame + advisory bar
+   9. CLOSING — editorial split with visual frame + mandate bar
    ========================================================================== */
 
 .closing {
@@ -805,14 +805,14 @@
   color: var(--c-secondary-container);
 }
 
-/* Direct advisory bar — closes the page above the footer. */
-.advisory-bar {
+/* Direct mandate bar — closes the page above the footer. */
+.mandate-bar {
   position: relative;
   border-top: 1px solid var(--c-hairline-dark);
   background-color: rgba(0, 0, 0, 0.25);
 }
 
-.advisory-bar__inner {
+.mandate-bar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -821,13 +821,13 @@
   padding-block: var(--s-lg);
 }
 
-.advisory-bar__contact {
+.mandate-bar__contact {
   display: flex;
   align-items: center;
   gap: var(--s-md);
 }
 
-.advisory-bar__icon {
+.mandate-bar__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -839,30 +839,30 @@
   color: var(--c-secondary-container);
 }
 
-.advisory-bar__title {
+.mandate-bar__title {
   font-size: var(--t-label-md-size);
   font-weight: 600;
 }
 
-.advisory-bar__note {
+.mandate-bar__note {
   font-size: var(--t-body-sm-size);
   color: var(--c-on-primary-container);
 }
 
-.advisory-bar__brand {
+.mandate-bar__brand {
   display: flex;
   align-items: center;
   gap: var(--s-lg);
 }
 
-.advisory-bar__motto {
+.mandate-bar__motto {
   font-family: var(--font-display);
   font-style: italic;
   font-size: var(--t-body-lg-size);
   color: var(--c-secondary-dim);
 }
 
-.advisory-bar__wordmark {
+.mandate-bar__wordmark {
   padding-left: var(--s-lg);
   border-left: 1px solid var(--c-hairline-dark);
   font-size: var(--t-eyebrow-size);
@@ -872,7 +872,7 @@
   color: var(--c-surface);
 }
 
-.advisory-bar__wordmark span {
+.mandate-bar__wordmark span {
   display: block;
   color: var(--c-on-primary-container);
   letter-spacing: 0.12em;

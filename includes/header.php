@@ -7,7 +7,7 @@
 
 require_once __DIR__ . '/config.php';
 
-$pageTitle = $pageTitle ?? 'HS Properties — Private Real Estate Advisory';
+$pageTitle = $pageTitle ?? 'HS Properties — Private Real Estate';
 $pageDescription = $pageDescription ?? 'A private, curated approach to acquiring and presenting exceptional residential and estate assets across India\'s premier enclaves.';
 $currentPage = $currentPage ?? 'home';
 ?>
@@ -61,11 +61,11 @@ $currentPage = $currentPage ?? 'home';
       <?php include __DIR__ . '/navigation.php'; ?>
 
       <div class="header__actions">
-        <a class="btn btn--ghost" href="#contact">Advisor Portal</a>
+        <a class="btn btn--ghost" href="<?= e(route('admin.dashboard')) ?>">Admin Portal</a>
         <a class="btn btn--outline" href="<?= e(route('seller.step1')) ?>">Sell Your Property</a>
-        <a class="btn btn--primary shimmer" href="#buyer">Find Your Property</a>
+        <a class="btn btn--primary shimmer" href="<?= e(route('buyer.step1')) ?>">Find Your Property</a>
 
-        <a class="avatar" href="#contact" aria-label="Account and advisor portal">
+        <a class="avatar" href="<?= e(route('admin.dashboard')) ?>" aria-label="Account and admin portal">
           <?= icon('user') ?>
         </a>
 
@@ -98,8 +98,9 @@ $currentPage = $currentPage ?? 'home';
         <?php endforeach; ?>
       </ul>
       <div class="nav-drawer__actions">
+        <a class="btn btn--ghost" href="<?= e(route('admin.dashboard')) ?>">Admin Portal</a>
         <a class="btn btn--outline" href="<?= e(route('seller.step1')) ?>">Sell Your Property</a>
-        <a class="btn btn--primary" href="#buyer">Find Your Property</a>
+        <a class="btn btn--primary" href="<?= e(route('buyer.step1')) ?>">Find Your Property</a>
       </div>
     </div>
   </div>

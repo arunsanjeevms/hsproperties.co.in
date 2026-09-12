@@ -315,7 +315,7 @@
   max-width: 32rem;
 }
 
-/* Advisory protocol note — a bronze-ruled quote block. */
+/* Privacy protocol note — a bronze-ruled quote block. */
 .protocol {
   margin-top: var(--s-xl);
   padding-left: var(--s-md);

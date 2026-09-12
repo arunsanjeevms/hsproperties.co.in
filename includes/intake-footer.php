@@ -9,7 +9,7 @@
       <div class="intake-footer__brand">
         <span class="intake-footer__name">HS Properties</span>
         <span class="intake-footer__rule" aria-hidden="true">|</span>
-        <span>Private Client Advisory Desk &bull; Strict Fiduciary Governance</span>
+        <span>Private Client Desk &bull; Strict Fiduciary Governance</span>
       </div>
 
       <div class="intake-footer__links">

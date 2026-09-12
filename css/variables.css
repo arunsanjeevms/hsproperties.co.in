@@ -89,6 +89,77 @@
   --c-ink: #0f172a;  /* selected-state border + focus ring */
 
   /* ----------------------------------------------------------------------
+     COLOUR — Admin console
+     Taken verbatim from the Stitch `tailwind.config` of the admin screens
+     ("HS Properties — Operations Center"), so the console matches
+     the blueprint rather than approximating it with the intake ramp.
+     ---------------------------------------------------------------------- */
+  --c-con-ivory: #f7f5f0; /* console page ground */
+  --c-con-stone: #eae6de;
+  --c-con-stone-light: #f2efeb;
+  --c-con-charcoal: #111827; /* primary console ink */
+  --c-con-dark: #0b0f17;
+  --c-con-sidebar: #0c1019; /* sidebar ground */
+  --c-con-sidebar-line: #1f2937;
+  --c-con-gold: #b99a68; /* console accent */
+  --c-con-gold-light: #d4af37;
+  --c-con-gold-dim: #8f754a;
+  --c-con-muted: #6f6b63;
+  --c-con-border: #e2dcd2;
+  --c-con-surface: #ffffff;
+
+  /* Console status colours */
+  --c-con-new: #1d4ed8;
+  --c-con-review: #b45309;
+  --c-con-contacted: #6d28d9;
+  --c-con-progress: #0f766e;
+  --c-con-complete: #3f6b4f;
+  --c-con-hold: #6f6b63;
+  --c-con-high: #ba1a1a;
+
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo,
+    Consolas, monospace;
+
+  /* Console ink, darkened from the blueprint's #6F6B63 so secondary text
+     clears WCAG AA on the ivory ground at the sizes the console uses. */
+  --c-con-muted-strong: #57534a;
+
+  /* Headline figures — budget, asking price. Set in the console charcoal
+     rather than bronze: at 15:1 on the champagne plate it is the highest
+     contrast pairing on the page, so money reads first. */
+  --c-con-figure-ink: #111827;
+
+  /* Console surfaces — every card, tile and header is a gradient rather than
+     flat white, so panels separate from the ivory ground without extra rules.
+     Defined here so the dashboard, inbox and detail view cannot drift apart. */
+  --g-con-card: linear-gradient(160deg, #ffffff 0%, #fdfcfa 55%, #f7f4ee 100%);
+  --g-con-card-head: linear-gradient(
+    180deg,
+    rgba(185, 154, 104, 0.07) 0%,
+    rgba(185, 154, 104, 0.02) 100%
+  );
+  --g-con-tile: linear-gradient(150deg, #ffffff 0%, #faf8f4 60%, #f3efe7 100%);
+  --g-con-tile-gold: linear-gradient(
+    150deg,
+    #ffffff 0%,
+    #fdf8ef 55%,
+    #f6ecda 100%
+  );
+  --g-con-rail: linear-gradient(180deg, #11161f 0%, #0c1019 55%, #090c13 100%);
+  --g-con-dark: linear-gradient(135deg, #1b2230 0%, #111827 55%, #0b0f17 100%);
+  --g-con-accent-soft: linear-gradient(
+    135deg,
+    rgba(185, 154, 104, 0.14) 0%,
+    rgba(185, 154, 104, 0.04) 100%
+  );
+
+  /* Console elevation — a warm, low shadow so cards lift off the ivory. */
+  --shadow-con: 0 1px 2px rgba(64, 52, 32, 0.05),
+    0 8px 20px -14px rgba(64, 52, 32, 0.22);
+  --shadow-con-lift: 0 2px 4px rgba(64, 52, 32, 0.06),
+    0 16px 32px -18px rgba(64, 52, 32, 0.3);
+
+  /* ----------------------------------------------------------------------
      GRADIENTS
      ---------------------------------------------------------------------- */
   --g-champagne-text: linear-gradient(

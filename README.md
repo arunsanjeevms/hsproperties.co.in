@@ -1,6 +1,6 @@
 # HS Properties — Consultation Platform
 
-Frontend for the HS Properties private real estate advisory platform.
+Frontend for the HS Properties private real estate platform.
 
 Built from the Google Stitch project *HS Properties Consultation Platform*,
 which is the visual source of truth for the design system.
@@ -19,7 +19,7 @@ data). No framework, no build step, no dependencies.
 | `/pages/seller-intake-step-1.php` | Private Seller Intake, Step 01: Property |
 | `/pages/seller-intake-step-2.php` | Private Seller Intake, Step 02: Details & Documents |
 | `/pages/seller-intake-step-3.php` | Private Seller Intake, Step 03: Review & Submit |
-| `/pages/seller-intake-step-3.php?state=submitted` | Advisory confirmation |
+| `/pages/intake-submitted.php?flow=seller` | Submission confirmation |
 
 ## Structure
 

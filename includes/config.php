@@ -19,7 +19,7 @@ define('APP_ROOT', dirname(__DIR__));
 define('BASE_URL', '');
 
 define('SITE_NAME', 'HS Properties');
-define('SITE_TAGLINE', 'Private Advisory');
+define('SITE_TAGLINE', 'Private Client Desk');
 
 /**
  * Build a site-relative URL.
@@ -71,9 +71,21 @@ function route(string $name): string
         'seller.step1'  => url('pages/seller-intake-step-1.php'),
         'seller.step2'  => url('pages/seller-intake-step-2.php'),
         'seller.step3'  => url('pages/seller-intake-step-3.php'),
-        'seller.done'   => url('pages/seller-intake-step-3.php') . '?state=submitted',
-        'advisor.call'  => 'tel:+442079460892',
-        'advisor.email' => 'mailto:desk@hsproperties.com',
+        'buyer.step1'   => url('pages/buyer-intake-step-1.php'),
+        'buyer.step2'   => url('pages/buyer-intake-step-2.php'),
+        'buyer.step3'   => url('pages/buyer-intake-step-3.php'),
+
+        // Shared post-submission page; `?flow=` selects the mandate type.
+        'intake.submitted' => url('pages/intake-submitted.php'),
+        'seller.done'      => url('pages/intake-submitted.php') . '?flow=seller',
+        'buyer.done'       => url('pages/intake-submitted.php') . '?flow=buyer',
+        // Admin operations console.
+        'admin.dashboard' => url('pages/admin/dashboard.php'),
+        'admin.requests'  => url('pages/admin/requests.php'),
+        'admin.request'   => url('pages/admin/request-detail.php'),
+
+        'contact.call'  => 'tel:+442079460892',
+        'contact.email' => 'mailto:desk@hsproperties.com',
     ];
 
     return $routes[$name] ?? url('index.php');
@@ -89,7 +101,7 @@ function nav_items(): array
     return [
         ['key' => 'home',       'label' => 'Home',       'href' => url('index.php')],
         ['key' => 'properties', 'label' => 'Properties', 'href' => '#portfolio'],
-        ['key' => 'services',   'label' => 'Services',   'href' => '#advisory'],
+        ['key' => 'services',   'label' => 'Services',   'href' => '#mandate'],
         ['key' => 'about',      'label' => 'About Us',   'href' => '#distinction'],
         ['key' => 'contact',    'label' => 'Contact',    'href' => '#contact'],
     ];

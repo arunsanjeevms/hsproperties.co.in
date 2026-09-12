@@ -4,16 +4,16 @@
  * "Architectural Editorial Edition"
  *
  * Section order follows the Stitch blueprint:
- *   1 Hero · 2 Trust pillars · 3 Portfolio · 4 Advisory mandate
+ *   1 Hero · 2 Trust pillars · 3 Portfolio · 4 Mandate
  *   5 Buyer journey · 6 Seller journey · 7 Distinction · 8 Governance
- *   9 Closing + advisory bar
+ *   9 Closing + mandate bar
  */
 
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/data.php';
 
 $currentPage = 'home';
-$pageTitle = 'HS Properties — Private Real Estate Advisory';
+$pageTitle = 'HS Properties — Private Real Estate';
 
 include __DIR__ . '/includes/header.php';
 ?>
@@ -39,7 +39,7 @@ include __DIR__ . '/includes/header.php';
 
         <p class="badge badge--glass hero-item" data-step="0">
           <span class="badge__dot"></span>
-          Private Real Estate Advisory
+          Private Real Estate
         </p>
 
         <h1 class="t-display hero__title hero-item" id="hero-title" data-step="1">
@@ -54,14 +54,14 @@ include __DIR__ . '/includes/header.php';
 
         <p class="t-body-md hero__support hero-item" data-step="3">
           HS Properties connects serious buyers and property owners through a
-          discreet advisory-led process — from mandate discovery and valuation
+          discreet partner-led process — from mandate discovery and valuation
           to sovereign verification and confidential closing.
         </p>
 
         <!-- Dual gateway: the page's two primary intents, given equal weight -->
         <div class="hero__gateways hero-item" data-step="4">
 
-          <a class="gateway gateway--solid shimmer" href="#buyer">
+          <a class="gateway gateway--solid shimmer" href="<?= e(route('buyer.step1')) ?>">
             <span class="gateway__row">
               <span class="gateway__label">
                 <?= icon('shield', 'gateway__icon') ?>
@@ -126,7 +126,7 @@ include __DIR__ . '/includes/header.php';
           <p class="t-body-md section-head__lede">
             A retrospective portfolio of premier residential estates, penthouses,
             and private retreats successfully represented, acquired, and closed
-            through our private advisory network.
+            through our private network.
           </p>
         </div>
 
@@ -189,14 +189,14 @@ include __DIR__ . '/includes/header.php';
   </section>
 
   <!-- ====================================================================
-       4. ADVISORY MANDATE — continuous four-stage band
+       4. THE MANDATE — continuous four-stage band
        ==================================================================== -->
-  <section class="section section--ivory" id="advisory" aria-labelledby="advisory-title">
+  <section class="section section--ivory" id="mandate" aria-labelledby="mandate-title">
     <div class="container">
 
       <div class="section-head reveal">
-        <p class="t-eyebrow section-head__eyebrow">The Advisory Mandate</p>
-        <h2 class="t-headline-lg section-head__title" id="advisory-title">
+        <p class="t-eyebrow section-head__eyebrow">The Mandate</p>
+        <h2 class="t-headline-lg section-head__title" id="mandate-title">
           Property decisions deserve more than a search bar.
         </h2>
         <p class="t-body-md section-head__lede">
@@ -208,7 +208,7 @@ include __DIR__ . '/includes/header.php';
       </div>
 
       <ol class="mandate__band reveal">
-        <?php foreach (advisory_stages() as $stage): ?>
+        <?php foreach (mandate_stages() as $stage): ?>
           <li class="stage">
             <div class="stage__head">
               <span class="stage__number" aria-hidden="true"><?= e($stage['number']) ?></span>
@@ -241,7 +241,7 @@ include __DIR__ . '/includes/header.php';
               Looking for something specific?
             </h2>
             <p class="t-body-md section-head__lede">
-              Tell us what matters to you. Our advisors translate your
+              Tell us what matters to you. Our partners translate your
               parameters into a targeted acquisition mandate, saving hundreds of
               hours of unfiltered viewings.
             </p>
@@ -253,7 +253,7 @@ include __DIR__ . '/includes/header.php';
           </p>
 
           <div class="buyer__cta">
-            <a class="btn btn--primary btn--lg shimmer" href="#">
+            <a class="btn btn--primary btn--lg shimmer" href="<?= e(route('buyer.step1')) ?>">
               Find Your Property
               <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
             </a>
@@ -361,7 +361,7 @@ include __DIR__ . '/includes/header.php';
               Discreet Network
             </p>
             <p class="float-card__text">
-              Over 65% of our high-value residential advisory transactions are
+              Over 65% of our high-value residential transactions are
               conducted strictly off-market.
             </p>
           </div>
@@ -376,7 +376,7 @@ include __DIR__ . '/includes/header.php';
             <p class="t-body-md section-head__lede">
               Traditional real estate classifieds optimize for page views, ad
               revenue, and bulk broker circulars. HS Properties is founded on
-              the antithesis: low volume, senior advisor stewardship, absolute
+              the antithesis: low volume, senior partner stewardship, absolute
               confidentiality, and deep asset verification.
             </p>
           </div>
@@ -430,7 +430,7 @@ include __DIR__ . '/includes/header.php';
   </section>
 
   <!-- ====================================================================
-       9. CLOSING — editorial split, then the direct advisory bar
+       9. CLOSING — editorial split, then the direct mandate bar
        ==================================================================== -->
   <section class="closing" id="contact" aria-labelledby="closing-title">
     <span class="closing__glow" aria-hidden="true"></span>
@@ -455,7 +455,7 @@ include __DIR__ . '/includes/header.php';
 
           <div class="closing__cards">
 
-            <a class="choice" href="#buyer">
+            <a class="choice" href="<?= e(route('buyer.step1')) ?>">
               <?= icon('home', 'choice__icon icon--lg') ?>
               <span class="choice__eyebrow">For Buyers</span>
               <span class="choice__title">Find Your Property</span>
@@ -473,7 +473,7 @@ include __DIR__ . '/includes/header.php';
               <span class="choice__eyebrow">For Sellers</span>
               <span class="choice__title">Sell Your Property</span>
               <span class="choice__text">
-                Submit your property privately for evaluation and advisory.
+                Submit your property privately for evaluation.
               </span>
               <span class="choice__action">
                 Get Started
@@ -505,30 +505,30 @@ include __DIR__ . '/includes/header.php';
       </div>
     </div>
 
-    <!-- Direct advisory bar -->
-    <div class="advisory-bar">
-      <div class="container advisory-bar__inner">
+    <!-- Direct mandate bar -->
+    <div class="mandate-bar">
+      <div class="container mandate-bar__inner">
 
-        <div class="advisory-bar__contact">
-          <span class="advisory-bar__icon"><?= icon('call') ?></span>
+        <div class="mandate-bar__contact">
+          <span class="mandate-bar__icon"><?= icon('call') ?></span>
           <div>
-            <p class="advisory-bar__title">Prefer to speak directly?</p>
-            <p class="advisory-bar__note">
-              Talk to a Senior Advisor for a confidential consultation.
+            <p class="mandate-bar__title">Prefer to speak directly?</p>
+            <p class="mandate-bar__note">
+              Talk to Our Team for a confidential consultation.
             </p>
           </div>
         </div>
 
-        <a class="btn btn--light btn--lg shimmer" href="<?= e(route('advisor.call')) ?>">
-          Speak to an Advisor
+        <a class="btn btn--light btn--lg shimmer" href="<?= e(route('contact.call')) ?>">
+          Speak to Our Team
           <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
         </a>
 
-        <div class="advisory-bar__brand">
-          <p class="advisory-bar__motto">Property. People. Possibilities.</p>
-          <p class="advisory-bar__wordmark">
+        <div class="mandate-bar__brand">
+          <p class="mandate-bar__motto">Property. People. Possibilities.</p>
+          <p class="mandate-bar__wordmark">
             HS Properties
-            <span>Private Real Estate Advisory</span>
+            <span>Private Real Estate</span>
           </p>
         </div>
 

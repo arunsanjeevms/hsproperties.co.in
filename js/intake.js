@@ -154,41 +154,4 @@
     }
   });
 
-  /* ----------------------------------------------------------------------
-     Step 03: swap to the confirmation view without a reload.
-
-     The form's action already points at ?state=submitted, so if anything here
-     fails the normal submission still lands on the confirmation.
-     ---------------------------------------------------------------------- */
-  var reviewForm = document.getElementById('intake-form');
-  var confirmation = document.getElementById('intake-confirmation');
-
-  if (reviewForm && confirmation) {
-    reviewForm.addEventListener('submit', function (event) {
-      // Let the browser surface its own validation for the declaration.
-      if (!reviewForm.checkValidity()) {
-        return;
-      }
-
-      event.preventDefault();
-
-      reviewForm.hidden = true;
-      confirmation.hidden = false;
-
-      // Keep the URL honest so a refresh or a shared link shows the same view.
-      if (window.history && window.history.pushState) {
-        window.history.pushState({}, '', '?state=submitted');
-      }
-
-      // Move focus to the confirmation so the change is announced.
-      confirmation.setAttribute('tabindex', '-1');
-      confirmation.focus({ preventScroll: true });
-      confirmation.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
-        block: 'start',
-      });
-    });
-  }
 })();

@@ -8,7 +8,7 @@
  * the templates that consume them do not change.
  *
  * Nothing here is a permanent static table — it is a typed stand-in for the
- * `properties`, `advisory_stages`, and related entities.
+ * `properties`, `mandate_stages`, and related entities.
  */
 
 declare(strict_types=1);
@@ -27,7 +27,7 @@ function portfolio_properties(): array
             'title'       => 'The Sandstone Pavilion Villa',
             'mandate'     => 'Buyer Representation & Acquisition',
             'spec'        => '4 BHK Cantilevered Residence · 8,200 sq.ft Grounds',
-            'summary'     => 'Discreet acquisition advisory completed for private family office; cantilevered limestone architecture with dual reflecting pools.',
+            'summary'     => 'Discreet acquisition completed for a private family office; cantilevered limestone architecture with dual reflecting pools.',
             'type'        => 'Independent Estate',
             'image'       => 'assets/images/property-sandstone-pavilion.jpg',
             'image_alt'   => 'The Sandstone Pavilion Villa in Whitefield, Bengaluru — a cantilevered limestone residence lit at dusk beside a reflecting pool.',
@@ -49,7 +49,7 @@ function portfolio_properties(): array
             'status'      => 'Landmark Sale',
             'location'    => 'ECR, Chennai',
             'title'       => 'The Oceanfront Pavilion Estate',
-            'mandate'     => 'Bespoke Transaction Advisory',
+            'mandate'     => 'Bespoke Transaction Management',
             'spec'        => '5 BHK Coastal Sanctuary · 20,000 sq.ft Plot',
             'summary'     => 'Discreet coastal acquisition diligence, coastal clearance audits, and bespoke escrow closure for an overseas principal.',
             'type'        => 'Coastal Retreat',
@@ -76,8 +76,8 @@ function trust_pillars(): array
             'text'  => 'We focus on high-fidelity opportunities instead of algorithmic inventory bulk.',
         ],
         [
-            'icon'  => 'advisor',
-            'title' => 'Advisory-Led',
+            'icon'  => 'contact-phone',
+            'title' => 'Partner-Led',
             'text'  => 'A dedicated senior partner coordinates every negotiation and legal touchpoint.',
         ],
         [
@@ -89,10 +89,10 @@ function trust_pillars(): array
 }
 
 /**
- * The four-stage advisory mandate band.
- * Future source: `advisory_stages` ordered by sequence.
+ * The four-stage mandate band.
+ * Future source: `mandate_stages` ordered by sequence.
  */
-function advisory_stages(): array
+function mandate_stages(): array
 {
     return [
         [
@@ -119,8 +119,8 @@ function advisory_stages(): array
         [
             'number' => '04',
             'label'  => 'Stage 04',
-            'title'  => 'Transaction Advisory',
-            'text'   => 'Advisors oversee price negotiation, escrow modalities, draft documentation, and private deed registration.',
+            'title'  => 'Transaction Management',
+            'text'   => 'Our partners oversee price negotiation, escrow modalities, draft documentation, and private deed registration.',
             'tag'    => 'Closing',
         ],
     ];
@@ -139,7 +139,7 @@ function buyer_journey(): array
         ],
         [
             'index' => '02',
-            'title' => 'Advisor Review',
+            'title' => 'Mandate Review',
             'text'  => 'A dedicated director connects for a structured, confidential briefing call to validate parameters and align timing expectations.',
         ],
         [
@@ -212,7 +212,7 @@ function distinction_points(): array
         [
             'icon'  => 'fact-check',
             'title' => 'Trust',
-            'text'  => 'Complete disclosure, transparent advisory fee structures, and zero hidden markups.',
+            'text'  => 'Complete disclosure, transparent fee structures, and zero hidden markups.',
         ],
     ];
 }
@@ -235,8 +235,8 @@ function governance_pillars(): array
         ],
         [
             'icon'  => 'contact-phone',
-            'title' => 'Advisor Accountability',
-            'text'  => 'A single dedicated senior advisor serves as your direct fiduciary liaison from initial requirement discovery through to final deed execution and handoff.',
+            'title' => 'Direct Accountability',
+            'text'  => 'A single dedicated senior partner serves as your direct fiduciary liaison from initial requirement discovery through to final deed execution and handoff.',
         ],
     ];
 }
@@ -261,9 +261,9 @@ function footer_groups(): array
             ],
         ],
         [
-            'heading' => 'Advisory',
+            'heading' => 'Services',
             'links'   => [
-                ['label' => 'Acquisition Mandate'],
+                ['label' => 'Acquisition Mandate', 'route' => 'buyer.step1'],
                 ['label' => 'Discreet Liquidation',  'route' => 'seller.step1'],
                 ['label' => 'Valuation & Audit',     'route' => 'seller.step1'],
                 ['label' => 'Family Office Services'],

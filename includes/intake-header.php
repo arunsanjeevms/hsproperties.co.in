@@ -26,7 +26,7 @@ $intakeSteps = $intakeSteps ?? [];
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= e($pageTitle) ?></title>
-  <meta name="description" content="Submit a property privately to the HS Properties advisory desk. Confidential intake, never publicly listed.">
+  <meta name="description" content="Submit a property privately to the HS Properties client desk. Confidential intake, never publicly listed.">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#faf9f6">
 
@@ -55,14 +55,14 @@ $intakeSteps = $intakeSteps ?? [];
         <span class="intake-brand__mark" aria-hidden="true">HS</span>
         <span>
           <span class="intake-brand__name">HS Properties</span>
-          <span class="intake-brand__tagline">Private Real Estate Advisory</span>
+          <span class="intake-brand__tagline">Private Real Estate</span>
         </span>
       </a>
 
       <div class="intake-header__aside">
         <span class="intake-header__note">Need confidential assistance?</span>
-        <a class="intake-header__cta" href="<?= e(route('advisor.call')) ?>">
-          Speak to an Advisor
+        <a class="intake-header__cta" href="<?= e(route('contact.call')) ?>">
+          Speak to Our Team
           <?= icon('arrow-right', 'icon--sm') ?>
         </a>
       </div>

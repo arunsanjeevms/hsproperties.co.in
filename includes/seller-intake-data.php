@@ -123,8 +123,8 @@ function mandate_structures(): array
 {
     return [
         ['value' => 'off-market',  'label' => 'Bespoke Off-Market',   'note' => 'Strict bilateral outreach with pre-qualified buyers under strict NDA.'],
-        ['value' => 'assisted',    'label' => 'Advisor-Assisted Sale','note' => 'Curated high-touch syndication across vetted partner networks.'],
-        ['value' => 'consultation','label' => 'Open to Consultation', 'note' => 'Review optimal strategy during preliminary advisory conference.'],
+        ['value' => 'assisted',    'label' => 'Managed Sale','note' => 'Curated high-touch syndication across vetted partner networks.'],
+        ['value' => 'consultation','label' => 'Open to Consultation', 'note' => 'Review optimal strategy during preliminary consultation.'],
     ];
 }
 
@@ -216,6 +216,6 @@ function seller_submission_reference(): array
     return [
         ['label' => 'Reference',    'value' => 'HS-2025-BLR-8492', 'accent' => true],
         ['label' => 'Status',       'value' => 'Initial Review'],
-        ['label' => 'Mandate Type', 'value' => 'Bespoke Off-Market Advisory'],
+        ['label' => 'Mandate Type', 'value' => 'Bespoke Off-Market Mandate'],
     ];
 }

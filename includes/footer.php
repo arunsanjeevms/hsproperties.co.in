@@ -19,13 +19,13 @@
 
           <p class="site-footer__about">
             Bespoke private real estate stewardship across premier metropolitan
-            and global destinations. Discreet acquisitions, sovereign advisory,
+            and global destinations. Discreet acquisitions, sovereign counsel,
             and structured liquidations.
           </p>
 
           <span class="badge badge--retainer">
             <?= icon('verified', 'icon--sm') ?>
-            Certified Private Advisory Retainer
+            Certified Private Client Retainer
           </span>
         </div>
 
@@ -62,7 +62,7 @@
       </div>
 
       <div class="site-footer__bottom">
-        <p>&copy; <?= date('Y') ?> HS Properties Advisory Ltd. All sovereign rights reserved. Confidential representation.</p>
+        <p>&copy; <?= date('Y') ?> HS Properties Ltd. All sovereign rights reserved. Confidential representation.</p>
         <nav class="site-footer__legal" aria-label="Legal">
           <a href="#">Privacy Charter</a>
           <a href="#">Terms of Mandate</a>

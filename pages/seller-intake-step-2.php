@@ -33,7 +33,7 @@ include __DIR__ . '/../includes/intake-header.php';
       </p>
 
       <div class="protocol">
-        <h2 class="protocol__title">Strict Advisory Protocol</h2>
+        <h2 class="protocol__title">Strict Privacy Protocol</h2>
         <p class="protocol__text">
           Your information is handled confidentially. Documentation is reviewed
           only as required for evaluation.
@@ -212,7 +212,7 @@ include __DIR__ . '/../includes/intake-header.php';
 
         <p class="note">
           <?= icon('lock', 'icon--sm') ?>
-          Documents can also be provided during the advisor review. Files are
+          Documents can also be provided during the review. Files are
           strictly utilized for legal encumbrance scrutiny and valuation
           verification.
         </p>
