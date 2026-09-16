@@ -13,6 +13,9 @@
   background-color: var(--c-con-ivory);
   color: var(--c-con-charcoal);
   font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 
 .console-body {
@@ -26,8 +29,8 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--s-lg);
-  padding: var(--s-lg) var(--s-xl) var(--s-2xl);
+  gap: var(--s-xl);
+  padding: var(--s-xl) var(--s-xl) var(--s-2xl);
 
   /* The architectural grid texture from the blueprint. */
   background-image: linear-gradient(
@@ -74,9 +77,9 @@
 .rail__eyebrow {
   margin: 0 0 var(--s-sm);
   padding-inline: 1.25rem;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #d8bb8c;
 }
@@ -98,7 +101,7 @@
   border-radius: var(--r-md);
   border-left: 2px solid transparent;
   color: #c3c8d1;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 500;
   text-decoration: none;
   transition: background-color var(--d-fast) var(--ease-standard),
@@ -132,7 +135,7 @@
 
 .rail__count {
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
   color: #dcc091;
 }
@@ -158,15 +161,17 @@
 
 .rail__plate-title {
   display: block;
-  font-family: var(--font-display);
-  font-size: 15px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: #f3f4f6;
 }
 
 .rail__plate-note {
   display: block;
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--c-con-gold);
 }
@@ -196,20 +201,20 @@
   background-color: rgba(185, 154, 104, 0.18);
   border: 1px solid rgba(185, 154, 104, 0.45);
   color: #dcc091;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
 }
 
 .rail__operator-name {
   display: block;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 600;
   color: #f3f4f6;
 }
 
 .rail__operator-role {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #9aa1ad;
@@ -257,9 +262,9 @@
   gap: 0.4375rem;
   margin: 0;
   padding: 0;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--c-con-muted-strong);
 }
@@ -324,7 +329,7 @@
   border-radius: var(--r-sm);
   background-color: var(--c-con-stone-light);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--c-con-muted-strong);
 }
 
@@ -337,7 +342,7 @@
   border-radius: 50%;
   background-image: var(--g-con-dark);
   color: #e3c79a;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
 }
 
@@ -358,9 +363,9 @@
   align-items: center;
   gap: 0.625rem;
   margin: 0;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--c-con-gold-dim);
 }
@@ -369,7 +374,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -401,14 +406,14 @@
 
 .page-head__today {
   text-align: right;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .page-head__today-label {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--c-con-gold-dim);
 }
@@ -421,7 +426,7 @@
 .page-head__today-time {
   display: block;
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--c-con-muted-strong);
 }
 
@@ -451,9 +456,9 @@
 
 .card__eyebrow {
   margin: 0;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--c-con-gold-dim);
 }
@@ -468,7 +473,7 @@
 
 .card__note {
   margin: 3px 0 0;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--c-con-muted-strong);
 }
 
@@ -476,7 +481,7 @@
   padding: 3px 0.5rem;
   border-radius: var(--r-pill);
   background-image: var(--g-con-accent-soft);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -497,7 +502,7 @@
   border-top: 1px solid var(--c-con-border);
   background-image: var(--g-con-card-head);
   border-radius: 0 0 var(--r-lg) var(--r-lg);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--c-con-muted-strong);
 }
 
@@ -568,9 +573,9 @@
 
 .tile__label {
   margin: 0;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--c-con-muted-strong);
 }
@@ -585,7 +590,7 @@
 
 .tile__note {
   margin: 0.375rem 0 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--c-con-muted-strong);
 }
 
@@ -595,7 +600,7 @@
 
 .ref {
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--c-con-charcoal);
@@ -612,9 +617,9 @@
   align-items: center;
   padding: 2px 0.5rem;
   border-radius: var(--r-sm);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -643,7 +648,7 @@
   padding: 3px 0.5625rem;
   border-radius: var(--r-pill);
   border: 1px solid currentColor;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -669,9 +674,9 @@
   align-items: center;
   padding: 2px 0.5rem;
   border-radius: var(--r-sm);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   background-color: rgba(111, 107, 99, 0.1);
   color: var(--c-con-muted-strong);
@@ -701,7 +706,7 @@
   background-image: linear-gradient(180deg, #ffffff 0%, #f6f3ec 100%);
   color: var(--c-con-charcoal);
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
@@ -750,7 +755,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -801,21 +806,23 @@
 
 .attention__title {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: 19px;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
 }
 
 .attention__text {
   margin: 0.375rem 0 0;
-  font-size: 14.5px;
+  font-size: 15px;
   line-height: 1.5;
   color: var(--c-con-muted-strong);
 }
 
 .attention__foot {
   margin: 0.5rem 0 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--c-con-muted-strong);
 }
 
@@ -851,7 +858,7 @@
   padding: 2px 0.5rem;
   border-radius: var(--r-pill);
   background-image: var(--g-con-accent-soft);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--c-con-gold-dim);
@@ -891,13 +898,13 @@
 
 .funnel__count {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   text-align: right;
 }
 
 .funnel__label {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--c-con-charcoal);
 }
@@ -908,7 +915,7 @@
 
 .shortcuts {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-sm);
 }
 
@@ -923,23 +930,44 @@
 .ctable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .ctable th,
 .ctable td {
-  padding: 0.875rem var(--s-lg);
+  padding: 0.875rem var(--s-md);
   text-align: left;
   vertical-align: middle;
   border-bottom: 1px solid var(--c-con-border);
+}
+
+.ctable th,
+.ctable td {
   white-space: nowrap;
+}
+
+/* Only the free-text columns may wrap, and only when the card is too narrow
+   to hold them — references, tags, chips and actions always stay on one line. */
+.ctable td:nth-child(3),
+.ctable td:nth-child(4),
+.ctable .plot__none {
+  white-space: normal;
+}
+
+/* The property list's leading cell holds a photograph and two lines of text,
+   so it must be free to wrap however narrow the card gets. */
+.ctable .plot,
+.ctable .plot .ctable__name,
+.ctable .plot .ctable__sub {
+  white-space: normal;
 }
 
 .ctable thead th {
   background-image: var(--g-con-card-head);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--c-con-muted-strong);
 }
@@ -960,7 +988,7 @@
 .ctable__sub {
   display: block;
   margin-top: 2px;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1005,7 +1033,7 @@
   border-radius: var(--r-sm);
   background-image: linear-gradient(180deg, #ffffff 0%, #f6f3ec 100%);
   color: var(--c-con-muted-strong);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
 }
@@ -1036,7 +1064,7 @@
   margin-bottom: -1px;
   border-bottom: 2px solid transparent;
   color: var(--c-con-muted-strong);
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-decoration: none;
@@ -1056,7 +1084,7 @@
   border-radius: var(--r-pill);
   background-image: var(--g-con-accent-soft);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--c-con-gold-dim);
 }
 
@@ -1065,7 +1093,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1091,7 +1119,7 @@
   background-image: linear-gradient(180deg, #ffffff 0%, #f8f6f1 100%);
   color: var(--c-con-charcoal);
   font-family: var(--font-body);
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
 }
 
@@ -1144,7 +1172,7 @@
 
 .dossier__sub {
   margin: 3px 0 0;
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1159,7 +1187,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 500;
 }
 
@@ -1171,7 +1199,7 @@
   height: 1.75rem;
   border-radius: var(--r-sm);
   background-image: var(--g-con-accent-soft);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--c-con-muted-strong);
@@ -1182,7 +1210,7 @@
   margin: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 var(--s-lg);
+  gap: 0 var(--s-2xl);
 }
 
 .facts--single {
@@ -1191,24 +1219,33 @@
 
 .facts__row {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--s-md);
-  padding: 0.625rem 0;
+  gap: 0.25rem var(--s-xl);
+  padding: 0.75rem 0;
   border-bottom: 1px solid var(--c-con-border);
 }
 
 .facts__label {
-  font-size: 13px;
+  flex: 0 0 auto;
+  font-size: 14px;
   font-weight: 500;
+  line-height: 1.5;
   color: var(--c-con-muted-strong);
 }
 
 .facts__value {
+  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 600;
+  line-height: 1.5;
   text-align: right;
+  /* Long values ("Home Loan (Pre-approved)") wrap whole, never mid-word. */
+  overflow-wrap: break-word;
+  hyphens: none;
 }
 
 /* The money row: set in the console mono so figures align digit-for-digit and
@@ -1238,7 +1275,7 @@
   border: 1px solid rgba(185, 154, 104, 0.4);
   border-radius: var(--r-pill);
   background-image: var(--g-con-accent-soft);
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--c-con-gold-dim);
 }
@@ -1290,21 +1327,21 @@
     rgba(186, 26, 26, 0.05) 100%
   );
   color: #9b1c1c;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
 .doc__name {
   display: block;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 600;
 }
 
 .doc__meta {
   display: block;
   margin-top: 2px;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1326,7 +1363,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: var(--s-sm);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .note-item__author {
@@ -1339,7 +1376,7 @@
 
 .note-item__text {
   margin: 0.5rem 0 0;
-  font-size: 14.5px;
+  font-size: 15px;
   line-height: 1.55;
 }
 
@@ -1351,7 +1388,7 @@
   border-radius: var(--r-md);
   background-color: var(--c-con-surface);
   font-family: var(--font-body);
-  font-size: 14.5px;
+  font-size: 15px;
   color: var(--c-con-charcoal);
   resize: vertical;
 }
@@ -1380,7 +1417,7 @@
   border-radius: var(--r-md);
   background-image: linear-gradient(180deg, #ffffff 0%, #f7f4ee 100%);
   color: var(--c-con-charcoal);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   text-decoration: none;
 }
@@ -1406,7 +1443,7 @@
 
 .next-action__text {
   margin: 0 0 var(--s-sm);
-  font-size: 14.5px;
+  font-size: 15px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1441,7 +1478,7 @@
 
 .trail__text {
   display: block;
-  font-size: 14.5px;
+  font-size: 15px;
   line-height: 1.45;
 }
 
@@ -1449,7 +1486,7 @@
   display: block;
   margin-top: 2px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1480,14 +1517,14 @@
 
 .workload__role {
   display: block;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--c-con-muted-strong);
 }
 
 .workload__load {
   margin-left: auto;
   text-align: right;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1520,7 +1557,7 @@
 
 .agenda__time {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--c-con-gold-dim);
 }
@@ -1536,7 +1573,7 @@
 
 .agenda__note {
   margin: 3px 0 0;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1553,7 +1590,7 @@
   gap: var(--s-md);
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--c-con-border);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
 }
 
@@ -1563,7 +1600,7 @@
 
 .audit__time {
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--c-con-muted-strong);
 }
 
@@ -1580,7 +1617,7 @@
   border-top: 1px solid var(--c-con-border);
   border-radius: 0 0 var(--r-lg) var(--r-lg);
   background-image: var(--g-con-card-head);
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.5;
   color: var(--c-con-muted-strong);
 }
@@ -1603,7 +1640,7 @@
 .console-foot__note,
 .console-foot__links {
   margin: 0;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1628,6 +1665,309 @@
 /* --------------------------------------------------------------------------
    RESPONSIVE
    -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   PROPERTIES — list rows and one property's file
+
+   The list reuses .ctable; only the first cell (photograph beside the name)
+   and the detail page's photograph, match list and status sentence are new.
+   -------------------------------------------------------------------------- */
+
+/* One row's leading cell: a small photograph beside the name. The picture is
+   what staff recognise a property by, faster than any reference code. */
+.plot {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  /* Wide enough that a property name keeps to one or two lines; without it the
+     column collapses and the reference code breaks across lines mid-token. */
+  min-width: 17rem;
+}
+
+.plot .ref {
+  white-space: nowrap;
+}
+
+.plot__thumb {
+  flex-shrink: 0;
+  width: 4rem;
+  height: 3rem;
+  object-fit: cover;
+  border: 1px solid var(--c-con-border);
+  border-radius: var(--r-md);
+  background-color: var(--c-con-stone);
+}
+
+/* The figure a buyer asks for first, so it is set apart from the row's prose. */
+.plot__price {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-con-figure-ink);
+}
+
+.plot__none {
+  color: var(--c-con-muted-strong);
+}
+
+/* The detail page's photograph. */
+.property-photo {
+  display: block;
+  width: 100%;
+  max-height: 20rem;
+  object-fit: cover;
+  border: 1px solid var(--c-con-border);
+  border-radius: var(--r-md);
+  background-color: var(--c-con-stone);
+}
+
+.property-summary {
+  margin: var(--s-md) 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--c-con-charcoal);
+}
+
+/* --------------------------------------------------------------------------
+   MATCHES — buyers who might want this property
+
+   Each match is a block, not a table row: a percentage alone reads as a
+   promise, so the verdict, the bar and the reason sit together and the
+   sentence is given as much room as the number.
+   -------------------------------------------------------------------------- */
+
+.match-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-md);
+}
+
+.match {
+  padding: var(--s-md);
+  border: 1px solid var(--c-con-border);
+  border-radius: var(--r-md);
+  background-image: var(--g-con-tile);
+}
+
+.match__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-sm);
+}
+
+.match__name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.match__meta {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--c-con-muted-strong);
+}
+
+.match__fit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem var(--s-md);
+  margin: var(--s-md) 0 0;
+}
+
+.match__verdict {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-con-charcoal);
+}
+
+.match__bar {
+  flex: 1 1 8rem;
+  height: 6px;
+  min-width: 6rem;
+  border-radius: var(--r-pill);
+  background-color: var(--c-con-stone);
+  overflow: hidden;
+}
+
+.match__bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background-color: var(--c-con-gold);
+}
+
+.match__score {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-con-muted-strong);
+}
+
+.match__why {
+  margin: var(--s-sm) 0 var(--s-md);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-con-charcoal);
+}
+
+/* --------------------------------------------------------------------------
+   STATUS, SAID IN WORDS
+
+   The coloured pill carries no meaning for someone who has not learned the
+   palette, so the rail repeats it as a plain sentence underneath.
+   -------------------------------------------------------------------------- */
+
+.standing {
+  margin: 0;
+}
+
+.standing__plain {
+  margin: var(--s-sm) 0 var(--s-md);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-con-muted-strong);
+}
+
+/* --------------------------------------------------------------------------
+   CONSOLE FORMS — "Add a property"
+
+   The intake flow's field styles live in intake.css, which the console does
+   not load, so the console has its own. They are deliberately larger than the
+   filter row's controls: this form is filled in once, carefully, by someone
+   who may not be confident with software, and a 44px target typed into slowly
+   beats a compact one typed into twice.
+   -------------------------------------------------------------------------- */
+
+.cform {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-xl);
+}
+
+/* Two fields per row on desktop; one on anything narrow. */
+.cform-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-lg) var(--s-xl);
+}
+
+.cfield {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cfield__label {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--c-con-charcoal);
+}
+
+/* The example sits between the label and the box, where it is read before the
+   field is answered rather than after it is answered wrongly. */
+.cfield__help {
+  margin: 2px 0 0.5rem;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-con-muted-strong);
+}
+
+.cfield__input {
+  width: 100%;
+  padding: 0.6875rem 0.75rem;
+  border: 1px solid var(--c-con-border);
+  border-radius: var(--r-md);
+  background-color: var(--c-con-surface);
+  color: var(--c-con-charcoal);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.cfield__input--tall {
+  resize: vertical;
+}
+
+.cfield__input:focus-visible {
+  outline: 2px solid var(--c-con-gold);
+  outline-offset: 1px;
+}
+
+/* A field in error carries the message, a red border and a red bar to its
+   left, so it is findable by colour, by shape and by reading — not by colour
+   alone. */
+.cfield--bad .cfield__input {
+  border-color: var(--c-con-high);
+  box-shadow: inset 3px 0 0 var(--c-con-high);
+}
+
+.cfield__error {
+  margin: 0 0 0.5rem;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-con-high);
+}
+
+/* The summary at the top of a failed save. */
+.cform-alert {
+  border-left: 3px solid var(--c-con-high);
+}
+
+.cform-alert__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--c-con-high);
+}
+
+.cform-alert__text {
+  margin: 0.375rem 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-con-charcoal);
+}
+
+.cform-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-md);
+}
+
+/* The one button that matters on the page, sized to say so. */
+.cform-save {
+  padding: 0.75rem 1.5rem;
+  font-size: 16px;
+}
+
+/* Shown on a property's own page straight after it has been added. */
+.saved-banner {
+  border-left: 3px solid var(--c-success);
+}
+
+.saved-banner__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--c-success);
+}
+
+.saved-banner__text {
+  margin: 0.375rem 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-con-charcoal);
+}
 
 @media (max-width: 1280px) {
   .tiles {
@@ -1676,7 +2016,8 @@
   }
 
   .facts,
-  .doc-list {
+  .doc-list,
+  .cform-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -1686,6 +2027,62 @@
   .tiles--4,
   .shortcuts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* ----------------------------------------------------------------------
+     Stacked table rows.
+
+     A side-scrolling table puts the row's own action off-screen, which on the
+     property list is the whole point of the row. Each row becomes a card
+     instead, with every cell labelled by the heading it lost.
+     ---------------------------------------------------------------------- */
+  .ctable--stack thead {
+    display: none;
+  }
+
+  .ctable--stack,
+  .ctable--stack tbody,
+  .ctable--stack tr,
+  .ctable--stack td {
+    display: block;
+    width: 100%;
+  }
+
+  .ctable--stack tr {
+    padding: var(--s-md) 0;
+    border-bottom: 1px solid var(--c-con-border);
+  }
+
+  .ctable--stack tr:last-child {
+    border-bottom: 0;
+  }
+
+  .ctable--stack td {
+    padding: 0.375rem 0;
+    border-bottom: 0;
+    white-space: normal;
+  }
+
+  .ctable--stack td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-con-muted-strong);
+  }
+
+  /* The photograph and name cell keeps its side-by-side shape; only the
+     column's desktop floor has to go. */
+  .ctable--stack .plot {
+    min-width: 0;
+  }
+
+  /* One full-width action per row — the easiest possible target. */
+  .ctable--stack .console-btn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
   }
 
   .topbar__search-text,
@@ -1790,7 +2187,7 @@
   border-radius: var(--r-md);
   background-image: var(--g-con-dark);
   color: #fff;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 600;
   box-shadow: var(--shadow-con-lift);
 }

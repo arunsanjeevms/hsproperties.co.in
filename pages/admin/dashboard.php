@@ -137,7 +137,6 @@ include __DIR__ . '/../../includes/admin-header.php';
               <th scope="col">Reference</th>
               <th scope="col">Type</th>
               <th scope="col">Client</th>
-              <th scope="col">Location</th>
               <th scope="col">Status</th>
               <th scope="col">Updated</th>
             </tr>
@@ -156,8 +155,6 @@ include __DIR__ . '/../../includes/admin-header.php';
                   </span>
                 </td>
                 <td><?= e($row['client']) ?></td>
-                <td><?= e($row['location']) ?></td>
-                <td><?= e($row['desk']) ?> desk</td>
                 <td><span class="status status--<?= e($row['tone']) ?>"><?= e($row['status']) ?></span></td>
                 <td><?= e($row['updated']) ?></td>
               </tr>

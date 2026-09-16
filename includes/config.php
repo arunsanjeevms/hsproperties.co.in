@@ -83,6 +83,9 @@ function route(string $name): string
         'admin.dashboard' => url('pages/admin/dashboard.php'),
         'admin.requests'  => url('pages/admin/requests.php'),
         'admin.request'   => url('pages/admin/request-detail.php'),
+        'admin.properties'=> url('pages/admin/properties.php'),
+        'admin.property'  => url('pages/admin/property-detail.php'),
+        'admin.property.new' => url('pages/admin/property-new.php'),
 
         'contact.call'  => 'tel:+442079460892',
         'contact.email' => 'mailto:desk@hsproperties.com',

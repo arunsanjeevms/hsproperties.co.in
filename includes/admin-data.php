@@ -14,6 +14,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/admin-store.php';
+
 /* ==========================================================================
    SHELL — sidebar, console identity
    ========================================================================== */
@@ -30,7 +32,7 @@ function admin_nav(): array
         ['key' => 'requests',     'label' => 'Requests',     'icon' => 'fact-check',   'route' => 'admin.requests', 'count' => 20],
         ['key' => 'buyers',       'label' => 'Buyers',       'icon' => 'user',         'route' => 'admin.requests', 'query' => 'tab=buyers', 'count' => 12],
         ['key' => 'sellers',      'label' => 'Sellers',      'icon' => 'villa',        'route' => 'admin.requests', 'query' => 'tab=sellers', 'count' => 8],
-        ['key' => 'properties',   'label' => 'Properties',   'icon' => 'home',         'count' => 42],
+        ['key' => 'properties',   'label' => 'Properties',   'icon' => 'home',         'route' => 'admin.properties', 'count' => admin_property_counts()['all']],
         ['key' => 'matches',      'label' => 'Matches',      'icon' => 'key',          'count' => 14],
         ['key' => 'appointments', 'label' => 'Appointments', 'icon' => 'contact-phone','count' => 5],
         ['key' => 'documents',    'label' => 'Documents',    'icon' => 'document',     'count' => 6],
@@ -202,7 +204,7 @@ function admin_quick_actions(): array
     return [
         ['label' => 'New buyer brief',     'route' => 'buyer.step1'],
         ['label' => 'New seller mandate',  'route' => 'seller.step1'],
-        ['label' => 'Add a property',      'route' => null],
+        ['label' => 'Add a property',      'route' => 'admin.property.new'],
         ['label' => 'Schedule a meeting',  'route' => null],
     ];
 }
@@ -494,5 +496,323 @@ function admin_detail_activity(): array
         ['text' => 'Request received via Private Web Intake',    'time' => '11 Sep · 10:42 AM'],
         ['text' => 'Automated pre-qualification check passed',   'time' => '11 Sep · 10:50 AM'],
         ['text' => 'Staged for review',                          'time' => '11 Sep · 11:15 AM'],
+    ];
+}
+
+/* ==========================================================================
+   PROPERTIES — the registry list and one property's detail view
+
+   Written in plain words rather than trade language: the console is operated
+   by desk staff, not only by agents, so "Who owns it" beats "Vendor" and
+   "Buyers who might want this" beats "Match pipeline".
+   ========================================================================== */
+
+/**
+ * Property statuses.
+ *
+ * Deliberately a separate vocabulary from the request statuses: a property is
+ * available or sold, a request is new or contacted. Sharing one list would
+ * force both into words that fit neither. `tone` reuses the console's existing
+ * status colours, so no new CSS is needed. `plain` is the one-sentence
+ * explanation shown on the detail page, for staff who do not know the trade
+ * shorthand.
+ */
+function admin_property_statuses(): array
+{
+    return [
+        'available' => ['label' => 'Ready to show',        'tone' => 'complete',  'plain' => 'This property can be shown to buyers right now.'],
+        'offer'     => ['label' => 'Offer received',       'tone' => 'review',    'plain' => 'A buyer has made an offer. The owner is considering it.'],
+        'reserved'  => ['label' => 'Reserved',             'tone' => 'contacted', 'plain' => 'Held for one buyer while the paperwork is finished. Do not show it to anyone else.'],
+        'checking'  => ['label' => 'Papers being checked', 'tone' => 'new',       'plain' => 'Do not show this property to buyers until the documents have been checked.'],
+        'sold'      => ['label' => 'Sold',                 'tone' => 'hold',      'plain' => 'The sale is finished. This is kept here only for the record.'],
+    ];
+}
+
+function admin_property_status(string $key): array
+{
+    return admin_property_statuses()[$key]
+        ?? ['label' => $key, 'tone' => 'hold', 'plain' => ''];
+}
+
+/** How many properties sit at each status. */
+function admin_property_counts(): array
+{
+    $counts = ['all' => 0, 'available' => 0, 'checking' => 0, 'offer' => 0, 'reserved' => 0, 'sold' => 0];
+
+    foreach (admin_properties() as $property) {
+        $counts['all']++;
+
+        if (isset($counts[$property['status']])) {
+            $counts[$property['status']]++;
+        }
+    }
+
+    return $counts;
+}
+
+/** The four counts above the list. */
+function admin_property_stats(): array
+{
+    $counts = admin_property_counts();
+
+    return [
+        ['label' => 'All properties',  'value' => (string) $counts['all'],       'note' => 'On our books',         'tone' => 'gold'],
+        ['label' => 'Ready to show',   'value' => (string) $counts['available'], 'note' => 'Can be shown today',   'tone' => 'complete'],
+        ['label' => 'Papers checking', 'value' => (string) $counts['checking'],  'note' => 'Waiting on documents', 'tone' => 'new'],
+        ['label' => 'Offer received',  'value' => (string) $counts['offer'],     'note' => 'A buyer has offered',  'tone' => 'review'],
+    ];
+}
+
+/** The list's tabs. Each key other than "all" is a status. */
+function admin_property_tabs(): array
+{
+    $counts = admin_property_counts();
+
+    return [
+        ['key' => 'all',       'label' => 'All',           'count' => $counts['all']],
+        ['key' => 'available', 'label' => 'Ready to show', 'count' => $counts['available']],
+        ['key' => 'checking',  'label' => 'Being checked', 'count' => $counts['checking']],
+        ['key' => 'sold',      'label' => 'Sold',          'count' => $counts['sold']],
+    ];
+}
+
+/** The filter row, worded the way a person would ask the question. */
+function admin_property_filters(): array
+{
+    return [
+        ['name' => 'city',  'label' => 'City',  'options' => ['All', 'Bengaluru', 'Chennai']],
+        ['name' => 'kind',  'label' => 'Type',  'options' => ['All', 'Villa', 'Apartment', 'Penthouse']],
+        ['name' => 'price', 'label' => 'Price', 'options' => ['Any price', 'Under 2 Cr', '2 to 4 Cr', 'Above 4 Cr']],
+        ['name' => 'sort',  'label' => 'Show',  'options' => ['Newest first', 'Oldest first', 'Most expensive first']],
+    ];
+}
+
+/**
+ * Everything on our books: properties added through the console first, then
+ * the seeded ones. Newest at the top, as the list's default sort claims.
+ */
+function admin_properties(): array
+{
+    return array_merge(admin_stored_properties(), admin_seed_properties());
+}
+
+/**
+ * The seeded registry.
+ *
+ * `code` is the reference an operator reads aloud on the phone, so it is the
+ * key the detail view is addressed by.
+ */
+function admin_seed_properties(): array
+{
+    return [
+        [
+            'code' => 'HS-P-0142', 'name' => 'Whitefield Executive Villa',
+            'kind' => 'Villa', 'city' => 'Bengaluru', 'area' => 'Whitefield',
+            'price' => '₹3.2 Cr', 'size' => '4,200 sq ft', 'beds' => '4 BHK',
+            'status' => 'available', 'owner' => 'Private Estate Owner',
+            'owner_phone' => '+91 98450 12849', 'owner_email' => 'estate.whitefield@outlook.com',
+            'listed' => '11 Sep 2026', 'matches' => 4,
+            'image' => 'assets/images/hero-villa.jpg',
+            'summary' => 'A renovated four-bedroom villa inside a gated enclave, with a private lawn and covered parking for three cars.',
+        ],
+        [
+            'code' => 'HS-P-0141', 'name' => 'ECR Beachfront Residence',
+            'kind' => 'Villa', 'city' => 'Chennai', 'area' => 'ECR',
+            'price' => '₹5.8 Cr', 'size' => '6,100 sq ft', 'beds' => '5 BHK',
+            'status' => 'checking', 'owner' => 'Corporate Holding LLP',
+            'owner_phone' => '+91 98401 55210', 'owner_email' => 'desk@corporateholding.in',
+            'listed' => '10 Sep 2026', 'matches' => 2,
+            'image' => 'assets/images/property-oceanfront-estate.jpg',
+            'summary' => 'A sea-facing house on the East Coast Road. The coastal approval and the khata certificate are still being checked.',
+        ],
+        [
+            'code' => 'HS-P-0139', 'name' => 'Indiranagar Louvered Penthouse',
+            'kind' => 'Penthouse', 'city' => 'Bengaluru', 'area' => 'Indiranagar',
+            'price' => '₹4.4 Cr', 'size' => '3,800 sq ft', 'beds' => '4 BHK',
+            'status' => 'offer', 'owner' => 'Sundaram Capital',
+            'owner_phone' => '+91 99002 71184', 'owner_email' => 'property@sundaramcapital.in',
+            'listed' => '09 Sep 2026', 'matches' => 5,
+            'image' => 'assets/images/property-louvered-penthouse.jpg',
+            'summary' => 'A top-floor home with a wrap-around terrace. One buyer has offered ₹4.2 Cr and the owner has not answered yet.',
+        ],
+        [
+            'code' => 'HS-P-0137', 'name' => 'Alwarpet Sandstone Pavilion',
+            'kind' => 'Apartment', 'city' => 'Chennai', 'area' => 'Alwarpet',
+            'price' => '₹2.6 Cr', 'size' => '2,900 sq ft', 'beds' => '3 BHK',
+            'status' => 'reserved', 'owner' => 'Kavita Krishnan',
+            'owner_phone' => '+91 98403 66127', 'owner_email' => 'kavita.krishnan@outlook.com',
+            'listed' => '07 Sep 2026', 'matches' => 1,
+            'image' => 'assets/images/property-sandstone-pavilion.jpg',
+            'summary' => 'Held for one buyer until 30 September while their home loan is approved. Do not show it to anyone else until then.',
+        ],
+        [
+            'code' => 'HS-P-0134', 'name' => 'Sadashivanagar Garden Villa',
+            'kind' => 'Villa', 'city' => 'Bengaluru', 'area' => 'Sadashivanagar',
+            'price' => '₹6.5 Cr', 'size' => '5,400 sq ft', 'beds' => '5 BHK',
+            'status' => 'available', 'owner' => 'NR Principal Trust',
+            'owner_phone' => '+91 98866 40912', 'owner_email' => 'trust@nrprincipal.in',
+            'listed' => '04 Sep 2026', 'matches' => 3,
+            'image' => 'assets/images/villa-terrace.jpg',
+            'summary' => 'A large corner-plot villa with a mature garden and a separate staff block. The owner prefers weekday viewings.',
+        ],
+        [
+            'code' => 'HS-P-0128', 'name' => 'Boat Club Heritage Apartment',
+            'kind' => 'Apartment', 'city' => 'Chennai', 'area' => 'Boat Club',
+            'price' => '₹4.9 Cr', 'size' => '3,300 sq ft', 'beds' => '4 BHK',
+            'status' => 'sold', 'owner' => 'Tarun Chawla',
+            'owner_phone' => '+91 98410 30045', 'owner_email' => 'tarun.chawla@outlook.com',
+            'listed' => '28 Aug 2026', 'matches' => 0,
+            'image' => 'assets/images/property-sandstone-pavilion.jpg',
+            'summary' => 'The sale was completed on 6 September 2026. It is kept on the list so the paperwork stays easy to find.',
+        ],
+    ];
+}
+
+/** Rows for one tab. "all" shows everything; every other tab is one status. */
+function admin_tab_properties(string $tab): array
+{
+    $rows = admin_properties();
+
+    if ($tab === 'all') {
+        return $rows;
+    }
+
+    return array_values(array_filter($rows, function (array $p) use ($tab) {
+        return $p['status'] === $tab;
+    }));
+}
+
+/** Link to one property's detail view. */
+function admin_property_url(string $code): string
+{
+    return route('admin.property') . '?code=' . urlencode($code);
+}
+
+/** A single property by code, or null when the code is unknown. */
+function admin_property(?string $code): ?array
+{
+    foreach (admin_properties() as $property) {
+        if ($property['code'] === $code) {
+            return $property;
+        }
+    }
+
+    return null;
+}
+
+/** The property the detail view opens on when no code is given. */
+function admin_default_property(): array
+{
+    return admin_properties()[0];
+}
+
+/* --------------------------------------------------------------------------
+   ONE PROPERTY — detail panels
+   -------------------------------------------------------------------------- */
+
+/** "What this property is" — the facts staff are asked for on the phone. */
+function admin_property_facts(array $property): array
+{
+    return [
+        ['label' => 'Type of property',   'value' => $property['kind']],
+        ['label' => 'Bedrooms',           'value' => $property['beds']],
+        ['label' => 'Size',               'value' => $property['size']],
+        ['label' => 'Where it is',        'value' => $property['area'] . ', ' . $property['city']],
+        ['label' => 'Asking price',       'value' => $property['price'], 'accent' => true],
+        ['label' => 'On our books since', 'value' => $property['listed']],
+    ];
+}
+
+/** "Who owns it" — the panel staff open before making a call. */
+function admin_property_owner(array $property): array
+{
+    return [
+        ['label' => 'Owner',        'value' => $property['owner']],
+        ['label' => 'Phone number', 'value' => $property['owner_phone']],
+        ['label' => 'Email',        'value' => $property['owner_email']],
+    ];
+}
+
+/** Papers held for this property, and whether each one has been checked. */
+function admin_property_documents(array $property): array
+{
+    $checked = $property['status'] !== 'checking';
+
+    return [
+        ['name' => 'Sale Deed.pdf',        'meta' => $checked ? 'Checked • 3.2 MB' : 'Not checked yet • 3.2 MB'],
+        ['name' => 'Tax Receipt.pdf',      'meta' => 'Year 2025-26 • 1.1 MB'],
+        ['name' => 'Encumbrance Cert.pdf', 'meta' => $checked ? 'No loan on the property • 1.8 MB' : 'Not checked yet • 1.8 MB'],
+        ['name' => 'Approved Plan.pdf',    'meta' => 'Sanctioned plan • 5.4 MB'],
+    ];
+}
+
+/**
+ * Buyers who might want this property.
+ *
+ * `fit` is a plain percentage, and every row carries a sentence saying why:
+ * a bare number invites staff to read it as a promise rather than a suggestion.
+ */
+function admin_property_matches(string $code): array
+{
+    $matches = [
+        'HS-P-0142' => [
+            [
+                'name' => 'Meera & Rajesh Singhal', 'reference' => 'HS-B-20260911-0042',
+                'budget' => '₹1.5 Cr — ₹2.0 Cr', 'fit' => 92, 'status' => 'new',
+                'why' => 'They want a 4 BHK villa in a gated enclave in Whitefield. This is the closest match on our books.',
+            ],
+            [
+                'name' => 'Sundaram Capital', 'reference' => 'HS-B-20260909-0037',
+                'budget' => '₹3.0 Cr — ₹4.0 Cr', 'fit' => 78, 'status' => 'progress',
+                'why' => 'The price and the size both fit. They asked for Indiranagar, so the area is a stretch.',
+            ],
+            [
+                'name' => 'Kavita Krishnan', 'reference' => 'HS-B-20260911-0041',
+                'budget' => '₹2.5 Cr — ₹3.5 Cr', 'fit' => 64, 'status' => 'contacted',
+                'why' => 'The budget works. They are looking in Chennai, so call only if they will consider moving city.',
+            ],
+            [
+                'name' => 'Tarun Chawla', 'reference' => 'HS-B-20260910-0039',
+                'budget' => '₹3.0 Cr — ₹3.5 Cr', 'fit' => 55, 'status' => 'completed',
+                'why' => 'They already bought a home through us in September. Listed here only for the record.',
+            ],
+        ],
+    ];
+
+    return $matches[$code] ?? [
+        [
+            'name' => 'Sundaram Capital', 'reference' => 'HS-B-20260909-0037',
+            'budget' => '₹3.0 Cr — ₹4.0 Cr', 'fit' => 71, 'status' => 'progress',
+            'why' => 'The budget and the size fit. Nobody has called them about this property yet.',
+        ],
+        [
+            'name' => 'Kavita Krishnan', 'reference' => 'HS-B-20260911-0041',
+            'budget' => '₹2.5 Cr — ₹3.5 Cr', 'fit' => 58, 'status' => 'contacted',
+            'why' => 'A partial fit — the right price, but not the area they asked for.',
+        ],
+    ];
+}
+
+/** How well a match fits, said in words as well as a number. */
+function admin_match_verdict(int $fit): string
+{
+    if ($fit >= 85) {
+        return 'Very good match';
+    }
+
+    if ($fit >= 70) {
+        return 'Good match';
+    }
+
+    return 'Partial match';
+}
+
+/** What has happened to this property, oldest first. */
+function admin_property_activity(array $property): array
+{
+    return [
+        ['text' => 'Owner signed the listing agreement', 'time' => $property['listed'] . ' · 10:20 AM'],
+        ['text' => 'Photographs added to the file',      'time' => $property['listed'] . ' · 04:10 PM'],
+        ['text' => 'Documents sent for legal checking',  'time' => '12 Sep 2026 · 11:05 AM'],
     ];
 }
