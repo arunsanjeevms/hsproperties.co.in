@@ -19,6 +19,7 @@
 require_once __DIR__ . '/../../includes/config.php';
 require_once __DIR__ . '/../../includes/admin-data.php';
 require_once __DIR__ . '/../../includes/form-helpers.php';
+require_once __DIR__ . '/../../includes/console-fields.php';
 
 /** Fields the form will not save without. */
 $required = [
@@ -151,64 +152,6 @@ $adminCrumbs = [
 ];
 
 include __DIR__ . '/../../includes/admin-header.php';
-
-/** One labelled text field, with its error if it has one. */
-function cfield(string $name, string $label, string $help, array $values, array $errors, string $type = 'text'): void
-{
-    $bad = isset($errors[$name]);
-    ?>
-    <div class="cfield <?= $bad ? 'cfield--bad' : '' ?>">
-      <label class="cfield__label" for="f-<?= e($name) ?>"><?= e($label) ?></label>
-      <p class="cfield__help" id="h-<?= e($name) ?>"><?= e($help) ?></p>
-      <?php if ($bad): ?>
-        <p class="cfield__error" id="e-<?= e($name) ?>">
-          <strong>Please check this:</strong> <?= e($errors[$name]) ?>
-        </p>
-      <?php endif; ?>
-      <input
-        class="cfield__input"
-        type="<?= e($type) ?>"
-        id="f-<?= e($name) ?>"
-        name="<?= e($name) ?>"
-        value="<?= e($values[$name]) ?>"
-        aria-describedby="h-<?= e($name) ?><?= $bad ? ' e-' . e($name) : '' ?>"
-        <?= $bad ? 'aria-invalid="true"' : '' ?>>
-    </div>
-    <?php
-}
-
-/** One labelled dropdown, with its error if it has one. */
-function cselect(string $name, string $label, string $help, array $options, array $values, array $errors, string $blank = 'Choose one'): void
-{
-    $bad = isset($errors[$name]);
-    ?>
-    <div class="cfield <?= $bad ? 'cfield--bad' : '' ?>">
-      <label class="cfield__label" for="f-<?= e($name) ?>"><?= e($label) ?></label>
-      <p class="cfield__help" id="h-<?= e($name) ?>"><?= e($help) ?></p>
-      <?php if ($bad): ?>
-        <p class="cfield__error" id="e-<?= e($name) ?>">
-          <strong>Please check this:</strong> <?= e($errors[$name]) ?>
-        </p>
-      <?php endif; ?>
-      <select
-        class="cfield__input"
-        id="f-<?= e($name) ?>"
-        name="<?= e($name) ?>"
-        aria-describedby="h-<?= e($name) ?><?= $bad ? ' e-' . e($name) : '' ?>"
-        <?= $bad ? 'aria-invalid="true"' : '' ?>>
-        <?php if ($blank !== ''): ?>
-          <option value=""><?= e($blank) ?></option>
-        <?php endif; ?>
-        <?php foreach ($options as $value => $text): ?>
-          <?php $value = is_int($value) ? $text : $value; ?>
-          <option value="<?= e((string) $value) ?>" <?= $values[$name] === $value ? 'selected' : '' ?>>
-            <?= e((string) $text) ?>
-          </option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-    <?php
-}
 ?>
 
 <!-- ================= Back bar ================= -->

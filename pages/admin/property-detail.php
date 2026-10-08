@@ -20,6 +20,12 @@ require_once __DIR__ . '/../../includes/admin-data.php';
 require_once __DIR__ . '/../../includes/form-helpers.php';
 
 $code     = isset($_GET['code']) ? (string) $_GET['code'] : null;
+
+// A status change posted from the rail comes back to this same file. Runs
+// before any output, and before the property is read, so the page below always
+// shows the status that was just saved.
+$notice = $code === null ? null : admin_handle_status_post(admin_property_url($code));
+
 $property = $code === null ? admin_default_property() : admin_property($code);
 
 $pageTitle   = 'HS Properties — Properties';
@@ -66,6 +72,13 @@ include __DIR__ . '/../../includes/admin-header.php';
       Back to all properties
     </a>
   </section>
+
+  <?php if ($notice !== null): ?>
+    <p class="notice notice--<?= $notice['ok'] ? 'ok' : 'bad' ?>" role="status">
+      <?= icon($notice['ok'] ? 'verified' : 'info', 'icon--sm') ?>
+      <?= e($notice['text']) ?>
+    </p>
+  <?php endif; ?>
 
   <?php if (isset($_GET['added'])): ?>
     <!-- Landed here straight from the Add form. Say plainly that it worked and
@@ -266,6 +279,23 @@ include __DIR__ . '/../../includes/admin-header.php';
           </p>
           <p class="standing__plain"><?= e($status['plain']) ?></p>
 
+          <?php
+            // The operator sets this by hand; it is the one thing on this page
+            // that changes anything, so it sits directly under the sentence it
+            // rewrites rather than at the bottom of the rail.
+            $returnUrl = admin_property_url($property['code']);
+            include __DIR__ . '/../../includes/property-status-form.php';
+
+            $changeMeta = admin_status_override_meta($property['code']);
+          ?>
+
+          <?php if ($changeMeta !== null): ?>
+            <p class="standing__changed">
+              Last changed by <?= e((string) ($changeMeta['by'] ?? 'the office')) ?>
+              on <?= e((string) ($changeMeta['changed'] ?? 'an earlier date')) ?>.
+            </p>
+          <?php endif; ?>
+
           <dl class="facts facts--single">
             <div class="facts__row">
               <dt class="facts__label">Asking price</dt>
@@ -302,7 +332,27 @@ include __DIR__ . '/../../includes/admin-header.php';
                 No buyer matches this property yet. Nothing needs doing today.
               <?php endif; ?>
             </p>
-            <a class="console-btn console-btn--gold console-btn--block" href="<?= e(route('admin.requests')) ?>">
+            <?php
+              // Arranging the viewing is the action the sentence above asks
+              // for, so it leads — pre-filled with the property and, when we
+              // have one, the buyer it is suggesting. Only offered when the
+              // property can actually be shown.
+              $canShow   = !in_array($property['status'], ['checking', 'sold'], true);
+              $bestMatch = $matches[0] ?? null;
+              $bookUrl   = route('admin.appointment.new')
+                . '?kind=viewing&property=' . rawurlencode($property['code'])
+                . ($bestMatch !== null ? '&with=' . rawurlencode($bestMatch['name'])
+                    . '&request=' . rawurlencode($bestMatch['reference']) : '');
+            ?>
+
+            <?php if ($canShow): ?>
+              <a class="console-btn console-btn--gold console-btn--block" href="<?= e($bookUrl) ?>">
+                <?= icon('contact-phone', 'icon--sm') ?>
+                Arrange a viewing
+              </a>
+            <?php endif; ?>
+
+            <a class="console-btn <?= $canShow ? 'console-btn--quiet' : 'console-btn--gold' ?> console-btn--block" href="<?= e(route('admin.requests')) ?>">
               Find a buyer for this
               <?= icon('arrow-right', 'icon--sm') ?>
             </a>

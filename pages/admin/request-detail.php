@@ -334,6 +334,19 @@ include __DIR__ . '/../../includes/admin-header.php';
               Mark as reviewed
               <?= icon('arrow-right', 'icon--sm') ?>
             </button>
+
+            <?php
+              // Meeting them is the step after reading the brief, so booking
+              // arrives with the client and their request already filled in.
+              $bookUrl = route('admin.appointment.new')
+                . '?kind=' . ($request['flow'] === 'seller' ? 'seller' : 'buyer')
+                . '&with=' . rawurlencode($request['customer'])
+                . '&request=' . rawurlencode($request['reference']);
+            ?>
+            <a class="console-btn console-btn--quiet console-btn--block" href="<?= e($bookUrl) ?>">
+              <?= icon('contact-phone', 'icon--sm') ?>
+              Book an appointment
+            </a>
           </div>
         </div>
       </section>

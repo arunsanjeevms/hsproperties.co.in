@@ -15,6 +15,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/admin-store.php';
+require_once __DIR__ . '/appointment-store.php';
 
 /* ==========================================================================
    SHELL — sidebar, console identity
@@ -33,8 +34,8 @@ function admin_nav(): array
         ['key' => 'buyers',       'label' => 'Buyers',       'icon' => 'user',         'route' => 'admin.requests', 'query' => 'tab=buyers', 'count' => 12],
         ['key' => 'sellers',      'label' => 'Sellers',      'icon' => 'villa',        'route' => 'admin.requests', 'query' => 'tab=sellers', 'count' => 8],
         ['key' => 'properties',   'label' => 'Properties',   'icon' => 'home',         'route' => 'admin.properties', 'count' => admin_property_counts()['all']],
-        ['key' => 'matches',      'label' => 'Matches',      'icon' => 'key',          'count' => 14],
-        ['key' => 'appointments', 'label' => 'Appointments', 'icon' => 'contact-phone','count' => 5],
+        ['key' => 'matches',      'label' => 'Matches',      'icon' => 'key',          'route' => 'admin.matches', 'count' => count(admin_matches())],
+        ['key' => 'appointments', 'label' => 'Appointments', 'icon' => 'contact-phone','route' => 'admin.appointments', 'count' => admin_appointment_counts()['upcoming']],
         ['key' => 'documents',    'label' => 'Documents',    'icon' => 'document',     'count' => 6],
         ['key' => 'activity',     'label' => 'Activity',     'icon' => 'rule'],
         ['key' => 'reports',      'label' => 'Reports',      'icon' => 'architecture'],
@@ -205,7 +206,7 @@ function admin_quick_actions(): array
         ['label' => 'New buyer brief',     'route' => 'buyer.step1'],
         ['label' => 'New seller mandate',  'route' => 'seller.step1'],
         ['label' => 'Add a property',      'route' => 'admin.property.new'],
-        ['label' => 'Schedule a meeting',  'route' => null],
+        ['label' => 'Schedule a meeting',  'route' => 'admin.appointment.new'],
     ];
 }
 
@@ -221,15 +222,28 @@ function admin_recent_requests(): array
     ];
 }
 
-/** "Today (5 sessions)" schedule. */
+/**
+ * Today's schedule, for the dashboard card.
+ *
+ * Reads the real diary now rather than a fixed list, so what the dashboard
+ * promises and what the Appointments page holds cannot drift apart. The shape
+ * it returns is unchanged, so the dashboard's markup did not have to move.
+ */
 function admin_schedule(): array
 {
-    return [
-        ['time' => '10:00', 'title' => 'Buyer Consultation',  'state' => 'Confirmed', 'note' => 'Whitefield requirement review • A. Kumar'],
-        ['time' => '12:30', 'title' => 'Property Viewing',    'state' => 'Confirmed', 'note' => 'ECR Residence on-site preview • S. Nair'],
-        ['time' => '15:00', 'title' => 'Seller Consultation', 'state' => 'Pending',   'note' => 'Independent Villa valuation • R. Menon'],
-        ['time' => '18:00', 'title' => 'Property Viewing',    'state' => 'Confirmed', 'note' => 'Alwarpet Penthouse bilateral • A. Kumar'],
-    ];
+    $sessions = [];
+
+    foreach (admin_appointments_today() as $appointment) {
+        $sessions[] = [
+            'time'  => admin_time_words($appointment['time']),
+            'title' => admin_appointment_kind($appointment['kind'])['label'],
+            'state' => admin_appointment_status($appointment['status'])['label'],
+            'note'  => $appointment['with'] . ' • ' . $appointment['place'],
+            'href'  => admin_appointment_url($appointment['ref']),
+        ];
+    }
+
+    return $sessions;
 }
 
 /** "Recent Activity" — the immutable audit log. */
@@ -534,6 +548,60 @@ function admin_property_status(string $key): array
         ?? ['label' => $key, 'tone' => 'hold', 'plain' => ''];
 }
 
+/**
+ * Apply a status change posted from the registry or a property file.
+ *
+ * Call it before any output. It answers with the message the page should show,
+ * or null when the request was not a status change. On success it redirects so
+ * that a reload cannot repeat the change (post/redirect/get) — the message is
+ * carried back in the query string.
+ */
+function admin_handle_status_post(string $returnUrl): ?array
+{
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET') {
+        $changed = isset($_GET['changed']) ? (string) $_GET['changed'] : '';
+
+        if ($changed === '') {
+            return null;
+        }
+
+        $property = admin_property($changed);
+
+        if ($property === null) {
+            return null;
+        }
+
+        return [
+            'ok'   => true,
+            'text' => $property['name'] . ' is now marked "'
+                . admin_property_status($property['status'])['label'] . '".',
+        ];
+    }
+
+    if (!isset($_POST['property_status'], $_POST['code'])) {
+        return null;
+    }
+
+    $code   = (string) $_POST['code'];
+    $status = (string) $_POST['property_status'];
+
+    // Submitted without choosing anything: nothing to say, nothing to do.
+    if ($status === '') {
+        return null;
+    }
+
+    if (!admin_set_property_status($code, $status, admin_operator()['name'])) {
+        return [
+            'ok'   => false,
+            'text' => 'That status could not be saved. Please try again, and tell the office if it keeps failing.',
+        ];
+    }
+
+    $separator = strpos($returnUrl, '?') === false ? '?' : '&';
+    header('Location: ' . $returnUrl . $separator . 'changed=' . rawurlencode($code), true, 303);
+    exit;
+}
+
 /** How many properties sit at each status. */
 function admin_property_counts(): array
 {
@@ -593,7 +661,21 @@ function admin_property_filters(): array
  */
 function admin_properties(): array
 {
-    return array_merge(admin_stored_properties(), admin_seed_properties());
+    $rows      = array_merge(admin_stored_properties(), admin_seed_properties());
+    $overrides = admin_status_overrides();
+
+    if (!$overrides) {
+        return $rows;
+    }
+
+    // A manual change by an operator outranks whatever the row was stored with.
+    foreach ($rows as $i => $row) {
+        if (isset($overrides[$row['code']])) {
+            $rows[$i]['status'] = $overrides[$row['code']];
+        }
+    }
+
+    return $rows;
 }
 
 /**
@@ -793,6 +875,74 @@ function admin_property_matches(string $code): array
     ];
 }
 
+/* ==========================================================================
+   MATCHES — who has been paired with what
+
+   A reading page, not a decision one. It answers "what is what": which buyer
+   has been put against which property, how close the two are, and whether
+   anyone has spoken to them yet. Acting on a match happens on the request or
+   the property itself, so nothing here changes anything.
+   ========================================================================== */
+
+/**
+ * Every buyer-to-property pairing on the books.
+ *
+ * Shaped like the join that will replace it: one row per (buyer request,
+ * property) pair, carrying the score, the sentence explaining it, and where
+ * the conversation has got to. `status` is the console's ordinary status
+ * vocabulary, so the pill means the same here as it does in the inbox.
+ */
+function admin_matches(): array
+{
+    return [
+        [
+            'id' => 'HS-M-0061', 'status' => 'new', 'fit' => 92,
+            'buyer' => 'Meera & Rajesh Singhal', 'reference' => 'HS-B-20260911-0042',
+            'budget' => '₹1.5 Cr — ₹2.0 Cr', 'wants' => '4 BHK villa, gated enclave, Whitefield',
+            'property' => 'Whitefield Executive Villa', 'code' => 'HS-P-0142',
+            'price' => '₹3.2 Cr', 'where' => 'Whitefield, Bengaluru',
+            'why' => 'The house type, the bedroom count and the area are all what they asked for. The price is above the budget they gave us, so they would have to stretch.',
+            'suggested' => '12 Sep 2026', 'note' => 'Nobody has called them about this property yet.',
+        ],
+        [
+            'id' => 'HS-M-0060', 'status' => 'contacted', 'fit' => 81,
+            'buyer' => 'Sundaram Capital', 'reference' => 'HS-B-20260909-0037',
+            'budget' => '₹3.0 Cr — ₹4.0 Cr', 'wants' => 'Penthouse or large apartment, Indiranagar',
+            'property' => 'Indiranagar Louvered Penthouse', 'code' => 'HS-P-0139',
+            'price' => '₹4.4 Cr', 'where' => 'Indiranagar, Bengaluru',
+            'why' => 'The right property in the right area, inside their budget. Another buyer has already offered ₹4.2 Cr and the owner has not answered.',
+            'suggested' => '12 Sep 2026', 'note' => 'Called on 12 September. They asked to see it this weekend.',
+        ],
+        [
+            'id' => 'HS-M-0059', 'status' => 'new', 'fit' => 67,
+            'buyer' => 'Kavita Krishnan', 'reference' => 'HS-B-20260911-0041',
+            'budget' => '₹2.5 Cr — ₹3.5 Cr', 'wants' => '3 BHK apartment, central Chennai',
+            'property' => 'Alwarpet Sandstone Pavilion', 'code' => 'HS-P-0137',
+            'price' => '₹2.6 Cr', 'where' => 'Alwarpet, Chennai',
+            'why' => 'The price, the size and the city all fit. The property is reserved for another buyer until 30 September, so this can only be a second position.',
+            'suggested' => '11 Sep 2026', 'note' => 'Nothing to do until the reservation runs out.',
+        ],
+        [
+            'id' => 'HS-M-0058', 'status' => 'progress', 'fit' => 88,
+            'buyer' => 'NR Principal Trust', 'reference' => 'HS-B-20260908-0034',
+            'budget' => '₹6.0 Cr — ₹7.5 Cr', 'wants' => '5 BHK villa with a garden, north Bengaluru',
+            'property' => 'Sadashivanagar Garden Villa', 'code' => 'HS-P-0134',
+            'price' => '₹6.5 Cr', 'where' => 'Sadashivanagar, Bengaluru',
+            'why' => 'Everything they asked for, inside their budget.',
+            'suggested' => '10 Sep 2026', 'note' => 'Viewing arranged with the owner for a weekday morning.',
+        ],
+        [
+            'id' => 'HS-M-0057', 'status' => 'completed', 'fit' => 74,
+            'buyer' => 'Tarun Chawla', 'reference' => 'HS-B-20260910-0039',
+            'budget' => '₹3.0 Cr — ₹3.5 Cr', 'wants' => 'Apartment, Chennai, ready to move in',
+            'property' => 'Boat Club Heritage Apartment', 'code' => 'HS-P-0128',
+            'price' => '₹4.9 Cr', 'where' => 'Boat Club, Chennai',
+            'why' => 'The area and the size were what they wanted, and they agreed a price above their stated budget.',
+            'suggested' => '28 Aug 2026', 'note' => 'Sale completed on 6 September 2026. Kept here for the record.',
+        ],
+    ];
+}
+
 /** How well a match fits, said in words as well as a number. */
 function admin_match_verdict(int $fit): string
 {
@@ -815,4 +965,474 @@ function admin_property_activity(array $property): array
         ['text' => 'Photographs added to the file',      'time' => $property['listed'] . ' · 04:10 PM'],
         ['text' => 'Documents sent for legal checking',  'time' => '12 Sep 2026 · 11:05 AM'],
     ];
+}
+
+/* ==========================================================================
+   APPOINTMENTS — meeting the person
+
+   Requests say what someone wants, properties say what we have, matches pair
+   the two. An appointment is the moment those become a meeting, so it is the
+   one record staff create for themselves rather than receive.
+
+   Three states, each a plain word: it is going to happen, it happened, it is
+   not happening. Anything finer would be a vocabulary to learn.
+   ========================================================================== */
+
+/** The three states an appointment can be in, in the order the tabs show them. */
+function admin_appointment_statuses(): array
+{
+    return [
+        'booked'    => [
+            'label' => 'Booked',
+            'tone'  => 'progress',
+            'plain' => 'This is going to happen. Ring the day before to remind them.',
+        ],
+        'done'      => [
+            'label' => 'Done',
+            'tone'  => 'complete',
+            'plain' => 'This has happened.',
+        ],
+        'cancelled' => [
+            'label' => 'Cancelled',
+            'tone'  => 'hold',
+            'plain' => 'This is not happening.',
+        ],
+    ];
+}
+
+function admin_appointment_status(string $key): array
+{
+    return admin_appointment_statuses()[$key]
+        ?? ['label' => $key, 'tone' => 'hold', 'plain' => ''];
+}
+
+/**
+ * What an appointment can be for.
+ *
+ * `needs_property` says whether the meeting is about one particular property,
+ * so the booking form can ask for it only when it makes sense.
+ */
+function admin_appointment_kinds(): array
+{
+    return [
+        'viewing'  => ['label' => 'Property viewing',    'needs_property' => true,
+                       'note' => 'Showing a property to a buyer.'],
+        'buyer'    => ['label' => 'Buyer consultation',  'needs_property' => false,
+                       'note' => 'Sitting down with a buyer to understand what they want.'],
+        'seller'   => ['label' => 'Seller consultation', 'needs_property' => false,
+                       'note' => 'Meeting an owner about selling their property.'],
+        'papers'   => ['label' => 'Signing papers',      'needs_property' => true,
+                       'note' => 'Signing or handing over documents.'],
+    ];
+}
+
+function admin_appointment_kind(string $key): array
+{
+    return admin_appointment_kinds()[$key]
+        ?? ['label' => $key, 'needs_property' => false, 'note' => ''];
+}
+
+/** Where a meeting can be held. */
+function admin_appointment_places(): array
+{
+    return [
+        'At the property',
+        'At our office',
+        'At the client\'s home or office',
+        'Over the phone',
+        'Video call',
+    ];
+}
+
+/** The half-hour slots the office works in. */
+function admin_appointment_times(): array
+{
+    $slots = [];
+
+    for ($hour = 9; $hour <= 19; $hour++) {
+        foreach (['00', '30'] as $minute) {
+            if ($hour === 19 && $minute === '30') {
+                continue;
+            }
+
+            $slot = str_pad((string) $hour, 2, '0', STR_PAD_LEFT) . ':' . $minute;
+            $slots[$slot] = admin_time_words($slot);
+        }
+    }
+
+    return $slots;
+}
+
+/** "14:30" said the way it would be said on the phone. */
+function admin_time_words(string $time): string
+{
+    $stamp = strtotime($time);
+
+    return $stamp === false ? $time : date('g:i A', $stamp);
+}
+
+/**
+ * When an appointment is, in the words an operator would use.
+ *
+ * "Today" and "Tomorrow" carry more meaning at a glance than a date does, and
+ * the date is still there for everything further off.
+ */
+function admin_when_words(string $date, string $time): string
+{
+    $stamp = strtotime($date);
+
+    if ($stamp === false) {
+        return $date . ' at ' . admin_time_words($time);
+    }
+
+    $day   = date('Y-m-d', $stamp);
+    $today = date('Y-m-d');
+
+    if ($day === $today) {
+        $said = 'Today';
+    } elseif ($day === date('Y-m-d', strtotime('+1 day'))) {
+        $said = 'Tomorrow';
+    } elseif ($day === date('Y-m-d', strtotime('-1 day'))) {
+        $said = 'Yesterday';
+    } else {
+        $said = date('D d M Y', $stamp);
+    }
+
+    return $said . ', ' . admin_time_words($time);
+}
+
+/**
+ * Every appointment: the seeded ones, overlaid by anything written through the
+ * console, soonest first.
+ *
+ * A stored row replaces the seed of the same reference outright, which is how
+ * marking a seeded appointment done works without a second overrides file.
+ */
+function admin_appointments(): array
+{
+    $rows = [];
+
+    foreach (admin_seed_appointments() as $row) {
+        $rows[$row['ref']] = $row;
+    }
+
+    foreach (admin_stored_appointments() as $ref => $row) {
+        $rows[$ref] = $row;
+    }
+
+    $rows = array_values($rows);
+
+    usort($rows, static function (array $a, array $b): int {
+        return [$a['date'], $a['time']] <=> [$b['date'], $b['time']];
+    });
+
+    return $rows;
+}
+
+/**
+ * The seeded diary.
+ *
+ * Dated relative to today so the Upcoming and Today views are never empty on a
+ * machine that has just checked the project out.
+ */
+function admin_seed_appointments(): array
+{
+    $today    = date('Y-m-d');
+    $tomorrow = date('Y-m-d', strtotime('+1 day'));
+    $soon     = date('Y-m-d', strtotime('+3 days'));
+    $past     = date('Y-m-d', strtotime('-2 days'));
+
+    return [
+        [
+            'ref' => 'HS-A-0021', 'kind' => 'buyer', 'status' => 'booked',
+            'date' => $today, 'time' => '10:00',
+            'with' => 'Meera & Rajesh Singhal', 'phone' => '+91 98450 22190',
+            'property' => null, 'request' => 'HS-B-20260911-0042',
+            'place' => 'At our office', 'desk' => 'Vikram K',
+            'note' => 'Going through what they want in Whitefield before showing them anything.',
+            'outcome' => '', 'booked' => '11 Sep 2026',
+        ],
+        [
+            'ref' => 'HS-A-0022', 'kind' => 'viewing', 'status' => 'booked',
+            'date' => $today, 'time' => '12:30',
+            'with' => 'Sundaram Capital', 'phone' => '+91 99002 71184',
+            'property' => 'HS-P-0141', 'request' => 'HS-B-20260909-0037',
+            'place' => 'At the property', 'desk' => 'Vikram K',
+            'note' => 'Meet them at the gate. The owner will not be there.',
+            'outcome' => '', 'booked' => '11 Sep 2026',
+        ],
+        [
+            'ref' => 'HS-A-0023', 'kind' => 'seller', 'status' => 'booked',
+            'date' => $today, 'time' => '15:00',
+            'with' => 'R. Menon', 'phone' => '+91 98403 11872',
+            'property' => null, 'request' => null,
+            'place' => 'At the client\'s home or office', 'desk' => 'Priya S',
+            'note' => 'Valuation of an independent villa. Take the recent sale figures.',
+            'outcome' => '', 'booked' => '12 Sep 2026',
+        ],
+        [
+            'ref' => 'HS-A-0024', 'kind' => 'viewing', 'status' => 'booked',
+            'date' => $tomorrow, 'time' => '11:00',
+            'with' => 'Kavita Krishnan', 'phone' => '+91 98403 66127',
+            'property' => 'HS-P-0137', 'request' => 'HS-B-20260911-0041',
+            'place' => 'At the property', 'desk' => 'Priya S',
+            'note' => 'Second position only — the property is reserved until 30 September.',
+            'outcome' => '', 'booked' => '12 Sep 2026',
+        ],
+        [
+            'ref' => 'HS-A-0025', 'kind' => 'papers', 'status' => 'booked',
+            'date' => $soon, 'time' => '16:30',
+            'with' => 'NR Principal Trust', 'phone' => '+91 98866 40912',
+            'property' => 'HS-P-0134', 'request' => 'HS-B-20260908-0034',
+            'place' => 'At our office', 'desk' => 'Vikram K',
+            'note' => 'Bring the listing agreement and both copies of the khata.',
+            'outcome' => '', 'booked' => '12 Sep 2026',
+        ],
+        [
+            'ref' => 'HS-A-0019', 'kind' => 'viewing', 'status' => 'done',
+            'date' => $past, 'time' => '10:30',
+            'with' => 'Tarun Chawla', 'phone' => '+91 98410 30045',
+            'property' => 'HS-P-0128', 'request' => 'HS-B-20260910-0039',
+            'place' => 'At the property', 'desk' => 'Vikram K',
+            'note' => 'Final walk-through before completion.',
+            'outcome' => 'Happy with the property. The sale was completed the same week.',
+            'booked' => '04 Sep 2026',
+        ],
+        [
+            'ref' => 'HS-A-0020', 'kind' => 'viewing', 'status' => 'cancelled',
+            'date' => $past, 'time' => '17:00',
+            'with' => 'Sundaram Capital', 'phone' => '+91 99002 71184',
+            'property' => 'HS-P-0139', 'request' => 'HS-B-20260909-0037',
+            'place' => 'At the property', 'desk' => 'Priya S',
+            'note' => 'First look at the penthouse.',
+            'outcome' => 'The owner was travelling. Rebooked for this week.',
+            'booked' => '05 Sep 2026',
+        ],
+    ];
+}
+
+/** One appointment by its reference, or null when there is no such thing. */
+function admin_appointment(?string $ref): ?array
+{
+    if ($ref === null || $ref === '') {
+        return null;
+    }
+
+    foreach (admin_appointments() as $appointment) {
+        if ($appointment['ref'] === $ref) {
+            return $appointment;
+        }
+    }
+
+    return null;
+}
+
+/** The soonest appointment still to come, for pages opened without a reference. */
+function admin_default_appointment(): ?array
+{
+    $upcoming = admin_tab_appointments('upcoming');
+
+    return $upcoming ? $upcoming[0] : (admin_appointments()[0] ?? null);
+}
+
+function admin_appointment_url(string $ref): string
+{
+    return route('admin.appointment') . '?ref=' . rawurlencode($ref);
+}
+
+/** Today's appointments that are still going to happen, soonest first. */
+function admin_appointments_today(): array
+{
+    $today = date('Y-m-d');
+
+    return array_values(array_filter(
+        admin_appointments(),
+        static fn (array $a): bool => $a['date'] === $today && $a['status'] === 'booked'
+    ));
+}
+
+/**
+ * The rows for one tab.
+ *
+ * "Upcoming" means still to come and not cancelled — which is the only
+ * question an operator actually asks the list.
+ */
+function admin_tab_appointments(string $tab): array
+{
+    $today = date('Y-m-d');
+    $rows  = admin_appointments();
+
+    $keep = static function (array $a) use ($tab, $today): bool {
+        switch ($tab) {
+            case 'upcoming':
+                return $a['status'] === 'booked' && $a['date'] >= $today;
+            case 'today':
+                return $a['date'] === $today;
+            case 'done':
+                return $a['status'] === 'done';
+            case 'cancelled':
+                return $a['status'] === 'cancelled';
+            default:
+                return true;
+        }
+    };
+
+    return array_values(array_filter($rows, $keep));
+}
+
+/** How many appointments each tab holds. */
+function admin_appointment_counts(): array
+{
+    return [
+        'upcoming'  => count(admin_tab_appointments('upcoming')),
+        'today'     => count(admin_tab_appointments('today')),
+        'done'      => count(admin_tab_appointments('done')),
+        'cancelled' => count(admin_tab_appointments('cancelled')),
+        'all'       => count(admin_appointments()),
+    ];
+}
+
+/** The tab strip on the appointments page. */
+function admin_appointment_tabs(): array
+{
+    $counts = admin_appointment_counts();
+
+    return [
+        ['key' => 'upcoming',  'label' => 'Still to come', 'count' => $counts['upcoming']],
+        ['key' => 'today',     'label' => 'Today',         'count' => $counts['today']],
+        ['key' => 'done',      'label' => 'Done',          'count' => $counts['done']],
+        ['key' => 'cancelled', 'label' => 'Cancelled',     'count' => $counts['cancelled']],
+        ['key' => 'all',       'label' => 'All',           'count' => $counts['all']],
+    ];
+}
+
+/** The four counts above the list. */
+function admin_appointment_stats(): array
+{
+    $counts = admin_appointment_counts();
+
+    return [
+        ['label' => 'Today',        'value' => (string) count(admin_appointments_today()),
+         'note' => 'Still to happen today', 'tone' => 'gold'],
+        ['label' => 'Still to come', 'value' => (string) $counts['upcoming'],
+         'note' => 'Booked and ahead of us',  'tone' => 'progress'],
+        ['label' => 'Done',          'value' => (string) $counts['done'],
+         'note' => 'Already happened',        'tone' => 'complete'],
+        ['label' => 'Cancelled',     'value' => (string) $counts['cancelled'],
+         'note' => 'Did not happen',          'tone' => 'hold'],
+    ];
+}
+
+/**
+ * Is somebody already booked at that moment?
+ *
+ * Double-booking a desk is the mistake this console can actually prevent, so
+ * the booking form asks before it saves. Returns the clashing appointment, or
+ * null when the slot is free.
+ */
+function admin_appointment_clash(string $date, string $time, string $desk, ?string $ignoreRef = null): ?array
+{
+    foreach (admin_appointments() as $appointment) {
+        if ($appointment['status'] !== 'booked') {
+            continue;
+        }
+
+        if ($ignoreRef !== null && $appointment['ref'] === $ignoreRef) {
+            continue;
+        }
+
+        if ($appointment['date'] === $date
+            && $appointment['time'] === $time
+            && $appointment['desk'] === $desk) {
+            return $appointment;
+        }
+    }
+
+    return null;
+}
+
+/** What has happened to this appointment, oldest first. */
+function admin_appointment_activity(array $appointment): array
+{
+    $trail = [
+        ['text' => 'Appointment booked', 'time' => $appointment['booked']],
+    ];
+
+    if ($appointment['status'] === 'done') {
+        $trail[] = ['text' => 'Marked as done', 'time' => admin_when_words($appointment['date'], $appointment['time'])];
+    }
+
+    if ($appointment['status'] === 'cancelled') {
+        $trail[] = ['text' => 'Cancelled', 'time' => $appointment['booked']];
+    }
+
+    return $trail;
+}
+
+/**
+ * Apply a "mark as done" or "cancel" posted from an appointment's own page.
+ *
+ * Call it before any output. Answers with the message the page should show, or
+ * null when the request was not one of those. On success it redirects so a
+ * reload cannot repeat the change (post/redirect/get), carrying the message
+ * back in the query string — the same shape as admin_handle_status_post().
+ */
+function admin_handle_appointment_post(string $returnUrl): ?array
+{
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET') {
+        $done = isset($_GET['done']) ? (string) $_GET['done'] : '';
+
+        if ($done === '') {
+            return null;
+        }
+
+        $appointment = admin_appointment($done);
+
+        if ($appointment === null) {
+            return null;
+        }
+
+        return [
+            'ok'   => true,
+            'text' => $appointment['status'] === 'cancelled'
+                ? 'This appointment has been cancelled. Nobody will be expected.'
+                : 'This appointment is marked as done.',
+        ];
+    }
+
+    if (!isset($_POST['appointment_action'], $_POST['ref'])) {
+        return null;
+    }
+
+    $action      = (string) $_POST['appointment_action'];
+    $ref         = (string) $_POST['ref'];
+    $appointment = admin_appointment($ref);
+
+    if ($appointment === null || !in_array($action, ['done', 'cancelled'], true)) {
+        return [
+            'ok'   => false,
+            'text' => 'That appointment could not be changed. Go back to the list and open it again.',
+        ];
+    }
+
+    $appointment['status']  = $action;
+    $appointment['outcome'] = trim((string) ($_POST['outcome'] ?? ''));
+
+    if ($appointment['outcome'] === '') {
+        $appointment['outcome'] = $action === 'done'
+            ? 'No note was written about what came of this.'
+            : 'No reason was given.';
+    }
+
+    if (!admin_save_appointment($appointment)) {
+        return [
+            'ok'   => false,
+            'text' => 'That could not be saved. The console could not write to its data folder. '
+                . 'Tell whoever looks after this system, then try again.',
+        ];
+    }
+
+    $separator = strpos($returnUrl, '?') === false ? '?' : '&';
+    header('Location: ' . $returnUrl . $separator . 'done=' . rawurlencode($ref), true, 303);
+    exit;
 }

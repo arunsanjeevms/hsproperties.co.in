@@ -158,4 +158,35 @@
       });
     }
   );
+
+  /* ------------------------------------------------------------------------
+     Manual status change.
+
+     The form works on its own; this only spares the operator a button that
+     does nothing. Save stays out of the way until the choice differs from what
+     is stored, and a row's click-to-open is suppressed while the select is in
+     use so changing a status never navigates away mid-choice.
+     ---------------------------------------------------------------------- */
+  Array.prototype.forEach.call(
+    document.querySelectorAll('[data-status-select]'),
+    function (select) {
+      var form = select.closest('.status-change');
+
+      if (!form) {
+        return;
+      }
+
+      // The placeholder is the empty value, so "something was chosen" and
+      // "there is a change to save" are the same question.
+      select.addEventListener('change', function () {
+        form.classList.toggle('is-dirty', select.value !== '');
+      });
+
+      // Inside a clickable row, the select must not open the property.
+      select.addEventListener('click', function (event) {
+        event.stopPropagation();
+      });
+    }
+  );
+
 })();

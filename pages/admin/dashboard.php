@@ -244,42 +244,55 @@ include __DIR__ . '/../../includes/admin-header.php';
       </div>
     </section>
 
-    <!-- Today's schedule -->
+    <!-- Today's schedule — the real diary, not a fixed list -->
+    <?php $schedule = admin_schedule(); ?>
     <section class="card" aria-labelledby="agenda-title">
       <div class="card__head">
         <div>
           <h2 class="card__title" id="agenda-title">Today&rsquo;s schedule</h2>
-          <p class="card__note">5 sessions booked.</p>
+          <p class="card__note">
+            <?php if (!$schedule): ?>
+              Nothing booked for today.
+            <?php else: ?>
+              <?= e((string) count($schedule)) ?>
+              <?= count($schedule) === 1 ? 'appointment' : 'appointments' ?> booked.
+            <?php endif; ?>
+          </p>
         </div>
-        <a class="console-link" href="#">
-          Open the calendar
+        <a class="console-link" href="<?= e(route('admin.appointments')) ?>">
+          Open the diary
           <?= icon('arrow-right', 'icon--sm') ?>
         </a>
       </div>
 
       <div class="card__body">
-        <ul class="agenda">
-          <?php foreach (admin_schedule() as $session): ?>
-            <li class="agenda__item">
-              <span class="agenda__time"><?= e($session['time']) ?></span>
-              <span>
-                <span class="agenda__title">
-                  <?= e($session['title']) ?>
-                  <span class="status status--<?= $session['state'] === 'Confirmed' ? 'complete' : 'review' ?>">
-                    <?= e($session['state']) ?>
+        <?php if (!$schedule): ?>
+          <p class="card__note">
+            Nothing is in the diary for today.
+            <a href="<?= e(route('admin.appointment.new')) ?>">Book an appointment</a>.
+          </p>
+        <?php else: ?>
+          <ul class="agenda">
+            <?php foreach ($schedule as $session): ?>
+              <li class="agenda__item">
+                <span class="agenda__time"><?= e($session['time']) ?></span>
+                <span>
+                  <span class="agenda__title">
+                    <a href="<?= e($session['href']) ?>"><?= e($session['title']) ?></a>
+                    <span class="status status--complete"><?= e($session['state']) ?></span>
                   </span>
+                  <span class="agenda__note"><?= e($session['note']) ?></span>
                 </span>
-                <span class="agenda__note"><?= e($session['note']) ?></span>
-              </span>
-            </li>
-          <?php endforeach; ?>
-        </ul>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+        <?php endif; ?>
       </div>
 
       <div class="card__foot">
-        <span class="console-btn console-btn--quiet" aria-disabled="true">
-          Schedule a session
-        </span>
+        <a class="console-btn console-btn--quiet" href="<?= e(route('admin.appointment.new')) ?>">
+          Book an appointment
+        </a>
       </div>
     </section>
 

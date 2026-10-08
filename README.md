@@ -19,7 +19,18 @@ data). No framework, no build step, no dependencies.
 | `/pages/seller-intake-step-1.php` | Private Seller Intake, Step 01: Property |
 | `/pages/seller-intake-step-2.php` | Private Seller Intake, Step 02: Details & Documents |
 | `/pages/seller-intake-step-3.php` | Private Seller Intake, Step 03: Review & Submit |
+| `/pages/buyer-intake-step-1.php` … `-3.php` | Private Buyer Intake, three steps |
 | `/pages/intake-submitted.php?flow=seller` | Submission confirmation |
+| `/pages/admin/dashboard.php` | Admin — Operations Center |
+| `/pages/admin/requests.php` | Admin — Customer request inbox |
+| `/pages/admin/request-detail.php` | Admin — One request |
+| `/pages/admin/properties.php` | Admin — Property registry (status changed in place) |
+| `/pages/admin/property-detail.php` | Admin — One property |
+| `/pages/admin/property-new.php` | Admin — Add a property |
+| `/pages/admin/matches.php` | Admin — Who has been paired with what (reading only) |
+| `/pages/admin/appointments.php` | Admin — The diary |
+| `/pages/admin/appointment-new.php` | Admin — Book an appointment |
+| `/pages/admin/appointment-detail.php` | Admin — One appointment |
 
 ## Structure
 
@@ -74,8 +85,23 @@ Then open <http://127.0.0.1:8088/index.php>.
 
 ## Status
 
-Home page and the three seller intake steps are complete and responsive
-(desktop, laptop, tablet, mobile), with `prefers-reduced-motion` honoured.
+The marketing home page, both intake flows and the admin console listed above
+are complete and responsive (desktop, laptop, tablet, mobile), with
+`prefers-reduced-motion` honoured.
 
-Not yet built: buyer intake, admin requests inbox, request detail, dashboard,
-and the MySQL layer.
+Three things are written to disk rather than held in a PHP array, as a
+stand-in until MySQL lands — see `includes/admin-store.php` and
+`includes/appointment-store.php`:
+
+| File | Holds |
+| --- | --- |
+| `data/properties.json` | properties added through the console |
+| `data/property-status.json` | manual status changes, keyed by property code |
+| `data/appointments.json` | appointments, keyed by reference |
+
+Each is written under an exclusive lock, and a damaged or missing file degrades
+to the seeded content rather than taking the console down.
+
+Not yet built: the MySQL layer, and authentication. Until there is a login,
+the console's forms carry no CSRF token and anyone who can reach the URL can
+post to them.
