@@ -10,49 +10,49 @@
 
 :root {
   /* ----------------------------------------------------------------------
-     COLOUR — Surfaces (warm architectural stone / ivory)
+     COLOUR — Surfaces (warm architectural stone / cream linen)
      ---------------------------------------------------------------------- */
   --c-surface-lowest: #ffffff;
-  --c-surface: #faf9f6;
-  --c-background: #fbf9f5; /* page ground — a touch warmer than surface */
-  --c-surface-low: #f4f3f1;
-  --c-surface-container: #efeeeb;
-  --c-surface-high: #e9e8e5;
-  --c-surface-highest: #e3e2e0;
-  --c-surface-dim: #dbdad7;
+  --c-surface: #faf6f1;
+  --c-background: #fbf8f4; /* page ground — warm linen ground */
+  --c-surface-low: #f3ebe2;
+  --c-surface-container: #ece2d6;
+  --c-surface-high: #e5d7ca;
+  --c-surface-highest: #ddcdbd;
+  --c-surface-dim: #d1c0ae;
 
   /* Ink */
-  --c-on-surface: #1a1c1a;
-  --c-on-surface-variant: #45464d;
+  --c-on-surface: #221813;
+  --c-on-surface-variant: #58473c;
   --c-on-primary: #ffffff;
 
   /* ----------------------------------------------------------------------
-     COLOUR — Deep architectural navy (the "dark band" sections)
+     COLOUR — Deep architectural espresso (the "dark band" sections)
      ---------------------------------------------------------------------- */
-  --c-primary: #000000;
-  --c-primary-container: #131b2e; /* hero + dark section ground */
-  --c-primary-variant: #3f465c;
-  --c-primary-fixed: #dae2fd;
-  --c-primary-fixed-dim: #bec6e0;
-  --c-on-primary-container: #7c839b;
+  --c-primary: #140b06;
+  --c-primary-container: #22150d; /* hero + dark section ground (espresso brown) */
+  --c-primary-variant: #543725;
+  --c-primary-fixed: #ebdacf;
+  --c-primary-fixed-dim: #d3beaf;
+  --c-on-primary-container: #bca08d;
 
   /* ----------------------------------------------------------------------
-     COLOUR — Bronze / champagne accent
+     COLOUR — Cognac brown & champagne bronze accent
      ---------------------------------------------------------------------- */
-  --c-secondary: #7a5826; /* bronze — accent on light grounds */
-  --c-secondary-container: #fecf93; /* champagne — accent on dark grounds */
-  --c-secondary-dim: #ecbf84;
-  --c-secondary-light: #ffdcb0;
-  --c-secondary-deep: #5f4111;
-  --c-tertiary-accent: #a57c47;
+  --c-secondary: #8d5629; /* rich warm cognac brown — accent on light grounds */
+  --c-secondary-container: #f5cb9d; /* champagne amber — accent on dark grounds */
+  --c-secondary-dim: #e6b380;
+  --c-secondary-light: #fde2c5;
+  --c-secondary-deep: #593213;
+  --c-tertiary-accent: #a86934;
 
   /* ----------------------------------------------------------------------
      COLOUR — Lines, outlines, status
      ---------------------------------------------------------------------- */
-  --c-outline: #76777d;
-  --c-outline-variant: #c6c6cd;
-  --c-hairline: #e3ded6; /* the signature warm hairline rule */
-  --c-hairline-dark: rgba(255, 255, 255, 0.1);
+  --c-outline: #7d6e62;
+  --c-outline-variant: #c8b9ab;
+  --c-hairline: #e2d6c8; /* the signature warm hairline rule */
+  --c-hairline-dark: rgba(245, 203, 157, 0.14);
 
   --c-error: #ba1a1a;
   --c-error-container: #ffdad6;
@@ -60,11 +60,11 @@
   --c-success: #3f6b4f;
 
   /* Translucent accents used across dark sections */
-  --c-champagne-a12: rgba(254, 207, 147, 0.12);
-  --c-champagne-a20: rgba(254, 207, 147, 0.2);
-  --c-champagne-a30: rgba(254, 207, 147, 0.3);
-  --c-champagne-a35: rgba(254, 207, 147, 0.35);
-  --c-bronze-a50: rgba(122, 88, 38, 0.5);
+  --c-champagne-a12: rgba(245, 203, 157, 0.14);
+  --c-champagne-a20: rgba(245, 203, 157, 0.22);
+  --c-champagne-a30: rgba(245, 203, 157, 0.32);
+  --c-champagne-a35: rgba(245, 203, 157, 0.38);
+  --c-bronze-a50: rgba(141, 86, 41, 0.5);
 
   /* ----------------------------------------------------------------------
      COLOUR — Intake surfaces
@@ -72,21 +72,21 @@
      with a brighter champagne accent. Shared by every intake and console
      screen (seller, buyer, admin), so it lives with the global tokens.
      ---------------------------------------------------------------------- */
-  --c-sand-50: #faf9f6;
-  --c-sand-100: #f4f3f0;
-  --c-sand-200: #e8e6e1; /* card + divider hairline */
-  --c-sand-300: #d9d6ce; /* control borders */
-  --c-sand-400: #b8b4a7; /* placeholder / disabled ink */
-  --c-sand-700: #524e44; /* secondary body ink */
-  --c-sand-900: #1c1b18; /* primary ink */
+  --c-sand-50: #faf6f1;
+  --c-sand-100: #f5ece3;
+  --c-sand-200: #e7dbcc; /* card + divider hairline */
+  --c-sand-300: #d7c6b4; /* control borders */
+  --c-sand-400: #b39e8a; /* placeholder / disabled ink */
+  --c-sand-700: #594637; /* secondary body ink */
+  --c-sand-900: #221813; /* primary ink */
 
-  --c-champagne-300: #ecd9ba;
-  --c-champagne-400: #dfc293;
-  --c-champagne-500: #c59d5f; /* the intake accent */
-  --c-champagne-600: #aa8144;
+  --c-champagne-300: #ebd0af;
+  --c-champagne-400: #dfb382;
+  --c-champagne-500: #c58f50; /* the intake accent */
+  --c-champagne-600: #a36f34;
 
-  --c-noir: #0e131f; /* intake dark panels */
-  --c-ink: #0f172a;  /* selected-state border + focus ring */
+  --c-noir: #180e08; /* intake dark panels */
+  --c-ink: #26150c;  /* selected-state border + focus ring */
 
   /* ----------------------------------------------------------------------
      GRADIENTS
@@ -99,15 +99,17 @@
   );
   --g-hero-horizontal: linear-gradient(
     to right,
-    rgba(19, 27, 46, 0.95) 0%,
-    rgba(19, 27, 46, 0.8) 55%,
-    rgba(19, 27, 46, 0.45) 100%
+    rgba(28, 17, 10, 0.78) 0%,
+    rgba(28, 17, 10, 0.52) 38%,
+    rgba(28, 17, 10, 0.15) 62%,
+    transparent 82%
   );
   --g-hero-vertical: linear-gradient(
     to top,
-    rgba(19, 27, 46, 1) 0%,
-    rgba(19, 27, 46, 0) 50%,
-    rgba(19, 27, 46, 0.6) 100%
+    rgba(28, 17, 10, 0.85) 0%,
+    rgba(28, 17, 10, 0.2) 20%,
+    transparent 45%,
+    rgba(28, 17, 10, 0.25) 100%
   );
 
   /* ----------------------------------------------------------------------
@@ -201,7 +203,7 @@
   --shadow-dark-lift: 0 20px 40px -15px rgba(0, 0, 0, 0.45),
     0 0 24px -2px var(--c-champagne-a12);
   --glow-champagne: 0 0 15px var(--c-champagne-a35);
-  --glow-navy: 0 0 20px rgba(19, 27, 46, 0.3);
+  --glow-navy: 0 0 20px rgba(32, 22, 18, 0.4);
 
   /* ----------------------------------------------------------------------
      MOTION — slow enough to feel premium, fast enough to stay usable

@@ -94,3 +94,9 @@ function nav_items(): array
         ['key' => 'contact',    'label' => 'Contact',    'href' => '#contact'],
     ];
 }
+
+// Bootstrap backend database, session, and models
+if (!defined('HS_BOOTSTRAPPED')) {
+    define('HS_BOOTSTRAPPED', true);
+    require_once APP_ROOT . '/backend/bootstrap.php';
+}

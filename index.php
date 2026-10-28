@@ -20,13 +20,31 @@ include __DIR__ . '/includes/header.php';
 
 <main class="site-main" id="main">
 
+  <?php if ($successMsg = Session::flash('success')): ?>
+    <div class="container" style="padding-top: var(--s-md); position: relative; z-index: 50;">
+      <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); color: #86efac; padding: 14px 20px; border-radius: var(--r-md); margin-top: 10px; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(8px);">
+        <?= icon('verified', 'icon--sm') ?>
+        <span><?= e($successMsg) ?></span>
+      </div>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($errorMsg = Session::flash('error')): ?>
+    <div class="container" style="padding-top: var(--s-md); position: relative; z-index: 50;">
+      <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 14px 20px; border-radius: var(--r-md); margin-top: 10px; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(8px);">
+        <?= icon('info', 'icon--sm') ?>
+        <span><?= e($errorMsg) ?></span>
+      </div>
+    </div>
+  <?php endif; ?>
+
   <!-- ====================================================================
        1. HERO — cinematic architectural plate
        ==================================================================== -->
   <section class="hero" aria-labelledby="hero-title">
     <img
       class="hero__plate ken-burns"
-      src="<?= e(url('assets/images/hero-villa.jpg')) ?>"
+      src="<?= e(url('assets/images/hero-villa.jpg')) ?>?v=<?= @filemtime(__DIR__ . '/assets/images/hero-villa.jpg') ?: '2' ?>"
       alt="A modern Indian luxury villa with warm sandstone cantilevered volumes, floor-to-ceiling glass and a still reflecting pool, photographed at dusk beneath coastal palms."
       fetchpriority="high"
       decoding="async">
@@ -253,10 +271,10 @@ include __DIR__ . '/includes/header.php';
           </p>
 
           <div class="buyer__cta">
-            <a class="btn btn--primary btn--lg shimmer" href="#">
-              Find Your Property
+            <button type="button" class="btn btn--primary btn--lg shimmer btn-open-buyer-modal">
+              Register Acquisition Mandate
               <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -455,7 +473,7 @@ include __DIR__ . '/includes/header.php';
 
           <div class="closing__cards">
 
-            <a class="choice" href="#buyer">
+            <a class="choice btn-open-buyer-modal" href="#buyer">
               <?= icon('home', 'choice__icon icon--lg') ?>
               <span class="choice__eyebrow">For Buyers</span>
               <span class="choice__title">Find Your Property</span>
@@ -463,7 +481,7 @@ include __DIR__ . '/includes/header.php';
                 Share your requirements and let us curate the right opportunities.
               </span>
               <span class="choice__action">
-                Get Started
+                Register Mandate
                 <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
               </span>
             </a>
@@ -481,6 +499,50 @@ include __DIR__ . '/includes/header.php';
               </span>
             </a>
 
+          </div>
+
+          <!-- Direct Advisory Contact Form -->
+          <div class="closing__form reveal" style="margin-top: var(--s-xl); padding: var(--s-lg); border: 1px solid var(--c-champagne-a30); border-radius: var(--r-md); background: rgba(28, 17, 10, 0.7); backdrop-filter: blur(12px);">
+            <div style="margin-bottom: var(--s-md);">
+              <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--c-champagne-300); margin-top: 0; margin-bottom: 4px;">Direct Consultation Inquiry</h3>
+              <p style="font-size: 0.82rem; color: var(--c-surface-highest); margin: 0;">Leave a confidential brief for our managing advisors.</p>
+            </div>
+
+            <div class="form-feedback" id="contact-feedback"></div>
+
+            <form id="form-contact-desk" method="post" action="<?= e(url('api/contact.php')) ?>">
+              <?= Session::csrfField() ?>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="cf-name">Name *</label>
+                  <input type="text" id="cf-name" name="full_name" class="form-control" placeholder="Vikramaditya Rao" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cf-email">Email *</label>
+                  <input type="email" id="cf-email" name="email" class="form-control" placeholder="rao@advisory.com" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="cf-phone">Telephone</label>
+                  <input type="tel" id="cf-phone" name="phone" class="form-control" placeholder="+91 98450 12345">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cf-subject">Subject</label>
+                  <input type="text" id="cf-subject" name="subject" class="form-control" placeholder="Confidential Estate Consultation">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cf-msg">Message / Advisory Requirement *</label>
+                <textarea id="cf-msg" name="message" class="form-control" rows="3" placeholder="Share your specific acquisition or advisory criteria..." required></textarea>
+              </div>
+              <div style="display: flex; justify-content: flex-end; margin-top: var(--s-sm);">
+                <button type="submit" class="btn btn--light btn--md shimmer" id="btn-submit-contact">
+                  Transmit Consultation Request
+                  <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -535,6 +597,227 @@ include __DIR__ . '/includes/header.php';
       </div>
     </div>
   </section>
+
+  <!-- ====================================================================
+       BUYER MANDATE MODAL (PROGRESSIVE ENHANCEMENT)
+       ==================================================================== -->
+  <div class="modal-overlay" id="modal-buyer-mandate" role="dialog" aria-modal="true" aria-labelledby="modal-buyer-title">
+    <div class="modal-panel">
+      <button type="button" class="modal-close" id="btn-close-buyer-modal" aria-label="Close modal">&times;</button>
+      <p class="t-eyebrow" style="color: var(--c-secondary); margin-bottom: 4px;">Private Acquisition Desk</p>
+      <h2 id="modal-buyer-title" style="font-family: var(--font-display); font-size: 1.6rem; color: #faf6f1; margin-top: 0; margin-bottom: 12px;">Discreet Buyer Mandate</h2>
+      <p style="font-size: 0.85rem; color: var(--c-surface-highest); margin-bottom: var(--s-lg); line-height: 1.5;">
+        Register your acquisition parameters. Our senior partners search off-market inventory and curate matching estates under strict non-disclosure.
+      </p>
+
+      <div class="form-feedback" id="buyer-feedback"></div>
+
+      <form id="form-buyer-mandate" method="post" action="<?= e(url('api/buyer-request.php')) ?>">
+        <?= Session::csrfField() ?>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="bm-name">Full Name *</label>
+            <input type="text" id="bm-name" name="full_name" class="form-control" placeholder="Rohan Singhania" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bm-email">Direct Email *</label>
+            <input type="email" id="bm-email" name="email" class="form-control" placeholder="singhania@domain.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="bm-phone">Phone / WhatsApp</label>
+            <input type="tel" id="bm-phone" name="phone" class="form-control" placeholder="+91 98765 43210">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bm-type">Preferred Archetype</label>
+            <select id="bm-type" name="property_type" class="form-control">
+              <option value="Villa">Villa / Gated Luxury Enclave</option>
+              <option value="Penthouse">Sky Penthouse / High-rise</option>
+              <option value="Duplex">Urban Duplex</option>
+              <option value="Estate">Estate / Country Acreage</option>
+              <option value="Commercial">Commercial Landmark Parcel</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="bm-city">Target City / Region</label>
+            <input type="text" id="bm-city" name="city" class="form-control" placeholder="Bengaluru / Mumbai / Goa">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bm-locality">Preferred Micro-market</label>
+            <input type="text" id="bm-locality" name="locality" class="form-control" placeholder="Indiranagar, Whitefield, North Goa">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="bm-budget">Indicative Budget Bracket</label>
+            <select id="bm-budget" name="budget_max" class="form-control">
+              <option value="₹ 5 Cr – ₹ 10 Cr">₹ 5 Cr – ₹ 10 Cr</option>
+              <option value="₹ 10 Cr – ₹ 25 Cr" selected>₹ 10 Cr – ₹ 25 Cr</option>
+              <option value="₹ 25 Cr – ₹ 50 Cr">₹ 25 Cr – ₹ 50 Cr</option>
+              <option value="₹ 50 Cr+">₹ 50 Cr+ (Landmark Allocation)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bm-bedrooms">Configuration</label>
+            <select id="bm-bedrooms" name="bedrooms" class="form-control">
+              <option value="3 BHK">3 BHK</option>
+              <option value="4 BHK" selected>4 BHK</option>
+              <option value="5+ BHK">5+ BHK / Sprawling Grounds</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="bm-req">Bespoke Requirements / Architectural Preferences</label>
+          <textarea id="bm-req" name="special_requirements" class="form-control" rows="2" placeholder="Private lap pool, cantilevered living spaces, high-security enclave..."></textarea>
+        </div>
+
+        <div style="margin-top: var(--s-md); display: flex; align-items: center; justify-content: space-between; gap: var(--s-md); flex-wrap: wrap;">
+          <span style="font-size: 0.75rem; color: rgba(254, 207, 147, 0.7); display: flex; align-items: center; gap: 6px;">
+            <?= icon('lock', 'icon--sm') ?>
+            Zero broker syndication. Encrypted fiduciary handling.
+          </span>
+          <button type="submit" class="btn btn--light btn--lg shimmer" id="btn-submit-bm">
+            Submit Private Mandate
+            <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // Modal controls
+      var modal = document.getElementById('modal-buyer-mandate');
+      var closeBtn = document.getElementById('btn-close-buyer-modal');
+      var openBtns = document.querySelectorAll('.btn-open-buyer-modal');
+
+      function openModal(e) {
+        if (e) e.preventDefault();
+        if (modal) modal.classList.add('is-open');
+      }
+
+      function closeModal() {
+        if (modal) modal.classList.remove('is-open');
+      }
+
+      openBtns.forEach(function (btn) {
+        btn.addEventListener('click', openModal);
+      });
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (modal) {
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      // AJAX form submission for Buyer Mandate
+      var buyerForm = document.getElementById('form-buyer-mandate');
+      var buyerFeedback = document.getElementById('buyer-feedback');
+      var buyerBtn = document.getElementById('btn-submit-bm');
+
+      if (buyerForm && buyerFeedback) {
+        buyerForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var formData = new FormData(buyerForm);
+          var originalBtnText = buyerBtn ? buyerBtn.innerHTML : '';
+          if (buyerBtn) {
+            buyerBtn.textContent = 'Transmitting...';
+            buyerBtn.disabled = true;
+          }
+
+          fetch(buyerForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data.success) {
+              buyerFeedback.className = 'form-feedback form-feedback--success';
+              buyerFeedback.innerHTML = '<strong>Mandate Registered.</strong> ' + data.message + ' (Ref: <strong>' + (data.reference || '') + '</strong>)';
+              buyerForm.reset();
+              setTimeout(function () {
+                closeModal();
+                buyerFeedback.style.display = 'none';
+              }, 4000);
+            } else {
+              buyerFeedback.className = 'form-feedback form-feedback--error';
+              var errs = data.errors ? Object.values(data.errors).join('<br>') : 'Submission error. Please check your entries.';
+              buyerFeedback.innerHTML = errs;
+            }
+          })
+          .catch(function () {
+            // Fallback: standard submit
+            buyerForm.submit();
+          })
+          .finally(function () {
+            if (buyerBtn) {
+              buyerBtn.innerHTML = originalBtnText;
+              buyerBtn.disabled = false;
+            }
+          });
+        });
+      }
+
+      // AJAX form submission for Contact Desk
+      var contactForm = document.getElementById('form-contact-desk');
+      var contactFeedback = document.getElementById('contact-feedback');
+      var contactBtn = document.getElementById('btn-submit-contact');
+
+      if (contactForm && contactFeedback) {
+        contactForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var formData = new FormData(contactForm);
+          var origText = contactBtn ? contactBtn.innerHTML : '';
+          if (contactBtn) {
+            contactBtn.textContent = 'Transmitting...';
+            contactBtn.disabled = true;
+          }
+
+          fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data.success) {
+              contactFeedback.className = 'form-feedback form-feedback--success';
+              contactFeedback.innerHTML = '<strong>Message Received.</strong> ' + data.message;
+              contactForm.reset();
+            } else {
+              contactFeedback.className = 'form-feedback form-feedback--error';
+              var errs = data.errors ? Object.values(data.errors).join('<br>') : 'Failed to send inquiry. Please check your entries.';
+              contactFeedback.innerHTML = errs;
+            }
+          })
+          .catch(function () {
+            contactForm.submit();
+          })
+          .finally(function () {
+            if (contactBtn) {
+              contactBtn.innerHTML = origText;
+              contactBtn.disabled = false;
+            }
+          });
+        });
+      }
+    })();
+  </script>
 
 </main>
 

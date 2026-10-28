@@ -30,10 +30,10 @@
   background-color: var(--c-sand-50);
   background-image: linear-gradient(
       to right,
-      rgba(15, 23, 42, 0.025) 1px,
+      rgba(36, 24, 17, 0.025) 1px,
       transparent 1px
     ),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.025) 1px, transparent 1px);
+    linear-gradient(to bottom, rgba(36, 24, 17, 0.025) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
@@ -239,7 +239,7 @@
 
 .steps__item--current .steps__dot {
   background-color: var(--c-sand-900);
-  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 0 0 3px rgba(36, 24, 17, 0.12);
 }
 
 .steps__rule {
@@ -403,7 +403,7 @@
   background-color: var(--c-surface-lowest);
   border: 1px solid var(--c-sand-200);
   border-radius: var(--r-md);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 1px 2px rgba(36, 24, 17, 0.03);
   padding: var(--s-xl);
 }
 
@@ -684,7 +684,7 @@ select.input {
 
 .option:has(.option__input:checked) {
   border-color: var(--c-ink);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 0 0 1px var(--c-ink);
+  box-shadow: 0 1px 3px rgba(36, 24, 17, 0.06), 0 0 0 1px var(--c-ink);
 }
 
 .option:has(.option__input:focus-visible) {
@@ -806,7 +806,7 @@ select.input {
 
 .segment:has(.option__input:checked) {
   border-color: var(--c-ink);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 0 0 1px var(--c-ink);
+  box-shadow: 0 1px 3px rgba(36, 24, 17, 0.06), 0 0 0 1px var(--c-ink);
   font-weight: 600;
 }
 
@@ -1112,8 +1112,8 @@ select.input {
 }
 
 .btn-submit:hover {
-  background-color: #000;
-  box-shadow: 0 8px 20px -8px rgba(15, 23, 42, 0.5);
+  background-color: var(--c-ink);
+  box-shadow: 0 8px 20px -8px rgba(36, 24, 17, 0.5);
 }
 
 .btn-submit:active {

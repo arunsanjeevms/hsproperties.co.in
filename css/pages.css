@@ -31,12 +31,13 @@
   transform-origin: center;
 }
 
-/* Two stacked scrims: one horizontal (protects the copy column), one
-   vertical (seats the section into the band below). */
+/* Two stacked scrims: one horizontal (protects the copy column with a soft fade),
+   one vertical (subtly seats the section into the band below). */
 .hero__scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 2;
 }
 
 .hero__scrim--horizontal {
@@ -49,6 +50,7 @@
 
 .hero__inner {
   position: relative;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -71,16 +73,19 @@
 .hero__title {
   font-weight: 400;
   line-height: 1.1;
+  text-shadow: 0 2px 14px rgba(20, 10, 5, 0.65);
 }
 
 .hero__lede {
   max-width: 42rem;
   color: var(--c-surface-low);
+  text-shadow: 0 1px 8px rgba(20, 10, 5, 0.6);
 }
 
 .hero__support {
   max-width: 36rem;
-  color: rgba(233, 232, 229, 0.9);
+  color: rgba(245, 238, 230, 0.95);
+  text-shadow: 0 1px 8px rgba(20, 10, 5, 0.6);
 }
 
 .hero__gateways {
@@ -776,8 +781,8 @@
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(19, 27, 46, 0.85),
-    rgba(19, 27, 46, 0.25)
+    rgba(32, 22, 18, 0.85),
+    rgba(32, 22, 18, 0.25)
   );
   pointer-events: none;
 }

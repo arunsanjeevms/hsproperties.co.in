@@ -18,7 +18,7 @@ $currentPage = $currentPage ?? 'home';
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= e($pageTitle) ?></title>
   <meta name="description" content="<?= e($pageDescription) ?>">
-  <meta name="theme-color" content="#131b2e">
+  <meta name="theme-color" content="#201612">
 
   <link rel="icon" type="image/svg+xml" href="<?= e(url('assets/images/logo.svg')) ?>">
 
@@ -30,11 +30,11 @@ $currentPage = $currentPage ?? 'home';
     rel="stylesheet">
 
   <?php /* Load order matters: tokens, base, components, page, then overrides. */ ?>
-  <link rel="stylesheet" href="<?= e(url('css/variables.css')) ?>">
-  <link rel="stylesheet" href="<?= e(url('css/global.css')) ?>">
-  <link rel="stylesheet" href="<?= e(url('css/components.css')) ?>">
-  <link rel="stylesheet" href="<?= e(url('css/pages.css')) ?>">
-  <link rel="stylesheet" href="<?= e(url('css/responsive.css')) ?>">
+  <link rel="stylesheet" href="<?= e(url('css/variables.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/variables.css') ?: '1' ?>">
+  <link rel="stylesheet" href="<?= e(url('css/global.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/global.css') ?: '1' ?>">
+  <link rel="stylesheet" href="<?= e(url('css/components.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/components.css') ?: '1' ?>">
+  <link rel="stylesheet" href="<?= e(url('css/pages.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/pages.css') ?: '1' ?>">
+  <link rel="stylesheet" href="<?= e(url('css/responsive.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/responsive.css') ?: '1' ?>">
 
   <?php /* Set synchronously, before first paint: scroll-reveal styles are
            scoped to .has-js so the page stays fully readable without JS. */ ?>

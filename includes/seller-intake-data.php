@@ -141,10 +141,24 @@ function document_categories(): array
 
 /**
  * Documents already staged against this mandate.
- * Future source: `documents` where request_id = ?
  */
 function staged_documents(): array
 {
+    try {
+        if (class_exists('Session') && class_exists('Document')) {
+            $requestId = Session::get('seller_request_id');
+            if ($requestId) {
+                $docModel = new Document();
+                $docs = $docModel->getByRequest((int)$requestId);
+                if (!empty($docs)) {
+                    return $docModel->formatForReview($docs);
+                }
+            }
+        }
+    } catch (\Throwable) {
+        // Fallback to initial display
+    }
+
     return [
         [
             'name'     => 'Sale_Deed_Executed_Khata_A_Certified.pdf',
@@ -176,12 +190,32 @@ function staged_documents(): array
 
 /**
  * The submission as it will be read back for confirmation.
- *
- * Future source: the in-progress `requests` row plus its related records.
- * `accent` marks a value that carries the champagne pip in the design.
  */
 function seller_review_sections(): array
 {
+    try {
+        if (class_exists('Session') && class_exists('SellerRequest')) {
+            $requestId = Session::get('seller_request_id');
+            $sellerModel = new SellerRequest();
+            $record = null;
+            if ($requestId) {
+                $record = $sellerModel->find((int)$requestId);
+            }
+            if (!$record) {
+                $draft = Session::get('seller_intake', []);
+                if (!empty($draft['step1'])) {
+                    $record = array_merge($draft['step1'] ?? [], $draft['step2'] ?? []);
+                }
+            }
+
+            if ($record && (!empty($record['city']) || !empty($record['property_type']))) {
+                return $sellerModel->buildReviewData($record);
+            }
+        }
+    } catch (\Throwable) {
+        // Fallback
+    }
+
     return [
         [
             'title'    => 'Property',
@@ -209,13 +243,13 @@ function seller_review_sections(): array
 
 /**
  * Reference details issued once the mandate is received.
- * Future source: the created `requests` row.
  */
 function seller_submission_reference(): array
 {
+    $ref = $_GET['ref'] ?? (class_exists('Session') ? Session::get('last_submitted_ref', 'HS-' . date('Y') . '-BLR-8492') : 'HS-' . date('Y') . '-BLR-8492');
     return [
-        ['label' => 'Reference',    'value' => 'HS-2025-BLR-8492', 'accent' => true],
-        ['label' => 'Status',       'value' => 'Initial Review'],
+        ['label' => 'Reference',    'value' => (string)$ref, 'accent' => true],
+        ['label' => 'Status',       'value' => 'Initial Advisory Review'],
         ['label' => 'Mandate Type', 'value' => 'Bespoke Off-Market Advisory'],
     ];
 }

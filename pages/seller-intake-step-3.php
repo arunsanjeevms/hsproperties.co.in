@@ -70,8 +70,10 @@ include __DIR__ . '/../includes/intake-header.php';
         class="panel"
         id="intake-form"
         method="post"
-        action="<?= e(route('seller.step3')) ?>?state=submitted"
+        action="<?= e(url('api/seller-intake.php?step=3')) ?>"
         <?= $submitted ? 'hidden' : '' ?>>
+
+        <?= Session::csrfField() ?>
 
         <div class="panel__head">
           <div>

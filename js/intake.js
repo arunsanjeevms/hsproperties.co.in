@@ -161,34 +161,17 @@
      fails the normal submission still lands on the confirmation.
      ---------------------------------------------------------------------- */
   var reviewForm = document.getElementById('intake-form');
-  var confirmation = document.getElementById('intake-confirmation');
 
-  if (reviewForm && confirmation) {
+  if (reviewForm) {
     reviewForm.addEventListener('submit', function (event) {
-      // Let the browser surface its own validation for the declaration.
       if (!reviewForm.checkValidity()) {
         return;
       }
-
-      event.preventDefault();
-
-      reviewForm.hidden = true;
-      confirmation.hidden = false;
-
-      // Keep the URL honest so a refresh or a shared link shows the same view.
-      if (window.history && window.history.pushState) {
-        window.history.pushState({}, '', '?state=submitted');
+      var submitBtn = reviewForm.querySelector('.btn-submit');
+      if (submitBtn) {
+        submitBtn.style.opacity = '0.7';
+        submitBtn.setAttribute('disabled', 'disabled');
       }
-
-      // Move focus to the confirmation so the change is announced.
-      confirmation.setAttribute('tabindex', '-1');
-      confirmation.focus({ preventScroll: true });
-      confirmation.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
-        block: 'start',
-      });
     });
   }
 })();

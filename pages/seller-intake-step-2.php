@@ -12,6 +12,17 @@ $intakeStep  = 2;
 $intakeFlow  = 'Seller Intake';
 $intakeSteps = intake_steps();
 
+$draft = Session::get('seller_intake', []);
+$step1Data = $draft['step1'] ?? [];
+$step2Data = $draft['step2'] ?? [];
+$errors = Session::flash('errors') ?? [];
+$old = Session::flash('old') ?? [];
+$v = array_merge([
+    'locality' => $step1Data['locality'] ?? '',
+    'city'     => $step1Data['city'] ?? '',
+    'pincode'  => $step1Data['pincode'] ?? '',
+], $step2Data, $old);
+
 include __DIR__ . '/../includes/intake-header.php';
 ?>
 
@@ -59,7 +70,20 @@ include __DIR__ . '/../includes/intake-header.php';
       id="intake-form"
       method="post"
       enctype="multipart/form-data"
-      action="<?= e(route('seller.step3')) ?>">
+      action="<?= e(url('api/seller-intake.php?step=2')) ?>">
+
+      <?= Session::csrfField() ?>
+
+      <?php if (!empty($errors)): ?>
+        <div style="background: rgba(185, 28, 28, 0.08); border-left: 3px solid #b91c1c; padding: 12px 16px; margin-bottom: 24px; border-radius: 4px;">
+          <strong style="color: #b91c1c; font-size: 0.9rem; display: block; margin-bottom: 6px;">Please review the highlighted details:</strong>
+          <ul style="margin: 0; padding-left: 18px; color: #7f1d1d; font-size: 0.85rem;">
+            <?php foreach ($errors as $err): ?>
+              <li><?= e($err) ?></li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+      <?php endif; ?>
 
       <div class="panel__head">
         <div>
@@ -84,31 +108,31 @@ include __DIR__ . '/../includes/intake-header.php';
           <label class="input-group__label" for="address">Property Address or Estate Name</label>
           <input
             class="input" type="text" id="address" name="address"
-            placeholder="42 Magnolia Sanctuary, Off Varthur Main Rd" required>
+            placeholder="42 Magnolia Sanctuary, Off Varthur Main Rd" value="<?= e($v['address'] ?? '') ?>" required>
         </p>
 
         <div class="grid-3 u-mt">
           <p class="input-group">
             <label class="input-group__label" for="locality2">Locality / Micro-market</label>
-            <input class="input" type="text" id="locality2" name="locality" placeholder="Whitefield / Palm Meadows">
+            <input class="input" type="text" id="locality2" name="locality" placeholder="Whitefield / Palm Meadows" value="<?= e($v['locality'] ?? '') ?>">
           </p>
           <p class="input-group">
             <label class="input-group__label" for="city2">City</label>
-            <input class="input" type="text" id="city2" name="city" placeholder="Bengaluru">
+            <input class="input" type="text" id="city2" name="city" placeholder="Bengaluru" value="<?= e($v['city'] ?? '') ?>">
           </p>
           <p class="input-group">
             <label class="input-group__label" for="pincode2">PIN Code</label>
             <input
               class="input" type="text" id="pincode2" name="pincode"
               placeholder="560066" inputmode="numeric" pattern="[0-9]{6}"
-              autocomplete="postal-code">
+              autocomplete="postal-code" value="<?= e($v['pincode'] ?? '') ?>">
           </p>
         </div>
 
         <p class="group-label" id="condition-label">Physical Condition Appraisal</p>
         <div class="segments" role="radiogroup" aria-labelledby="condition-label">
           <?php foreach (condition_options() as $cond): ?>
-            <?= segment('condition', $cond, $cond['value'] === 'pristine') ?>
+            <?= segment('condition', $cond, ($v['condition'] ?? 'pristine') === $cond['value']) ?>
           <?php endforeach; ?>
         </div>
 
@@ -117,13 +141,13 @@ include __DIR__ . '/../includes/intake-header.php';
             <label class="input-group__label" for="year">Year of Construction</label>
             <input
               class="input" type="text" id="year" name="year_built"
-              placeholder="2021" inputmode="numeric" pattern="[0-9]{4}">
+              placeholder="2021" inputmode="numeric" pattern="[0-9]{4}" value="<?= e((string)($v['year_built'] ?? '')) ?>">
           </p>
           <div class="input-group">
             <span class="input-group__label" id="furnishing-label">Furnishing Status</span>
             <div class="segments" role="radiogroup" aria-labelledby="furnishing-label">
               <?php foreach (furnishing_options() as $f): ?>
-                <?= segment('furnishing', $f, $f['value'] === 'full') ?>
+                <?= segment('furnishing', $f, ($v['furnishing'] ?? 'full') === $f['value']) ?>
               <?php endforeach; ?>
             </div>
           </div>
@@ -147,7 +171,7 @@ include __DIR__ . '/../includes/intake-header.php';
             <span class="affix__lead" aria-hidden="true">&#8377;</span>
             <input
               class="input" type="text" id="price" name="target_price"
-              placeholder="18,50,00,000" inputmode="numeric">
+              placeholder="18,50,00,000" inputmode="numeric" value="<?= e((string)($v['target_price'] ?? '')) ?>">
             <span class="affix__trail" aria-hidden="true">INR</span>
           </span>
         </p>
@@ -159,14 +183,14 @@ include __DIR__ . '/../includes/intake-header.php';
         <p class="group-label" id="timeline-label">Target Liquidity Horizon</p>
         <div class="segments" role="radiogroup" aria-labelledby="timeline-label">
           <?php foreach (timeline_options() as $t): ?>
-            <?= segment('timeline', $t, $t['value'] === '3-6m') ?>
+            <?= segment('timeline', $t, ($v['timeline'] ?? '3-6m') === $t['value']) ?>
           <?php endforeach; ?>
         </div>
 
         <p class="group-label" id="mandate-label">Preferred Mandate Structure</p>
         <div class="options options--3" role="radiogroup" aria-labelledby="mandate-label">
           <?php foreach (mandate_structures() as $m): ?>
-            <?= option_card('mandate', $m, $m['value'] === 'off-market') ?>
+            <?= option_card('mandate', $m, ($v['mandate'] ?? 'off-market') === $m['value']) ?>
           <?php endforeach; ?>
         </div>
       </div>

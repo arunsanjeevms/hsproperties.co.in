@@ -19,6 +19,18 @@ declare(strict_types=1);
  */
 function portfolio_properties(): array
 {
+    try {
+        if (class_exists('Property')) {
+            $propModel = new Property();
+            $items = $propModel->getPortfolio();
+            if (!empty($items)) {
+                return $items;
+            }
+        }
+    } catch (\Throwable $e) {
+        // Fallback to static records if database is offline
+    }
+
     return [
         [
             'reference'   => '#BLR-402',

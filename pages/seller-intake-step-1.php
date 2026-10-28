@@ -16,6 +16,12 @@ $intakeStep  = 1;
 $intakeFlow  = 'Seller Intake';
 $intakeSteps = intake_steps();
 
+$draft = Session::get('seller_intake', []);
+$step1Data = $draft['step1'] ?? [];
+$errors = Session::flash('errors') ?? [];
+$old = Session::flash('old') ?? [];
+$v = array_merge($step1Data, $old);
+
 include __DIR__ . '/../includes/intake-header.php';
 ?>
 
@@ -63,7 +69,20 @@ include __DIR__ . '/../includes/intake-header.php';
       class="panel"
       id="intake-form"
       method="post"
-      action="<?= e(route('seller.step2')) ?>">
+      action="<?= e(url('api/seller-intake.php?step=1')) ?>">
+
+      <?= Session::csrfField() ?>
+
+      <?php if (!empty($errors)): ?>
+        <div style="background: rgba(185, 28, 28, 0.08); border-left: 3px solid #b91c1c; padding: 12px 16px; margin-bottom: 24px; border-radius: 4px;">
+          <strong style="color: #b91c1c; font-size: 0.9rem; display: block; margin-bottom: 6px;">Please review the highlighted details:</strong>
+          <ul style="margin: 0; padding-left: 18px; color: #7f1d1d; font-size: 0.85rem;">
+            <?php foreach ($errors as $err): ?>
+              <li><?= e($err) ?></li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+      <?php endif; ?>
 
       <div class="panel__head">
         <div>
@@ -86,7 +105,7 @@ include __DIR__ . '/../includes/intake-header.php';
 
         <div class="options options--3">
           <?php foreach (property_types() as $type): ?>
-            <?= option_card('property_type', $type, $type['value'] === 'villa') ?>
+            <?= option_card('property_type', $type, ($v['property_type'] ?? 'villa') === $type['value']) ?>
           <?php endforeach; ?>
         </div>
       </div>
@@ -107,7 +126,7 @@ include __DIR__ . '/../includes/intake-header.php';
                 type="radio"
                 name="property_status"
                 value="<?= e($status['value']) ?>"
-                <?= $status['value'] === 'ready' ? 'checked' : '' ?>>
+                <?= ($v['property_status'] ?? 'ready') === $status['value'] ? 'checked' : '' ?>>
               <?= e($status['label']) ?>
             </label>
           <?php endforeach; ?>
@@ -126,18 +145,18 @@ include __DIR__ . '/../includes/intake-header.php';
         <div class="grid-3">
           <p class="input-group">
             <label class="input-group__label" for="city">City</label>
-            <input class="input" type="text" id="city" name="city" placeholder="Bengaluru" required>
+            <input class="input" type="text" id="city" name="city" placeholder="Bengaluru" value="<?= e($v['city'] ?? '') ?>" required>
           </p>
           <p class="input-group">
             <label class="input-group__label" for="locality">Locality / Micro-market</label>
-            <input class="input" type="text" id="locality" name="locality" placeholder="Whitefield" required>
+            <input class="input" type="text" id="locality" name="locality" placeholder="Whitefield" value="<?= e($v['locality'] ?? '') ?>" required>
           </p>
           <p class="input-group">
             <label class="input-group__label" for="pincode">PIN Code</label>
             <input
               class="input" type="text" id="pincode" name="pincode"
               placeholder="560066" inputmode="numeric" pattern="[0-9]{6}"
-              autocomplete="postal-code" required>
+              autocomplete="postal-code" value="<?= e($v['pincode'] ?? '') ?>" required>
           </p>
         </div>
 
@@ -162,7 +181,7 @@ include __DIR__ . '/../includes/intake-header.php';
             <span class="affix affix--trail">
               <input
                 class="input" type="text" id="extent" name="extent"
-                placeholder="8200" inputmode="numeric" required>
+                placeholder="8200" inputmode="numeric" value="<?= e($v['extent'] ?? '') ?>" required>
               <span class="affix__trail" aria-hidden="true">approx.</span>
             </span>
           </p>
@@ -170,7 +189,7 @@ include __DIR__ . '/../includes/intake-header.php';
             <label class="input-group__label" for="unit">Unit of Measurement</label>
             <select class="input" id="unit" name="unit">
               <?php foreach (measurement_units() as $u): ?>
-                <option value="<?= e($u['value']) ?>"><?= e($u['label']) ?></option>
+                <option value="<?= e($u['value']) ?>" <?= ($v['unit'] ?? 'sqft') === $u['value'] ? 'selected' : '' ?>><?= e($u['label']) ?></option>
               <?php endforeach; ?>
             </select>
           </p>
@@ -188,7 +207,7 @@ include __DIR__ . '/../includes/intake-header.php';
 
         <div class="segments">
           <?php foreach (bedroom_options() as $bed): ?>
-            <?= segment('bedrooms', $bed, $bed['value'] === '4') ?>
+            <?= segment('bedrooms', $bed, ($v['bedrooms'] ?? '4') === $bed['value']) ?>
           <?php endforeach; ?>
         </div>
       </div>
@@ -204,7 +223,7 @@ include __DIR__ . '/../includes/intake-header.php';
 
         <div class="options options--2">
           <?php foreach (ownership_types() as $own): ?>
-            <?= option_marked('ownership', $own, $own['value'] === 'individual') ?>
+            <?= option_marked('ownership', $own, ($v['ownership'] ?? 'individual') === $own['value']) ?>
           <?php endforeach; ?>
         </div>
 

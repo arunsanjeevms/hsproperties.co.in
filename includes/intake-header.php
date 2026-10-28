@@ -28,7 +28,7 @@ $intakeSteps = $intakeSteps ?? [];
   <title><?= e($pageTitle) ?></title>
   <meta name="description" content="Submit a property privately to the HS Properties advisory desk. Confidential intake, never publicly listed.">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#faf9f6">
+  <meta name="theme-color" content="#faf6f1">
 
   <link rel="icon" type="image/svg+xml" href="<?= e(url('assets/images/logo.svg')) ?>">
 
@@ -38,10 +38,10 @@ $intakeSteps = $intakeSteps ?? [];
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="<?= e(url('css/variables.css')) ?>">
-  <link rel="stylesheet" href="<?= e(url('css/global.css')) ?>">
-  <link rel="stylesheet" href="<?= e(url('css/components.css')) ?>">
-  <link rel="stylesheet" href="<?= e(url('css/intake.css')) ?>">
+  <link rel="stylesheet" href="<?= e(url('css/variables.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/variables.css') ?: '1' ?>">
+  <link rel="stylesheet" href="<?= e(url('css/global.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/global.css') ?: '1' ?>">
+  <link rel="stylesheet" href="<?= e(url('css/components.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/components.css') ?: '1' ?>">
+  <link rel="stylesheet" href="<?= e(url('css/intake.css')) ?>?v=<?= @filemtime(__DIR__ . '/../css/intake.css') ?: '1' ?>">
 
   <script>document.documentElement.classList.add('has-js');</script>
 </head>
