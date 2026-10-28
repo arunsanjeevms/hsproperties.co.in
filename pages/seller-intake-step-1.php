@@ -1,29 +1,18 @@
 <?php
 /**
- * HS Properties — Private Seller Intake, Step 01: Contact Details.
- *
- * Collects fundamental contact information:
- *   - Full Name (Required)
- *   - Phone Number (Required)
- *   - Email Address (Required)
- *   - Address (Optional)
+ * HS Properties — Private Seller Intake (Web3Forms).
  */
 
 require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/seller-intake-data.php';
 require_once __DIR__ . '/../includes/form-helpers.php';
 
-$pageTitle   = 'Private Seller Intake — Step 01: Contact Details | HS Properties';
+$pageTitle   = 'Sell Your Property — Private Mandate | HS Properties';
 $intakeStep  = 1;
-$intakeFlow  = 'Seller Intake';
-$intakeSteps = intake_steps();
-
-$draft = Session::get('seller_intake', []);
-$step1Data = $draft['step1'] ?? [];
-$errors = Session::flash('errors') ?? [];
-$old = Session::flash('old') ?? [];
-$notice = Session::flash('notice');
-$v = array_merge($step1Data, $old);
+$intakeFlow  = 'Seller Mandate';
+$intakeSteps = [
+    ['label' => 'Property Inquiry', 'href' => '#'],
+];
 
 include __DIR__ . '/../includes/intake-header.php';
 ?>
@@ -36,97 +25,74 @@ include __DIR__ . '/../includes/intake-header.php';
       <p class="intake-aside__eyebrow">Private Property Mandate</p>
 
       <h1 class="intake-aside__title">
-        Your contact
-        <em>details.</em>
+        Sell your
+        <em>property.</em>
       </h1>
 
       <p class="intake-aside__lede">
-        Start with the essentials. We&rsquo;ll use these details to connect with you
-        directly before discussing your property, valuation, and discreet buyer positioning.
+        Submit your property details for discreet valuation, documentation auditing,
+        and positioning with qualified accredited buyers under strict non-disclosure.
       </p>
 
       <div class="protocol">
         <h2 class="protocol__title">Strict Advisory Protocol</h2>
         <p class="protocol__text">
-          Your information is handled confidentially. Submissions are never
-          shared publicly or broadcast across portals.
+          Your information is held in strict confidence. Submissions are never
+          listed publicly, syndicated across search portals, or disclosed without prior bilateral agreement.
         </p>
       </div>
 
       <ul class="assurances">
         <li class="assurances__item">Direct oversight by a dedicated Senior Managing Partner.</li>
-        <li class="assurances__item">Encrypted intake &amp; strict client confidentiality.</li>
-        <li class="assurances__item">Access restricted solely to vetted advisory personnel.</li>
+        <li class="assurances__item">Strict pre-NDA screening and encrypted transmission.</li>
+        <li class="assurances__item">Curated access restricted solely to pre-qualified buyers.</li>
       </ul>
-
-      <p class="phase">
-        <span class="phase__number">01</span>
-        <span class="phase__total">/03</span>
-        <span class="phase__label">Phase: Contact Details</span>
-      </p>
     </aside>
 
     <!-- ================= Form column ================= -->
-    <form
-      class="panel"
-      id="intake-form"
-      method="post"
-      action="<?= e(url('api/seller-intake.php?step=1')) ?>">
-
-      <?= Session::csrfField() ?>
-
-      <?php if (!empty($notice)): ?>
-        <div style="background: rgba(46, 125, 50, 0.08); border-left: 3px solid #2e7d32; padding: 12px 16px; margin-bottom: 24px; border-radius: 4px; color: #1b5e20; font-size: 0.875rem;">
-          <?= e($notice) ?>
-        </div>
-      <?php endif; ?>
-
-      <?php if (!empty($errors)): ?>
-        <div style="background: rgba(185, 28, 28, 0.08); border-left: 3px solid #b91c1c; padding: 12px 16px; margin-bottom: 24px; border-radius: 4px;">
-          <strong style="color: #b91c1c; font-size: 0.9rem; display: block; margin-bottom: 6px;">Please review the highlighted details:</strong>
-          <ul style="margin: 0; padding-left: 18px; color: #7f1d1d; font-size: 0.85rem;">
-            <?php foreach ($errors as $err): ?>
-              <li><?= e($err) ?></li>
-            <?php endforeach; ?>
-          </ul>
-        </div>
-      <?php endif; ?>
-
+    <div class="panel">
       <div class="panel__head">
         <div>
-          <h2 class="panel__title">Contact Information</h2>
+          <h2 class="panel__title">Property Placement Details</h2>
           <p class="panel__note">
-            Provide your primary contact details to begin the private consultation process.
+            Please share the primary details below so our advisory desk can connect with you.
           </p>
         </div>
         <span class="panel__tag">Confidential Intake</span>
       </div>
 
-      <div class="fieldset">
-        <div class="fieldset__head">
-          <span class="fieldset__legend">Primary Contact Details</span>
-          <span class="fieldset__hint">Direct Principal</span>
-        </div>
+      <div class="form-feedback" id="seller-feedback" style="display: none; padding: 12px 16px; margin-bottom: 20px; border-radius: 6px; font-size: 0.9rem;"></div>
 
-        <!-- 1. Full Name -->
-        <div class="input-group">
-          <label class="input-group__label" for="full_name">
-            Full Name<span class="req" aria-hidden="true">*</span>
-          </label>
-          <input
-            class="input"
-            type="text"
-            id="full_name"
-            name="full_name"
-            placeholder="e.g. Alexander Vance"
-            autocomplete="name"
-            value="<?= e($v['full_name'] ?? $v['contact_name'] ?? '') ?>"
-            required>
-        </div>
+      <form id="seller-intake-form" method="post" action="https://api.web3forms.com/submit">
+        <input type="hidden" name="access_key" value="<?= e(web3forms_key()) ?>">
+        <input type="hidden" name="subject" value="New Seller Inquiry — HS Properties">
+        <input type="hidden" name="from_name" value="HS Properties Website">
+        <input type="hidden" name="inquiry_type" value="Seller Mandate Inquiry">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
-        <!-- 2. Phone Number & 3. Email Address -->
-        <div class="grid-2 u-mt">
+        <div class="fieldset">
+          <div class="fieldset__head">
+            <span class="fieldset__legend">Essential Information</span>
+            <span class="fieldset__hint">Direct Principal</span>
+          </div>
+
+          <!-- 1. Full Name -->
           <div class="input-group">
+            <label class="input-group__label" for="full_name">
+              Full Name<span class="req" aria-hidden="true">*</span>
+            </label>
+            <input
+              class="input"
+              type="text"
+              id="full_name"
+              name="name"
+              placeholder="e.g. Alexander Vance"
+              autocomplete="name"
+              required>
+          </div>
+
+          <!-- 2. Phone Number -->
+          <div class="input-group u-mt">
             <label class="input-group__label" for="phone">
               Phone Number<span class="req" aria-hidden="true">*</span>
             </label>
@@ -137,68 +103,150 @@ include __DIR__ . '/../includes/intake-header.php';
               name="phone"
               placeholder="+91 98765 43210"
               autocomplete="tel"
-              value="<?= e($v['phone'] ?? $v['contact_phone'] ?? '') ?>"
               required>
           </div>
 
-          <div class="input-group">
-            <label class="input-group__label" for="email">
-              Email Address<span class="req" aria-hidden="true">*</span>
+          <!-- 3. Property Type (Dropdown) -->
+          <div class="input-group u-mt">
+            <label class="input-group__label" for="property_type">
+              Property Type<span class="req" aria-hidden="true">*</span>
+            </label>
+            <select class="input" id="property_type" name="property_type" required>
+              <option value="" disabled selected>Select property archetype *</option>
+              <option value="Villa">Villa / Gated Luxury Enclave</option>
+              <option value="Apartment / Penthouse">Apartment / Sky Penthouse</option>
+              <option value="Independent House">Independent House / Standalone Bungalow</option>
+              <option value="Plot / Land Parcel">Plot / Land Development Parcel</option>
+              <option value="Commercial">Commercial / Prime Office / Retail</option>
+              <option value="Estate / Farmhouse">Estate / Farmhouse / Country Acreage</option>
+              <option value="Other">Other (Please specify)</option>
+            </select>
+          </div>
+
+          <!-- 4. Dynamic "Other" text input -->
+          <div class="input-group u-mt" id="other-type-wrap" style="display: none;">
+            <label class="input-group__label" for="other_property_type">
+              Specify Property Type<span class="req" aria-hidden="true">*</span>
             </label>
             <input
               class="input"
-              type="email"
-              id="email"
-              name="email"
-              placeholder="alexander.vance@example.com"
-              autocomplete="email"
-              value="<?= e($v['email'] ?? $v['contact_email'] ?? '') ?>"
-              required>
+              type="text"
+              id="other_property_type"
+              name="other_property_type"
+              placeholder="e.g. Heritage Haveli, Coffee Plantation, Island Parcel">
+          </div>
+
+          <p class="note">
+            <?= icon('lock', 'icon--sm') ?>
+            Submissions are transmitted securely via encrypted channel. No spam, no portal syndication.
+          </p>
+        </div>
+
+        <div class="form-foot">
+          <p class="form-foot__status">
+            <strong>Direct Liaison</strong>
+            <span aria-hidden="true">&bull;</span>
+            Response within 1 business day
+          </p>
+
+          <div class="form-foot__actions">
+            <a class="link-quiet" href="<?= e(url('index.html')) ?>">
+              <?= icon('arrow-left', 'icon--sm') ?>
+              Back to Home
+            </a>
+            <button class="btn-submit" type="submit" id="btn-seller-submit">
+              Submit Property Details
+              <?= icon('arrow-right', 'icon--sm') ?>
+            </button>
           </div>
         </div>
 
-        <!-- 4. Address -->
-        <div class="input-group u-mt">
-          <label class="input-group__label" for="address">
-            Address <span class="muted" style="font-size: 0.85em; font-weight: normal; color: var(--c-sand-500);">(Optional)</span>
-          </label>
-          <input
-            class="input"
-            type="text"
-            id="address"
-            name="address"
-            placeholder="Residential or correspondence address"
-            autocomplete="street-address"
-            value="<?= e($v['address'] ?? $v['contact_address'] ?? '') ?>">
-        </div>
+      </form>
+    </div>
 
-        <p class="note">
-          <?= icon('lock', 'icon--sm') ?>
-          Your contact details are encrypted and held in strict confidence. We never share your details or broadcast them across public channels.
-        </p>
-      </div>
-
-      <!-- Actions -->
-      <div class="form-foot">
-        <p class="form-foot__status">
-          <strong>Step 1 of 3</strong>
-          <span aria-hidden="true">&bull;</span>
-          Next: Details &amp; Documents
-        </p>
-
-        <div class="form-foot__actions">
-          <button class="link-quiet" type="submit" name="action" value="save">
-            Save &amp; continue later
-          </button>
-          <button class="btn-submit" type="submit" name="action" value="continue">
-            Continue
-            <?= icon('arrow-right', 'icon--sm') ?>
-          </button>
-        </div>
-      </div>
-
-    </form>
   </div>
 </main>
+
+<script>
+  (function () {
+    var typeSelect = document.getElementById('property_type');
+    var otherWrap  = document.getElementById('other-type-wrap');
+    var otherInput = document.getElementById('other_property_type');
+
+    if (typeSelect && otherWrap && otherInput) {
+      typeSelect.addEventListener('change', function () {
+        if (this.value === 'Other') {
+          otherWrap.style.display = 'block';
+          otherInput.required = true;
+          otherInput.focus();
+        } else {
+          otherWrap.style.display = 'none';
+          otherInput.required = false;
+          otherInput.value = '';
+        }
+      });
+    }
+
+    var form = document.getElementById('seller-intake-form');
+    var feedback = document.getElementById('seller-feedback');
+    var btn = document.getElementById('btn-seller-submit');
+
+    if (form && feedback) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        var formData = new FormData(form);
+        if (formData.get('property_type') === 'Other' && formData.get('other_property_type')) {
+          formData.set('property_type', 'Other (' + formData.get('other_property_type').trim() + ')');
+        }
+
+        var origText = btn ? btn.innerHTML : '';
+        if (btn) {
+          btn.textContent = 'Transmitting...';
+          btn.disabled = true;
+        }
+        feedback.style.display = 'none';
+
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data.success) {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(46, 125, 50, 0.12)';
+            feedback.style.borderLeft = '3px solid #2e7d32';
+            feedback.style.color = '#1b5e20';
+            feedback.innerHTML = '<strong>Property Details Received.</strong> Thank you! A senior advisory partner will connect with you shortly.';
+            form.reset();
+            if (otherWrap) otherWrap.style.display = 'none';
+          } else {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(185, 28, 28, 0.08)';
+            feedback.style.borderLeft = '3px solid #b91c1c';
+            feedback.style.color = '#7f1d1d';
+            feedback.innerHTML = '<strong>Notice:</strong> ' + (data.message || 'Please check your inputs and try again.');
+          }
+        })
+        .catch(function () {
+          form.submit();
+        })
+        .finally(function () {
+          if (btn) {
+            btn.innerHTML = origText;
+            btn.disabled = false;
+          }
+        });
+      });
+    }
+  })();
+</script>
 
 <?php include __DIR__ . '/../includes/intake-footer.php'; ?>

@@ -61,13 +61,13 @@ $currentPage = $currentPage ?? 'home';
       <?php include __DIR__ . '/navigation.php'; ?>
 
       <div class="header__actions">
-        <a class="btn btn--ghost" href="#contact">Advisor Portal</a>
-        <a class="btn btn--outline" href="<?= e(route('seller.step1')) ?>">Sell Your Property</a>
-        <a class="btn btn--primary shimmer" href="#buyer">Find Your Property</a>
 
-        <a class="avatar" href="#contact" aria-label="Account and advisor portal">
-          <?= icon('user') ?>
-        </a>
+        <a class="btn btn--outline btn-open-seller-modal" href="<?= e(route('seller.step1')) ?>">Sell Your Property</a>
+        <a class="btn btn--primary shimmer btn-open-buyer-modal" href="#buyer">Find Your Property</a>
+
+
+
+
 
         <button
           class="nav-toggle"
@@ -98,8 +98,8 @@ $currentPage = $currentPage ?? 'home';
         <?php endforeach; ?>
       </ul>
       <div class="nav-drawer__actions">
-        <a class="btn btn--outline" href="<?= e(route('seller.step1')) ?>">Sell Your Property</a>
-        <a class="btn btn--primary" href="#buyer">Find Your Property</a>
+        <a class="btn btn--outline btn-open-seller-modal" href="<?= e(route('seller.step1')) ?>">Sell Your Property</a>
+        <a class="btn btn--primary btn-open-buyer-modal" href="#buyer">Find Your Property</a>
       </div>
     </div>
   </div>

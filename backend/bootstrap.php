@@ -53,14 +53,19 @@ function env(string $key, mixed $default = null): mixed
     return $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key) ?: $default;
 }
 
-// ── Database ─────────────────────────────────────────────────────────────────
-$db = Database::getInstance([
-    'host' => env('DB_HOST', 'localhost'),
-    'port' => env('DB_PORT', '3306'),
-    'name' => env('DB_NAME', 'hsproperties'),
-    'user' => env('DB_USER', 'root'),
-    'pass' => env('DB_PASS', ''),
-]);
+// ── Database (Optional with Web3Forms) ───────────────────────────────────────
+$db = null;
+try {
+    $db = Database::getInstance([
+        'host' => env('DB_HOST', 'localhost'),
+        'port' => env('DB_PORT', '3306'),
+        'name' => env('DB_NAME', 'hsproperties'),
+        'user' => env('DB_USER', 'root'),
+        'pass' => env('DB_PASS', ''),
+    ]);
+} catch (\Throwable $e) {
+    // Database is optional; Web3Forms handles submissions directly
+}
 
 // ── Session ──────────────────────────────────────────────────────────────────
 Session::start();

@@ -7,9 +7,9 @@ which is the visual source of truth for the design system.
 
 ## Stack
 
-HTML, CSS, vanilla JavaScript, PHP. MySQL is planned but **not yet
-implemented** — the PHP here is templating only (includes plus presentation
-data). No framework, no build step, no dependencies.
+HTML5, CSS3, vanilla JavaScript, and Web3Forms (GitHub Pages static hosting).
+Zero backend dependencies — client inquiries are securely routed directly via Web3Forms.
+
 
 ## Pages
 

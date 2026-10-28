@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="../">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sell Your Property — Private Mandate | HS Properties</title>
+  <meta name="description" content="Submit a property privately to the HS Properties advisory desk. Confidential intake, never publicly listed.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#faf6f1">
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css?v=1793182034">
+  <link rel="stylesheet" href="css/global.css?v=1791446132">
+  <link rel="stylesheet" href="css/components.css?v=1792773986">
+  <link rel="stylesheet" href="css/intake.css?v=1793182034">
+
+  <script>document.documentElement.classList.add('has-js');</script>
+</head>
+<body class="intake-body">
+  <a class="skip-link" href="#intake-form">Skip to the form</a>
+
+  <header class="intake-header">
+    <div class="container intake-header__inner">
+
+      <a class="intake-brand" href="index.html">
+        <img class="brand__mark" src="assets/images/logo.svg" alt="HS Properties Logo" style="height: 2.25rem; width: auto;">
+        <span>
+          <span class="intake-brand__name">HS Properties</span>
+          <span class="intake-brand__tagline">Private Real Estate Advisory</span>
+        </span>
+      </a>
+
+      <div class="intake-header__aside">
+        <span class="intake-header__note">Need confidential assistance?</span>
+        <a class="intake-header__cta" href="tel:+442079460892">
+          Speak to an Advisor
+          <svg class="icon icon--sm" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#i-arrow-right"></use></svg>        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <nav class="intake-progress" aria-label="Intake progress">
+  <div class="container intake-progress__inner">
+
+    <ol class="crumb">
+      <li class="crumb__item crumb__item--strong">Confidential Mandate</li>
+      <li class="crumb__sep" aria-hidden="true">/</li>
+      <li class="crumb__item">Seller Mandate</li>
+      <li class="crumb__sep" aria-hidden="true">/</li>
+      <li class="crumb__item crumb__item--current">
+        Step 01      </li>
+    </ol>
+
+    <ol class="steps">
+                      
+        <li
+          class="steps__item steps__item--current"
+          aria-current="step"        >
+          <span class="steps__dot" aria-hidden="true"></span>
+          01          Property Inquiry                  </li>
+          </ol>
+
+  </div>
+</nav>
+
+<main class="intake-main">
+  <div class="container intake-grid">
+
+    <!-- ================= Editorial column ================= -->
+    <aside class="intake-aside">
+      <p class="intake-aside__eyebrow">Private Property Mandate</p>
+
+      <h1 class="intake-aside__title">
+        Sell your
+        <em>property.</em>
+      </h1>
+
+      <p class="intake-aside__lede">
+        Submit your property details for discreet valuation, documentation auditing,
+        and positioning with qualified accredited buyers under strict non-disclosure.
+      </p>
+
+      <div class="protocol">
+        <h2 class="protocol__title">Strict Advisory Protocol</h2>
+        <p class="protocol__text">
+          Your information is held in strict confidence. Submissions are never
+          listed publicly, syndicated across search portals, or disclosed without prior bilateral agreement.
+        </p>
+      </div>
+
+      <ul class="assurances">
+        <li class="assurances__item">Direct oversight by a dedicated Senior Managing Partner.</li>
+        <li class="assurances__item">Strict pre-NDA screening and encrypted transmission.</li>
+        <li class="assurances__item">Curated access restricted solely to pre-qualified buyers.</li>
+      </ul>
+    </aside>
+
+    <!-- ================= Form column ================= -->
+    <div class="panel">
+      <div class="panel__head">
+        <div>
+          <h2 class="panel__title">Property Placement Details</h2>
+          <p class="panel__note">
+            Please share the primary details below so our advisory desk can connect with you.
+          </p>
+        </div>
+        <span class="panel__tag">Confidential Intake</span>
+      </div>
+
+      <div class="form-feedback" id="seller-feedback" style="display: none; padding: 12px 16px; margin-bottom: 20px; border-radius: 6px; font-size: 0.9rem;"></div>
+
+      <form id="seller-intake-form" method="post" action="https://api.web3forms.com/submit">
+        <input type="hidden" name="access_key" value="00000000-0000-0000-0000-000000000000">
+        <input type="hidden" name="subject" value="New Seller Inquiry — HS Properties">
+        <input type="hidden" name="from_name" value="HS Properties Website">
+        <input type="hidden" name="inquiry_type" value="Seller Mandate Inquiry">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+        <div class="fieldset">
+          <div class="fieldset__head">
+            <span class="fieldset__legend">Essential Information</span>
+            <span class="fieldset__hint">Direct Principal</span>
+          </div>
+
+          <!-- 1. Full Name -->
+          <div class="input-group">
+            <label class="input-group__label" for="full_name">
+              Full Name<span class="req" aria-hidden="true">*</span>
+            </label>
+            <input
+              class="input"
+              type="text"
+              id="full_name"
+              name="name"
+              placeholder="e.g. Alexander Vance"
+              autocomplete="name"
+              required>
+          </div>
+
+          <!-- 2. Phone Number -->
+          <div class="input-group u-mt">
+            <label class="input-group__label" for="phone">
+              Phone Number<span class="req" aria-hidden="true">*</span>
+            </label>
+            <input
+              class="input"
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="+91 98765 43210"
+              autocomplete="tel"
+              required>
+          </div>
+
+          <!-- 3. Property Type (Dropdown) -->
+          <div class="input-group u-mt">
+            <label class="input-group__label" for="property_type">
+              Property Type<span class="req" aria-hidden="true">*</span>
+            </label>
+            <select class="input" id="property_type" name="property_type" required>
+              <option value="" disabled selected>Select property archetype *</option>
+              <option value="Villa">Villa / Gated Luxury Enclave</option>
+              <option value="Apartment / Penthouse">Apartment / Sky Penthouse</option>
+              <option value="Independent House">Independent House / Standalone Bungalow</option>
+              <option value="Plot / Land Parcel">Plot / Land Development Parcel</option>
+              <option value="Commercial">Commercial / Prime Office / Retail</option>
+              <option value="Estate / Farmhouse">Estate / Farmhouse / Country Acreage</option>
+              <option value="Other">Other (Please specify)</option>
+            </select>
+          </div>
+
+          <!-- 4. Dynamic "Other" text input -->
+          <div class="input-group u-mt" id="other-type-wrap" style="display: none;">
+            <label class="input-group__label" for="other_property_type">
+              Specify Property Type<span class="req" aria-hidden="true">*</span>
+            </label>
+            <input
+              class="input"
+              type="text"
+              id="other_property_type"
+              name="other_property_type"
+              placeholder="e.g. Heritage Haveli, Coffee Plantation, Island Parcel">
+          </div>
+
+          <p class="note">
+            <svg class="icon icon--sm" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#i-lock"></use></svg>            Submissions are transmitted securely via encrypted channel. No spam, no portal syndication.
+          </p>
+        </div>
+
+        <div class="form-foot">
+          <p class="form-foot__status">
+            <strong>Direct Liaison</strong>
+            <span aria-hidden="true">&bull;</span>
+            Response within 1 business day
+          </p>
+
+          <div class="form-foot__actions">
+            <a class="link-quiet" href="index.html">
+              <svg class="icon icon--sm" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#i-arrow-left"></use></svg>              Back to Home
+            </a>
+            <button class="btn-submit" type="submit" id="btn-seller-submit">
+              Submit Property Details
+              <svg class="icon icon--sm" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#i-arrow-right"></use></svg>            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  (function () {
+    var typeSelect = document.getElementById('property_type');
+    var otherWrap  = document.getElementById('other-type-wrap');
+    var otherInput = document.getElementById('other_property_type');
+
+    if (typeSelect && otherWrap && otherInput) {
+      typeSelect.addEventListener('change', function () {
+        if (this.value === 'Other') {
+          otherWrap.style.display = 'block';
+          otherInput.required = true;
+          otherInput.focus();
+        } else {
+          otherWrap.style.display = 'none';
+          otherInput.required = false;
+          otherInput.value = '';
+        }
+      });
+    }
+
+    var form = document.getElementById('seller-intake-form');
+    var feedback = document.getElementById('seller-feedback');
+    var btn = document.getElementById('btn-seller-submit');
+
+    if (form && feedback) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        var formData = new FormData(form);
+        if (formData.get('property_type') === 'Other' && formData.get('other_property_type')) {
+          formData.set('property_type', 'Other (' + formData.get('other_property_type').trim() + ')');
+        }
+
+        var origText = btn ? btn.innerHTML : '';
+        if (btn) {
+          btn.textContent = 'Transmitting...';
+          btn.disabled = true;
+        }
+        feedback.style.display = 'none';
+
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data.success) {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(46, 125, 50, 0.12)';
+            feedback.style.borderLeft = '3px solid #2e7d32';
+            feedback.style.color = '#1b5e20';
+            feedback.innerHTML = '<strong>Property Details Received.</strong> Thank you! A senior advisory partner will connect with you shortly.';
+            form.reset();
+            if (otherWrap) otherWrap.style.display = 'none';
+          } else {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(185, 28, 28, 0.08)';
+            feedback.style.borderLeft = '3px solid #b91c1c';
+            feedback.style.color = '#7f1d1d';
+            feedback.innerHTML = '<strong>Notice:</strong> ' + (data.message || 'Please check your inputs and try again.');
+          }
+        })
+        .catch(function () {
+          form.submit();
+        })
+        .finally(function () {
+          if (btn) {
+            btn.innerHTML = origText;
+            btn.disabled = false;
+          }
+        });
+      });
+    }
+  })();
+</script>
+
+  <footer class="intake-footer">
+    <div class="container intake-footer__inner">
+
+      <div class="intake-footer__brand">
+        <span class="intake-footer__name">HS Properties</span>
+        <span class="intake-footer__rule" aria-hidden="true">|</span>
+        <span>Private Client Advisory Desk &bull; Strict Fiduciary Governance</span>
+      </div>
+
+      <div class="intake-footer__links">
+        <span>Non-Disclosure &amp; Confidentiality Protected</span>
+        <a href="#">Privacy Mandate</a>
+        <a href="#">Terms of Representation</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="js/intake.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

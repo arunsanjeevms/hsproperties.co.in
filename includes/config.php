@@ -22,11 +22,36 @@ define('SITE_NAME', 'HS Properties');
 define('SITE_TAGLINE', 'Private Advisory');
 
 /**
+ * Web3Forms Access Key helper.
+ */
+function web3forms_key(): string
+{
+    if (function_exists('env')) {
+        $key = env('WEB3FORMS_ACCESS_KEY');
+        if (!empty($key) && $key !== 'YOUR_WEB3FORMS_ACCESS_KEY') {
+            return (string)$key;
+        }
+    }
+    $envVal = $_ENV['WEB3FORMS_ACCESS_KEY'] ?? getenv('WEB3FORMS_ACCESS_KEY');
+    if (!empty($envVal) && $envVal !== 'YOUR_WEB3FORMS_ACCESS_KEY') {
+        return (string)$envVal;
+    }
+    return '00000000-0000-0000-0000-000000000000';
+}
+
+/**
  * Build a site-relative URL.
  */
 function url(string $path = ''): string
 {
-    return BASE_URL . '/' . ltrim($path, '/');
+    $clean = ltrim($path, '/');
+    if ($clean === '' || $clean === 'index.php') {
+        return 'index.html';
+    }
+    if (str_ends_with($clean, '.php')) {
+        $clean = substr($clean, 0, -4) . '.html';
+    }
+    return $clean;
 }
 
 /**

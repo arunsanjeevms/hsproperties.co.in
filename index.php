@@ -79,7 +79,7 @@ include __DIR__ . '/includes/header.php';
         <!-- Dual gateway: the page's two primary intents, given equal weight -->
         <div class="hero__gateways hero-item" data-step="4">
 
-          <a class="gateway gateway--solid shimmer" href="#buyer">
+          <a class="gateway gateway--solid shimmer btn-open-buyer-modal" href="#buyer">
             <span class="gateway__row">
               <span class="gateway__label">
                 <?= icon('shield', 'gateway__icon') ?>
@@ -92,7 +92,7 @@ include __DIR__ . '/includes/header.php';
             </span>
           </a>
 
-          <a class="gateway gateway--glass shimmer" href="<?= e(route('seller.step1')) ?>">
+          <a class="gateway gateway--glass shimmer btn-open-seller-modal" href="<?= e(route('seller.step1')) ?>">
             <span class="gateway__row">
               <span class="gateway__label">
                 <?= icon('villa', 'gateway__icon') ?>
@@ -349,7 +349,7 @@ include __DIR__ . '/includes/header.php';
           <?= icon('gavel', 'icon--sm') ?>
           Non-disclosure agreements executed before disclosing property addresses.
         </p>
-        <a class="btn btn--light btn--lg shimmer" href="<?= e(route('seller.step1')) ?>">
+        <a class="btn btn--light btn--lg shimmer btn-open-seller-modal" href="<?= e(route('seller.step1')) ?>">
           Sell Your Property
           <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
         </a>
@@ -486,7 +486,7 @@ include __DIR__ . '/includes/header.php';
               </span>
             </a>
 
-            <a class="choice choice--solid" href="<?= e(route('seller.step1')) ?>">
+            <a class="choice choice--solid btn-open-seller-modal" href="<?= e(route('seller.step1')) ?>">
               <?= icon('document', 'choice__icon icon--lg') ?>
               <span class="choice__eyebrow">For Sellers</span>
               <span class="choice__title">Sell Your Property</span>
@@ -599,93 +599,113 @@ include __DIR__ . '/includes/header.php';
   </section>
 
   <!-- ====================================================================
-       BUYER MANDATE MODAL (PROGRESSIVE ENHANCEMENT)
+       BUYER INQUIRY MODAL (WEB3FORMS)
        ==================================================================== -->
   <div class="modal-overlay" id="modal-buyer-mandate" role="dialog" aria-modal="true" aria-labelledby="modal-buyer-title">
     <div class="modal-panel">
       <button type="button" class="modal-close" id="btn-close-buyer-modal" aria-label="Close modal">&times;</button>
       <p class="t-eyebrow" style="color: var(--c-secondary); margin-bottom: 4px;">Private Acquisition Desk</p>
-      <h2 id="modal-buyer-title" style="font-family: var(--font-display); font-size: 1.6rem; color: #faf6f1; margin-top: 0; margin-bottom: 12px;">Discreet Buyer Mandate</h2>
+      <h2 id="modal-buyer-title" style="font-family: var(--font-display); font-size: 1.6rem; color: #faf6f1; margin-top: 0; margin-bottom: 12px;">Find Your Property</h2>
       <p style="font-size: 0.85rem; color: var(--c-surface-highest); margin-bottom: var(--s-lg); line-height: 1.5;">
-        Register your acquisition parameters. Our senior partners search off-market inventory and curate matching estates under strict non-disclosure.
+        Register your acquisition interest. An HS Properties senior partner will connect with you privately under strict non-disclosure.
       </p>
 
-      <div class="form-feedback" id="buyer-feedback"></div>
+      <div class="form-feedback" id="buyer-feedback" style="display: none;"></div>
 
-      <form id="form-buyer-mandate" method="post" action="<?= e(url('api/buyer-request.php')) ?>">
-        <?= Session::csrfField() ?>
+      <form id="form-buyer-mandate" method="post" action="https://api.web3forms.com/submit">
+        <input type="hidden" name="access_key" value="<?= e(web3forms_key()) ?>">
+        <input type="hidden" name="subject" value="New Buyer Inquiry — HS Properties">
+        <input type="hidden" name="from_name" value="HS Properties Website">
+        <input type="hidden" name="inquiry_type" value="Buyer Acquisition Inquiry">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="bm-name">Full Name *</label>
-            <input type="text" id="bm-name" name="full_name" class="form-control" placeholder="Rohan Singhania" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="bm-email">Direct Email *</label>
-            <input type="email" id="bm-email" name="email" class="form-control" placeholder="singhania@domain.com" required>
-          </div>
+        <div class="form-group" style="margin-bottom: var(--s-md);">
+          <label class="form-label" for="bm-name">Full Name *</label>
+          <input type="text" id="bm-name" name="name" class="form-control" placeholder="e.g. Rohan Singhania" required>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="bm-phone">Phone / WhatsApp</label>
-            <input type="tel" id="bm-phone" name="phone" class="form-control" placeholder="+91 98765 43210">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="bm-type">Preferred Archetype</label>
-            <select id="bm-type" name="property_type" class="form-control">
-              <option value="Villa">Villa / Gated Luxury Enclave</option>
-              <option value="Penthouse">Sky Penthouse / High-rise</option>
-              <option value="Duplex">Urban Duplex</option>
-              <option value="Estate">Estate / Country Acreage</option>
-              <option value="Commercial">Commercial Landmark Parcel</option>
-            </select>
-          </div>
+        <div class="form-group" style="margin-bottom: var(--s-md);">
+          <label class="form-label" for="bm-phone">Phone Number *</label>
+          <input type="tel" id="bm-phone" name="phone" class="form-control" placeholder="e.g. +91 98765 43210" required>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="bm-city">Target City / Region</label>
-            <input type="text" id="bm-city" name="city" class="form-control" placeholder="Bengaluru / Mumbai / Goa">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="bm-locality">Preferred Micro-market</label>
-            <input type="text" id="bm-locality" name="locality" class="form-control" placeholder="Indiranagar, Whitefield, North Goa">
-          </div>
+        <div class="form-group" style="margin-bottom: var(--s-md);">
+          <label class="form-label" for="bm-email">Email Address <span style="font-size: 0.8em; opacity: 0.7; font-weight: normal;">(Optional)</span></label>
+          <input type="email" id="bm-email" name="email" class="form-control" placeholder="e.g. rohan@example.com">
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="bm-budget">Indicative Budget Bracket</label>
-            <select id="bm-budget" name="budget_max" class="form-control">
-              <option value="₹ 5 Cr – ₹ 10 Cr">₹ 5 Cr – ₹ 10 Cr</option>
-              <option value="₹ 10 Cr – ₹ 25 Cr" selected>₹ 10 Cr – ₹ 25 Cr</option>
-              <option value="₹ 25 Cr – ₹ 50 Cr">₹ 25 Cr – ₹ 50 Cr</option>
-              <option value="₹ 50 Cr+">₹ 50 Cr+ (Landmark Allocation)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="bm-bedrooms">Configuration</label>
-            <select id="bm-bedrooms" name="bedrooms" class="form-control">
-              <option value="3 BHK">3 BHK</option>
-              <option value="4 BHK" selected>4 BHK</option>
-              <option value="5+ BHK">5+ BHK / Sprawling Grounds</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="bm-req">Bespoke Requirements / Architectural Preferences</label>
-          <textarea id="bm-req" name="special_requirements" class="form-control" rows="2" placeholder="Private lap pool, cantilevered living spaces, high-security enclave..."></textarea>
-        </div>
-
-        <div style="margin-top: var(--s-md); display: flex; align-items: center; justify-content: space-between; gap: var(--s-md); flex-wrap: wrap;">
+        <div style="margin-top: var(--s-lg); display: flex; align-items: center; justify-content: space-between; gap: var(--s-md); flex-wrap: wrap;">
           <span style="font-size: 0.75rem; color: rgba(254, 207, 147, 0.7); display: flex; align-items: center; gap: 6px;">
             <?= icon('lock', 'icon--sm') ?>
-            Zero broker syndication. Encrypted fiduciary handling.
+            Strict confidentiality. Zero broker syndication.
           </span>
           <button type="submit" class="btn btn--light btn--lg shimmer" id="btn-submit-bm">
-            Submit Private Mandate
+            Submit Inquiry
+            <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       SELLER INQUIRY MODAL (WEB3FORMS)
+       ==================================================================== -->
+  <div class="modal-overlay" id="modal-seller-mandate" role="dialog" aria-modal="true" aria-labelledby="modal-seller-title">
+    <div class="modal-panel">
+      <button type="button" class="modal-close" id="btn-close-seller-modal" aria-label="Close modal">&times;</button>
+      <p class="t-eyebrow" style="color: var(--c-secondary); margin-bottom: 4px;">Private Property Mandate</p>
+      <h2 id="modal-seller-title" style="font-family: var(--font-display); font-size: 1.6rem; color: #faf6f1; margin-top: 0; margin-bottom: 12px;">Sell Your Property</h2>
+      <p style="font-size: 0.85rem; color: var(--c-surface-highest); margin-bottom: var(--s-lg); line-height: 1.5;">
+        Submit your property details for discreet valuation and qualified high-net-worth buyer access under bilateral non-disclosure.
+      </p>
+
+      <div class="form-feedback" id="seller-feedback" style="display: none;"></div>
+
+      <form id="form-seller-mandate" method="post" action="https://api.web3forms.com/submit">
+        <input type="hidden" name="access_key" value="<?= e(web3forms_key()) ?>">
+        <input type="hidden" name="subject" value="New Seller Inquiry — HS Properties">
+        <input type="hidden" name="from_name" value="HS Properties Website">
+        <input type="hidden" name="inquiry_type" value="Seller Mandate Inquiry">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+        <div class="form-group" style="margin-bottom: var(--s-md);">
+          <label class="form-label" for="sm-name">Full Name *</label>
+          <input type="text" id="sm-name" name="name" class="form-control" placeholder="e.g. Alexander Vance" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--s-md);">
+          <label class="form-label" for="sm-phone">Phone Number *</label>
+          <input type="tel" id="sm-phone" name="phone" class="form-control" placeholder="e.g. +91 98765 43210" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--s-md);">
+          <label class="form-label" for="sm-type">Property Type *</label>
+          <select id="sm-type" name="property_type" class="form-control" required style="background: rgba(20, 12, 7, 0.9); color: #faf6f1;">
+            <option value="" disabled selected>Select property archetype *</option>
+            <option value="Villa">Villa / Gated Luxury Enclave</option>
+            <option value="Apartment / Penthouse">Apartment / Sky Penthouse</option>
+            <option value="Independent House">Independent House / Standalone Bungalow</option>
+            <option value="Plot / Land Parcel">Plot / Land Development Parcel</option>
+            <option value="Commercial">Commercial / Prime Office / Retail</option>
+            <option value="Estate / Farmhouse">Estate / Farmhouse / Country Acreage</option>
+            <option value="Other">Other (Please specify)</option>
+          </select>
+        </div>
+
+        <!-- Dynamic "Other" text input -->
+        <div class="form-group" id="sm-other-group" style="display: none; margin-bottom: var(--s-md);">
+          <label class="form-label" for="sm-other-type">Specify Property Type *</label>
+          <input type="text" id="sm-other-type" name="other_property_type" class="form-control" placeholder="e.g. Heritage Haveli, Coffee Plantation, Island Parcel">
+        </div>
+
+        <div style="margin-top: var(--s-lg); display: flex; align-items: center; justify-content: space-between; gap: var(--s-md); flex-wrap: wrap;">
+          <span style="font-size: 0.75rem; color: rgba(254, 207, 147, 0.7); display: flex; align-items: center; gap: 6px;">
+            <?= icon('lock', 'icon--sm') ?>
+            Strict pre-NDA screening. Never listed publicly.
+          </span>
+          <button type="submit" class="btn btn--light btn--lg shimmer" id="btn-submit-sm">
+            Submit Property Details
             <?= icon('arrow-right', 'icon--arrow icon--sm') ?>
           </button>
         </div>
@@ -695,127 +715,166 @@ include __DIR__ . '/includes/header.php';
 
   <script>
     (function () {
-      // Modal controls
-      var modal = document.getElementById('modal-buyer-mandate');
-      var closeBtn = document.getElementById('btn-close-buyer-modal');
-      var openBtns = document.querySelectorAll('.btn-open-buyer-modal');
+      // ── Modals Setup ───────────────────────────────────────────────────────
+      var buyerModal = document.getElementById('modal-buyer-mandate');
+      var closeBuyerBtn = document.getElementById('btn-close-buyer-modal');
+      var openBuyerBtns = document.querySelectorAll('.btn-open-buyer-modal');
 
-      function openModal(e) {
-        if (e) e.preventDefault();
-        if (modal) modal.classList.add('is-open');
+      var sellerModal = document.getElementById('modal-seller-mandate');
+      var closeSellerBtn = document.getElementById('btn-close-seller-modal');
+      var openSellerBtns = document.querySelectorAll('.btn-open-seller-modal');
+
+      function openModal(m) {
+        if (m) m.classList.add('is-open');
       }
 
-      function closeModal() {
-        if (modal) modal.classList.remove('is-open');
+      function closeModal(m) {
+        if (m) m.classList.remove('is-open');
       }
 
-      openBtns.forEach(function (btn) {
-        btn.addEventListener('click', openModal);
+      openBuyerBtns.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          openModal(buyerModal);
+        });
       });
 
-      if (closeBtn) closeBtn.addEventListener('click', closeModal);
-      if (modal) {
-        modal.addEventListener('click', function (e) {
-          if (e.target === modal) closeModal();
+      openSellerBtns.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          openModal(sellerModal);
+        });
+      });
+
+      if (closeBuyerBtn) {
+        closeBuyerBtn.addEventListener('click', function () { closeModal(buyerModal); });
+      }
+      if (closeSellerBtn) {
+        closeSellerBtn.addEventListener('click', function () { closeModal(sellerModal); });
+      }
+
+      [buyerModal, sellerModal].forEach(function (m) {
+        if (m) {
+          m.addEventListener('click', function (e) {
+            if (e.target === m) closeModal(m);
+          });
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          closeModal(buyerModal);
+          closeModal(sellerModal);
+        }
+      });
+
+      // ── Dynamic "Other" Property Type Dropdown ────────────────────────────
+      var smTypeSelect = document.getElementById('sm-type');
+      var smOtherGroup = document.getElementById('sm-other-group');
+      var smOtherInput = document.getElementById('sm-other-type');
+
+      if (smTypeSelect && smOtherGroup && smOtherInput) {
+        smTypeSelect.addEventListener('change', function () {
+          if (this.value === 'Other') {
+            smOtherGroup.style.display = 'block';
+            smOtherInput.required = true;
+            smOtherInput.focus();
+          } else {
+            smOtherGroup.style.display = 'none';
+            smOtherInput.required = false;
+            smOtherInput.value = '';
+          }
         });
       }
 
-      // AJAX form submission for Buyer Mandate
-      var buyerForm = document.getElementById('form-buyer-mandate');
-      var buyerFeedback = document.getElementById('buyer-feedback');
-      var buyerBtn = document.getElementById('btn-submit-bm');
+      // ── Generic Web3Forms Submitter ────────────────────────────────────────
+      function bindWeb3Form(formId, feedbackId, btnId, successTitle, onSuccess) {
+        var form = document.getElementById(formId);
+        var feedback = document.getElementById(feedbackId);
+        var btn = document.getElementById(btnId);
 
-      if (buyerForm && buyerFeedback) {
-        buyerForm.addEventListener('submit', function (e) {
+        if (!form || !feedback) return;
+
+        form.addEventListener('submit', function (e) {
           e.preventDefault();
-          var formData = new FormData(buyerForm);
-          var originalBtnText = buyerBtn ? buyerBtn.innerHTML : '';
-          if (buyerBtn) {
-            buyerBtn.textContent = 'Transmitting...';
-            buyerBtn.disabled = true;
+
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
           }
 
-          fetch(buyerForm.action, {
+          var formData = new FormData(form);
+
+          // If "Other" property type is chosen, blend into property_type field
+          var pType = formData.get('property_type');
+          var otherType = formData.get('other_property_type');
+          if (pType === 'Other' && otherType) {
+            formData.set('property_type', 'Other (' + otherType.trim() + ')');
+          }
+
+          var origText = btn ? btn.innerHTML : '';
+          if (btn) {
+            btn.textContent = 'Transmitting...';
+            btn.disabled = true;
+          }
+          feedback.style.display = 'none';
+
+          fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             body: formData,
             headers: {
-              'X-Requested-With': 'XMLHttpRequest'
+              'Accept': 'application/json'
             }
           })
           .then(function (res) { return res.json(); })
           .then(function (data) {
             if (data.success) {
-              buyerFeedback.className = 'form-feedback form-feedback--success';
-              buyerFeedback.innerHTML = '<strong>Mandate Registered.</strong> ' + data.message + ' (Ref: <strong>' + (data.reference || '') + '</strong>)';
-              buyerForm.reset();
-              setTimeout(function () {
-                closeModal();
-                buyerFeedback.style.display = 'none';
-              }, 4000);
+              feedback.className = 'form-feedback form-feedback--success';
+              feedback.style.display = 'block';
+              feedback.innerHTML = '<strong>' + successTitle + '</strong> Your inquiry has been received. A senior advisor will contact you directly.';
+              form.reset();
+              if (smOtherGroup) smOtherGroup.style.display = 'none';
+              if (onSuccess) {
+                setTimeout(onSuccess, 3500);
+              }
             } else {
-              buyerFeedback.className = 'form-feedback form-feedback--error';
-              var errs = data.errors ? Object.values(data.errors).join('<br>') : 'Submission error. Please check your entries.';
-              buyerFeedback.innerHTML = errs;
+              feedback.className = 'form-feedback form-feedback--error';
+              feedback.style.display = 'block';
+              feedback.innerHTML = '<strong>Notice:</strong> ' + (data.message || 'Please check your inputs and try again.');
             }
           })
           .catch(function () {
-            // Fallback: standard submit
-            buyerForm.submit();
+            form.submit();
           })
           .finally(function () {
-            if (buyerBtn) {
-              buyerBtn.innerHTML = originalBtnText;
-              buyerBtn.disabled = false;
+            if (btn) {
+              btn.innerHTML = origText;
+              btn.disabled = false;
             }
           });
         });
       }
 
-      // AJAX form submission for Contact Desk
-      var contactForm = document.getElementById('form-contact-desk');
-      var contactFeedback = document.getElementById('contact-feedback');
-      var contactBtn = document.getElementById('btn-submit-contact');
+      // Bind Buyer Form
+      bindWeb3Form('form-buyer-mandate', 'buyer-feedback', 'btn-submit-bm', 'Acquisition Inquiry Received.', function () {
+        closeModal(buyerModal);
+        var fb = document.getElementById('buyer-feedback');
+        if (fb) fb.style.display = 'none';
+      });
 
-      if (contactForm && contactFeedback) {
-        contactForm.addEventListener('submit', function (e) {
-          e.preventDefault();
-          var formData = new FormData(contactForm);
-          var origText = contactBtn ? contactBtn.innerHTML : '';
-          if (contactBtn) {
-            contactBtn.textContent = 'Transmitting...';
-            contactBtn.disabled = true;
-          }
+      // Bind Seller Form
+      bindWeb3Form('form-seller-mandate', 'seller-feedback', 'btn-submit-sm', 'Property Details Received.', function () {
+        closeModal(sellerModal);
+        var fb = document.getElementById('seller-feedback');
+        if (fb) fb.style.display = 'none';
+      });
 
-          fetch(contactForm.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest'
-            }
-          })
-          .then(function (res) { return res.json(); })
-          .then(function (data) {
-            if (data.success) {
-              contactFeedback.className = 'form-feedback form-feedback--success';
-              contactFeedback.innerHTML = '<strong>Message Received.</strong> ' + data.message;
-              contactForm.reset();
-            } else {
-              contactFeedback.className = 'form-feedback form-feedback--error';
-              var errs = data.errors ? Object.values(data.errors).join('<br>') : 'Failed to send inquiry. Please check your entries.';
-              contactFeedback.innerHTML = errs;
-            }
-          })
-          .catch(function () {
-            contactForm.submit();
-          })
-          .finally(function () {
-            if (contactBtn) {
-              contactBtn.innerHTML = origText;
-              contactBtn.disabled = false;
-            }
-          });
-        });
-      }
+      // Bind Closing Section Contact Form
+      bindWeb3Form('form-contact-desk', 'contact-feedback', 'btn-submit-contact', 'Inquiry Transmitted.', function () {
+        var fb = document.getElementById('contact-feedback');
+        if (fb) fb.style.display = 'block';
+      });
+
     })();
   </script>
 
