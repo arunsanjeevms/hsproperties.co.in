@@ -51,7 +51,7 @@ $currentPage = $currentPage ?? 'home';
           class="brand__mark"
           src="<?= e(url('assets/images/logo.svg')) ?>"
           alt=""
-          width="296" height="52">
+          width="36" height="60">
         <span class="brand__text">
           <span class="brand__name"><?= e(SITE_NAME) ?></span>
           <span class="brand__tagline"><?= e(SITE_TAGLINE) ?></span>

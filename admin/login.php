@@ -34,7 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="login-wrap">
   <div class="login-card">
     <div class="login-header">
-      <div class="login-logo">HS PROPERTIES</div>
+      <div class="login-logo" style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px;">
+        <img src="<?= e(url('assets/images/logo.svg')) ?>" alt="" style="height: 36px; width: auto;">
+        <span>HS PROPERTIES</span>
+      </div>
       <p class="login-sub">Confidential Advisory Console</p>
     </div>
 

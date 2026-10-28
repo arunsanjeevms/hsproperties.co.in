@@ -27,7 +27,10 @@ $user = Auth::user();
 
   <aside class="admin-sidebar">
     <div class="admin-sidebar__brand">
-      <a href="<?= e(url('admin/index.php')) ?>" class="admin-sidebar__logo">HS <span>PROPERTIES</span></a>
+      <a href="<?= e(url('admin/index.php')) ?>" class="admin-sidebar__logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="<?= e(url('assets/images/logo.svg')) ?>" alt="" style="height: 24px; width: auto;">
+        <span>HS <span>PROPERTIES</span></span>
+      </a>
       <span class="admin-sidebar__badge">Desk</span>
     </div>
 

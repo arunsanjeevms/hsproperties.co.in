@@ -52,7 +52,7 @@ $intakeSteps = $intakeSteps ?? [];
     <div class="container intake-header__inner">
 
       <a class="intake-brand" href="<?= e(route('home')) ?>">
-        <span class="intake-brand__mark" aria-hidden="true">HS</span>
+        <img class="brand__mark" src="<?= e(url('assets/images/logo.svg')) ?>" alt="<?= e(SITE_NAME) ?> Logo" style="height: 2.25rem; width: auto;">
         <span>
           <span class="intake-brand__name">HS Properties</span>
           <span class="intake-brand__tagline">Private Real Estate Advisory</span>
