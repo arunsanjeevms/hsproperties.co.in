@@ -1,22 +1,3 @@
-# Dependencies (when Composer is introduced)
-/vendor/
-composer.lock
-
-# Local environment / secrets — the DB credentials will live here later
-.env
-.env.*
-!.env.example
-includes/config.local.php
-
-# Uploads written at runtime by the intake flow
-/uploads/
-/storage/
-
-# Logs & caches
-*.log
-/cache/
-/tmp/
-
 # Editor / IDE
 .vscode/
 .idea/
@@ -28,3 +9,6 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 .DS_Store
+
+# Logs
+*.log

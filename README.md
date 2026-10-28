@@ -1,81 +1,90 @@
-# HS Properties — Consultation Platform
+# HS Properties — Private Real Estate Advisory Platform
 
-Frontend for the HS Properties private real estate advisory platform.
+A luxury, editorial-grade static web platform for private real estate consultation, optimized for **GitHub Pages** with zero backend dependencies.
 
-Built from the Google Stitch project *HS Properties Consultation Platform*,
-which is the visual source of truth for the design system.
+Inquiries are securely and privately routed directly to email via **Web3Forms**.
 
-## Stack
+---
 
-HTML5, CSS3, vanilla JavaScript, and Web3Forms (GitHub Pages static hosting).
-Zero backend dependencies — client inquiries are securely routed directly via Web3Forms.
+## Architecture & Stack
 
+- **Pure Static Frontend**: HTML5, CSS3, vanilla JavaScript.
+- **Serverless Form Delivery**: [Web3Forms](https://web3forms.com) API (Zero backend, zero database, direct email alerts).
+- **Hosting Ready**: GitHub Pages (or any CDN / static host like Netlify, Vercel, Cloudflare Pages).
+- **Emblem / Logo**: Custom golden HS architectural monogram logo.
 
-## Pages
-
-| Route | Screen |
-| --- | --- |
-| `/index.php` | Home — Architectural Editorial Edition |
-| `/pages/seller-intake-step-1.php` | Private Seller Intake, Step 01: Property |
-| `/pages/seller-intake-step-2.php` | Private Seller Intake, Step 02: Details & Documents |
-| `/pages/seller-intake-step-3.php` | Private Seller Intake, Step 03: Review & Submit |
-| `/pages/seller-intake-step-3.php?state=submitted` | Advisory confirmation |
+---
 
 ## Structure
 
 ```
-assets/
-  icons/sprite.svg      Inline SVG icon set (no icon font)
-  images/               Photography and the logo
-css/
-  variables.css         Design tokens — the single source of truth
-  global.css            Reset, typography, layout, accessibility, motion
-  components.css        Reusable components (buttons, nav, cards, forms)
-  pages.css             Home page section layouts
-  intake.css            Intake shell + form system (shared by all intakes)
-  responsive.css        Breakpoint behaviour
-includes/
-  config.php            Config, helpers, named route table
-  data.php              Home page presentation data
-  seller-intake-data.php  Intake option sets (future lookup tables)
-  form-helpers.php      Form control renderers
-  header/footer/navigation.php     Marketing shell
-  intake-header/-progress/-footer.php  Intake shell
-js/
-  main.js, navigation.js, interactions.js, intake.js
-pages/
-index.php
+├── .nojekyll                          # Direct static serving on GitHub Pages
+├── index.html                         # Home page with integrated Buy & Sell inquiry modals
+├── sell.html                          # Standalone Private Seller Intake page
+├── pages/
+│   └── seller-intake-step-1.html      # Alternative subfolder intake page
+├── assets/
+│   ├── icons/sprite.svg               # Inline SVG icon sprite
+│   └── images/
+│       ├── logo.svg                   # Brand vector logo
+│       ├── logo.png                   # High-res PNG logo
+│       ├── logo-icon.png              # Monogram emblem icon
+│       └── hero-villa.jpg             # Architectural photography
+├── css/
+│   ├── variables.css                  # Design tokens (colors, typography, spacing)
+│   ├── global.css                     # Reset, base typography, layout
+│   ├── components.css                 # Buttons, modals, forms, cards
+│   ├── pages.css                      # Home section layouts
+│   ├── intake.css                     # Dedicated intake layouts
+│   └── responsive.css                 # Breakpoint rules
+└── js/
+    ├── navigation.js                  # Header scroll & drawer navigation
+    ├── interactions.js                # Micro-interactions & animations
+    └── main.js                        # Smooth scrolling & initialization
 ```
 
-## Conventions
+---
 
-- **Tokens first.** Colour, type, spacing and motion values live in
-  `variables.css`. Do not hard-code them in page-level CSS.
-- **Components over one-offs.** New screens compose from `components.css` and
-  `intake.css` rather than adding bespoke rules.
-- **Routes are named.** Cross-page links go through `route()` in `config.php`,
-  so moving pages or adding pretty URLs is a one-line change.
-- **Data is shaped like the database.** Arrays in `data.php` and
-  `seller-intake-data.php` mirror the rows that will replace them, so the
-  templates will not change when MySQL lands.
-- **Progressive enhancement.** Form controls are real inputs styled with CSS
-  `:has(:checked)`; every page works with JavaScript disabled.
-- **Escape everything.** Dynamic output goes through `e()`.
+## Client Inquiry Forms (Web3Forms)
 
-## Running locally
+Both forms submit asynchronously with instant feedback and zero page reloads:
 
-Any PHP 8 server works. With the built-in server from the project root:
+### 1. Buy ("Find Your Property")
+- **Full Name** — Required
+- **Phone Number** — Required
+- **Email Address** — Optional
 
-```bash
-php -S 127.0.0.1:8088 -t .
-```
+### 2. Sell ("Sell Your Property")
+- **Full Name** — Required
+- **Phone Number** — Required
+- **Property Type** — Required dropdown:
+  - Villa / Gated Luxury Enclave
+  - Apartment / Sky Penthouse
+  - Independent House / Standalone Bungalow
+  - Plot / Land Development Parcel
+  - Commercial / Prime Office / Retail
+  - Estate / Farmhouse / Country Acreage
+  - Other (Please specify)
+- **Dynamic "Other" Input**: Automatically appears when "Other" is chosen so the client can specify their custom property type.
 
-Then open <http://127.0.0.1:8088/index.php>.
+---
 
-## Status
+## Configuring Web3Forms
 
-Home page and the three seller intake steps are complete and responsive
-(desktop, laptop, tablet, mobile), with `prefers-reduced-motion` honoured.
+1. Obtain a free access key at [https://web3forms.com](https://web3forms.com) (sent instantly to your email).
+2. Open `index.html` and `sell.html`.
+3. Replace `00000000-0000-0000-0000-000000000000` with your access key:
+   ```html
+   <input type="hidden" name="access_key" value="YOUR_ACTUAL_ACCESS_KEY_HERE">
+   ```
 
-Not yet built: buyer intake, admin requests inbox, request detail, dashboard,
-and the MySQL layer.
+---
+
+## GitHub Pages Setup
+
+1. In your GitHub repository, navigate to **Settings** &rarr; **Pages**.
+2. Under **Build and deployment**:
+   - **Source**: Deploy from a branch
+   - **Branch**: `main` (or your deployment branch)
+   - **Folder**: `/ (root)`
+3. Click **Save**. Your site will be live immediately!
