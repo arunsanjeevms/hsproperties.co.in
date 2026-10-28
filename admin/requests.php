@@ -62,7 +62,15 @@ include __DIR__ . '/header.php';
       </div>
 
       <div style="padding: 24px;">
-        <h3 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-secondary, #8d5629); margin-top: 0;">1. Property Profile</h3>
+        <h3 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-secondary, #8d5629); margin-top: 0;">1. Principal Contact Details</h3>
+        <table class="admin-table" style="margin-bottom: 24px;">
+          <tr><th style="width: 35%;">Full Name</th><td><strong><?= e($detail['contact_name'] ?? '—') ?></strong></td></tr>
+          <tr><th>Phone Number</th><td><?= !empty($detail['contact_phone']) ? '<a href="tel:' . e($detail['contact_phone']) . '">' . e($detail['contact_phone']) . '</a>' : '—' ?></td></tr>
+          <tr><th>Email Address</th><td><?= !empty($detail['contact_email']) ? '<a href="mailto:' . e($detail['contact_email']) . '">' . e($detail['contact_email']) . '</a>' : '—' ?></td></tr>
+          <tr><th>Address</th><td><?= e($detail['contact_address'] ?? 'Not provided') ?></td></tr>
+        </table>
+
+        <h3 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-secondary, #8d5629);">2. Property Profile</h3>
         <table class="admin-table" style="margin-bottom: 24px;">
           <tr><th style="width: 35%;">Property Type</th><td><?= e(ucfirst($detail['property_type'] ?? '—')) ?></td></tr>
           <tr><th>Property Status</th><td><?= e(ucfirst($detail['property_status'] ?? '—')) ?></td></tr>
@@ -74,14 +82,14 @@ include __DIR__ . '/header.php';
           <tr><th>Physical Condition</th><td><?= e(ucfirst($detail['condition_status'] ?? '—')) ?></td></tr>
         </table>
 
-        <h3 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-secondary, #8d5629);">2. Advisory & Valuation Parameters</h3>
+        <h3 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-secondary, #8d5629);">3. Advisory & Valuation Parameters</h3>
         <table class="admin-table" style="margin-bottom: 24px;">
           <tr><th style="width: 35%;">Indicative Price</th><td><?= e($detail['target_price'] ? '₹ ' . number_format((float)$detail['target_price']) : 'Unstated / Discretionary') ?></td></tr>
           <tr><th>Timeline Target</th><td><?= e(ucfirst($detail['timeline'] ?? '—')) ?></td></tr>
           <tr><th>Mandate Structure</th><td><?= e(ucfirst($detail['mandate_structure'] ?? '—')) ?></td></tr>
         </table>
 
-        <h3 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-secondary, #8d5629);">3. Deposited Documentation</h3>
+        <h3 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-secondary, #8d5629);">4. Deposited Documentation</h3>
         <?php if (empty($documents)): ?>
           <p style="font-size: 0.85rem; color: #888;">No uploaded documents deposited.</p>
         <?php else: ?>

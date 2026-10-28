@@ -176,10 +176,11 @@ CREATE TABLE IF NOT EXISTS `seller_requests` (
   -- Step 3: Declaration
   `declaration`         TINYINT(1)      NOT NULL DEFAULT 0,
 
-  -- Contact info (optional, collected during advisor follow-up)
+  -- Contact info (collected in Step 01)
   `contact_name`        VARCHAR(120)    NULL DEFAULT NULL,
   `contact_email`       VARCHAR(255)    NULL DEFAULT NULL,
   `contact_phone`       VARCHAR(30)     NULL DEFAULT NULL,
+  `contact_address`     VARCHAR(500)    NULL DEFAULT NULL,
 
   -- Admin fields
   `assigned_to`         INT UNSIGNED    NULL DEFAULT NULL,

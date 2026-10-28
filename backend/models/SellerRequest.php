@@ -80,39 +80,43 @@ class SellerRequest
     }
 
     /**
-     * Update step 1 data.
+     * Update step 1 data: Contact Details.
      */
     public function saveStep1(int $id, array $data): void
     {
-        $this->db->update('seller_requests', [
-            'property_type'    => $data['property_type'] ?? null,
-            'property_status'  => $data['property_status'] ?? null,
-            'city'             => $data['city'] ?? null,
-            'locality'         => $data['locality'] ?? null,
-            'pincode'          => $data['pincode'] ?? null,
-            'extent'           => $data['extent'] ?? null,
-            'measurement_unit' => $data['unit'] ?? null,
-            'bedrooms'         => $data['bedrooms'] ?? null,
-            'ownership'        => $data['ownership'] ?? null,
-            'current_step'     => max(2, $this->getCurrentStep($id)),
-        ], '`id` = :id', ['id' => $id]);
+        $update = [
+            'contact_name'  => $data['contact_name'] ?? $data['full_name'] ?? null,
+            'contact_phone' => $data['contact_phone'] ?? $data['phone'] ?? null,
+            'contact_email' => $data['contact_email'] ?? $data['email'] ?? null,
+            'current_step'  => max(2, $this->getCurrentStep($id)),
+        ];
+
+        $addr = $data['contact_address'] ?? $data['address'] ?? null;
+        if ($addr !== null) {
+            $update['contact_address'] = $addr;
+        }
+
+        $this->db->update('seller_requests', $update, '`id` = :id', ['id' => $id]);
     }
 
     /**
-     * Update step 2 data.
+     * Update step 2 data: Property Details & Positioning.
      */
     public function saveStep2(int $id, array $data): void
     {
         $this->db->update('seller_requests', [
-            'address'           => $data['address'] ?? null,
-            'condition_status'  => $data['condition'] ?? null,
-            'year_built'        => $data['year_built'] ?? null,
-            'furnishing'        => $data['furnishing'] ?? null,
-            'target_price'      => $data['target_price'] ?? null,
-            'timeline'          => $data['timeline'] ?? null,
-            'mandate_structure' => $data['mandate'] ?? null,
+            'address'             => $data['address'] ?? null,
+            'locality'            => $data['locality'] ?? null,
+            'city'                => $data['city'] ?? null,
+            'pincode'             => $data['pincode'] ?? null,
+            'condition_status'    => $data['condition'] ?? null,
+            'year_built'          => $data['year_built'] ?? null,
+            'furnishing'          => $data['furnishing'] ?? null,
+            'target_price'        => $data['target_price'] ?? null,
+            'timeline'            => $data['timeline'] ?? null,
+            'mandate_structure'   => $data['mandate'] ?? null,
             'documents_available' => !empty($data['documents']) ? json_encode($data['documents']) : null,
-            'current_step'      => max(3, $this->getCurrentStep($id)),
+            'current_step'        => max(3, $this->getCurrentStep($id)),
         ], '`id` = :id', ['id' => $id]);
     }
 
@@ -242,53 +246,14 @@ class SellerRequest
     {
         $db = Database::getInstance();
 
-        // Resolve labels from lookup tables
-        $propertyTypeLabel = $db->fetchColumn(
-            "SELECT CONCAT(`label`, ' (', COALESCE(`note`, ''), ')') FROM `lookup_property_types` WHERE `value` = :v",
-            ['v' => $request['property_type'] ?? '']
-        ) ?: ($request['property_type'] ?? '—');
+        // Contact details from Step 1
+        $contactName  = $request['contact_name'] ?? $request['full_name'] ?? '—';
+        $contactPhone = $request['contact_phone'] ?? $request['phone'] ?? '—';
+        $contactEmail = $request['contact_email'] ?? $request['email'] ?? '—';
+        $contactAddr  = $request['contact_address'] ?? (!empty($request['address']) && empty($request['condition_status']) ? $request['address'] : '') ?: 'Not provided';
 
-        $ownershipLabel = $db->fetchColumn(
-            "SELECT `label` FROM `lookup_ownership_types` WHERE `value` = :v",
-            ['v' => $request['ownership'] ?? '']
-        ) ?: ($request['ownership'] ?? '—');
-
-        $conditionKey = $request['condition_status'] ?? $request['condition'] ?? '';
-        $conditionLabel = $db->fetchColumn(
-            "SELECT `label` FROM `lookup_conditions` WHERE `value` = :v",
-            ['v' => $conditionKey]
-        ) ?: ($conditionKey ?: '—');
-
-        $mandateKey = $request['mandate_structure'] ?? $request['mandate'] ?? '';
-        $mandateLabel = $db->fetchColumn(
-            "SELECT CONCAT(`label`, ' (', COALESCE(`note`, ''), ')') FROM `lookup_mandate_structures` WHERE `value` = :v",
-            ['v' => $mandateKey]
-        ) ?: ($mandateKey ?: '—');
-
-        $timelineKey = $request['timeline'] ?? '';
-        $timelineLabel = $db->fetchColumn(
-            "SELECT `label` FROM `lookup_timelines` WHERE `value` = :v",
-            ['v' => $timelineKey]
-        ) ?: ($timelineKey ?: '—');
-
-        $bedroomKey = $request['bedrooms'] ?? '';
-        $bedroomLabel = $db->fetchColumn(
-            "SELECT `label` FROM `lookup_bedroom_options` WHERE `value` = :v",
-            ['v' => $bedroomKey]
-        ) ?: ($bedroomKey ? $bedroomKey . ' BHK' : '—');
-
-        $unitKey = $request['measurement_unit'] ?? $request['unit'] ?? '';
-        $unitLabel = $db->fetchColumn(
-            "SELECT `label` FROM `lookup_measurement_units` WHERE `value` = :v",
-            ['v' => $unitKey]
-        ) ?: ($unitKey ?: 'sq ft');
-
-        $priceDisplay = 'Discretionary / Unstated';
-        if (!empty($request['target_price'])) {
-            $numPrice = (float)str_replace([',', ' '], '', (string)$request['target_price']);
-            $priceDisplay = $numPrice > 0 ? '₹ ' . number_format($numPrice) : '₹ ' . $request['target_price'];
-        }
-
+        // Property details from Step 2
+        $propertyAddress = $request['address'] ?? '—';
         $locationParts = array_filter([
             $request['locality'] ?? '',
             $request['city'] ?? '',
@@ -298,25 +263,66 @@ class SellerRequest
             $location .= " (PIN: {$request['pincode']})";
         }
 
-        $sizeDisplay = ($request['extent'] ?? '—') . ' ' . $unitLabel . ' (Built-up Area)';
+        $conditionKey = $request['condition_status'] ?? $request['condition'] ?? '';
+        $conditionLabel = '';
+        if ($conditionKey) {
+            try {
+                $conditionLabel = $db->fetchColumn(
+                    "SELECT `label` FROM `lookup_conditions` WHERE `value` = :v",
+                    ['v' => $conditionKey]
+                );
+            } catch (\Throwable $e) {}
+        }
+        $conditionLabel = $conditionLabel ?: ($conditionKey ?: '—');
+
+        $priceDisplay = 'Discretionary / Unstated';
+        if (!empty($request['target_price'])) {
+            $numPrice = (float)str_replace([',', ' '], '', (string)$request['target_price']);
+            $priceDisplay = $numPrice > 0 ? '₹ ' . number_format($numPrice) : '₹ ' . $request['target_price'];
+        }
+
+        $timelineKey = $request['timeline'] ?? '';
+        $timelineLabel = '';
+        if ($timelineKey) {
+            try {
+                $timelineLabel = $db->fetchColumn(
+                    "SELECT `label` FROM `lookup_timelines` WHERE `value` = :v",
+                    ['v' => $timelineKey]
+                );
+            } catch (\Throwable $e) {}
+        }
+        $timelineLabel = $timelineLabel ?: ($timelineKey ?: '—');
+
+        $mandateKey = $request['mandate_structure'] ?? $request['mandate'] ?? '';
+        $mandateLabel = '';
+        if ($mandateKey) {
+            try {
+                $mandateLabel = $db->fetchColumn(
+                    "SELECT CONCAT(`label`, ' (', COALESCE(`note`, ''), ')') FROM `lookup_mandate_structures` WHERE `value` = :v",
+                    ['v' => $mandateKey]
+                );
+            } catch (\Throwable $e) {}
+        }
+        $mandateLabel = $mandateLabel ?: ($mandateKey ?: '—');
 
         return [
             [
-                'title'    => 'Property',
+                'title'    => 'Contact Details',
                 'edit_url' => route('seller.step1'),
                 'rows'     => [
-                    ['label' => 'Property Type',      'value' => $propertyTypeLabel],
-                    ['label' => 'Location',           'value' => $location ?: '—'],
-                    ['label' => 'Property Size',      'value' => $sizeDisplay],
-                    ['label' => 'Bedrooms',           'value' => $bedroomLabel],
-                    ['label' => 'Property Condition',  'value' => $conditionLabel, 'accent' => true],
-                    ['label' => 'Ownership',          'value' => $ownershipLabel],
+                    ['label' => 'Full Name',     'value' => $contactName],
+                    ['label' => 'Phone Number',  'value' => $contactPhone],
+                    ['label' => 'Email Address', 'value' => $contactEmail],
+                    ['label' => 'Address',       'value' => $contactAddr],
                 ],
             ],
             [
-                'title'    => 'Sale Positioning',
+                'title'    => 'Property Details & Positioning',
                 'edit_url' => route('seller.step2'),
                 'rows'     => [
+                    ['label' => 'Property Address',        'value' => $propertyAddress],
+                    ['label' => 'Location',                'value' => $location ?: '—'],
+                    ['label' => 'Property Condition',      'value' => $conditionLabel, 'accent' => true],
                     ['label' => 'Indicative Asking Price', 'value' => $priceDisplay],
                     ['label' => 'Sale Timeline',           'value' => $timelineLabel],
                     ['label' => 'Preferred Mandate',       'value' => $mandateLabel],

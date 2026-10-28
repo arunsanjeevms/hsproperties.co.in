@@ -16,7 +16,7 @@ declare(strict_types=1);
 function intake_steps(): array
 {
     return [
-        ['label' => 'Property',             'href' => route('seller.step1')],
+        ['label' => 'Contact Details',      'href' => route('seller.step1')],
         ['label' => 'Details & Documents',  'href' => route('seller.step2')],
         ['label' => 'Review & Submit',      'href' => route('seller.step3')],
     ];
@@ -208,7 +208,7 @@ function seller_review_sections(): array
                 }
             }
 
-            if ($record && (!empty($record['city']) || !empty($record['property_type']))) {
+            if ($record && (!empty($record['contact_name']) || !empty($record['full_name']) || !empty($record['address']) || !empty($record['city']))) {
                 return $sellerModel->buildReviewData($record);
             }
         }
@@ -218,15 +218,13 @@ function seller_review_sections(): array
 
     return [
         [
-            'title'    => 'Property',
+            'title'    => 'Contact Details',
             'edit_url' => route('seller.step1'),
             'rows'     => [
-                ['label' => 'Property Type',      'value' => 'Villa (Gated Luxury Enclave)'],
-                ['label' => 'Location',           'value' => 'Whitefield, Bengaluru (PIN: 560066)'],
-                ['label' => 'Property Size',      'value' => '8,200 sq ft (Built-up Area)'],
-                ['label' => 'Bedrooms',           'value' => '4 BHK'],
-                ['label' => 'Property Condition', 'value' => 'New / Pristine', 'accent' => true],
-                ['label' => 'Ownership',          'value' => 'Individual Ownership'],
+                ['label' => 'Full Name',     'value' => 'Alexander Vance'],
+                ['label' => 'Phone Number',  'value' => '+91 98450 12345'],
+                ['label' => 'Email Address', 'value' => 'alexander.vance@example.com'],
+                ['label' => 'Address',       'value' => 'Richmond Town, Bengaluru'],
             ],
         ],
         [
