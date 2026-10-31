@@ -17,13 +17,68 @@
 
     <link rel="stylesheet" href="css/variables.css?v=1793182034">
   <link rel="stylesheet" href="css/global.css?v=1791446132">
-  <link rel="stylesheet" href="css/components.css?v=1792773986">
+  <link rel="stylesheet" href="css/components.css?v=1793463686246">
   <link rel="stylesheet" href="css/pages.css?v=1793463473157">
   <link rel="stylesheet" href="css/responsive.css?v=1793459263797">
 
     <script>document.documentElement.classList.add('has-js');</script>
 </head>
 <body>
+  <!-- ====================================================================
+       SITE PRELOADER & OPENING ANIMATION
+       ==================================================================== -->
+  <div class="site-preloader" id="site-preloader" aria-hidden="false">
+    <div class="preloader__inner">
+      <div class="preloader__logo-wrap">
+        <div class="preloader__glow" aria-hidden="true"></div>
+        <img
+          class="preloader__logo"
+          src="assets/images/logo-icon.png"
+          alt="HS Properties"
+          width="76"
+          height="126">
+      </div>
+      <h2 class="preloader__brand">HS Properties</h2>
+      <p class="preloader__tagline">Real Estate Services</p>
+      <div class="preloader__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+        <div class="preloader__bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var preloader = document.getElementById('site-preloader');
+      if (!preloader) return;
+
+      var minDuration = 1400; // minimum duration to display the logo animation
+      var startTime = Date.now();
+
+      function closePreloader() {
+        if (!preloader || preloader.classList.contains('is-loaded')) return;
+        var elapsed = Date.now() - startTime;
+        var remaining = Math.max(0, minDuration - elapsed);
+
+        setTimeout(function () {
+          preloader.classList.add('is-loaded');
+          preloader.setAttribute('aria-hidden', 'true');
+          setTimeout(function () {
+            preloader.classList.add('is-hidden');
+          }, 900);
+        }, remaining);
+      }
+
+      if (document.readyState === 'complete') {
+        closePreloader();
+      } else {
+        window.addEventListener('load', closePreloader);
+      }
+
+      // Safety timeout: dismiss after 2.5s regardless
+      setTimeout(closePreloader, 2500);
+    })();
+  </script>
+
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <header class="site-header" id="site-header">
