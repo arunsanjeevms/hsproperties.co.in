@@ -87,6 +87,19 @@
   text-shadow: 0 1px 10px rgba(16, 8, 4, 0.7);
 }
 
+.hero__highlight {
+  display: inline-block;
+  color: var(--c-secondary-container);
+  background: var(--g-champagne-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 14px rgba(245, 203, 157, 0.35);
+}
+
 .hero__support {
   max-width: 38rem;
   color: rgba(245, 238, 230, 0.9);
